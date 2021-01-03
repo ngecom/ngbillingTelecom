@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: NgBilling
+  main:
+    banner-mode: off
+  online: 
+    datasource:
+      driver-class-name: org.postgresql.Driver
+      password: postgres
+      url: jdbc:postgresql://localhost:5432/ngbillingtelco
+      username: postgres
+      platform: postgres
+      hikari:
+        auto-commit: true
+        connection-timeout: 600000
+        idle-timeout: 600000
+        leak-detection-threshold: 0
+        max-lifetime: 1800000
+        maximum-pool-size: 30
+        minimum-idle: 5                                                                                                     
+        poolName: onlineConnectionPool
+  jpa:
+      properties:
+          hibernate:
+              dialect: org.hibernate.dialect.PostgreSQLDialect
+              jdbc:
+                  lob:
+                    non_contextual_creation: true   
+  batch:
+    datasource:
+      driver-class-name: org.postgresql.Driver
+      password: postgres
+      url: jdbc:postgresql://localhost:5432/ngbillingtelco
+      username: postgres
+      platform: postgres
+      hikari:
+        auto-commit: true
+        connection-timeout: 600000
+        idle-timeout: 600000
+        leak-detection-threshold: 0
+        max-lifetime: 1800000
+        maximum-pool-size: 30
+        minimum-idle: 5                                                                                                     
+        poolName: onlineConnectionPool
+    initialize-schema: always
+    job:
+      enabled: false
+    cron: 0/10 0/1 * 1/1 * ?
+    commit:
+      chunk: 1
+    error:
+      skipCount: 144768
+    jobs:
+      billingJob: true
+    thread:
+      maxPool:
+        Size: 20
+      corePool:
+        Size: 1
+      queuePool:
+        Size: 1
+ngecom:
+  app:
+    jwtSecret: ngBillingKey
+    jwtExpirationMs: 86400000  
+    process:
+      time : 3
+      frequency : 4            
