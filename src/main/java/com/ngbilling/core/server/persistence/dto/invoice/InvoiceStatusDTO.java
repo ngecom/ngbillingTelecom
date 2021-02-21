@@ -63,4 +63,12 @@ public class InvoiceStatusDTO extends AbstractGenericStatus implements Serializa
     protected String getTable() {
         return ServerConstants.TABLE_INVOICE_STATUS;
     }
+    
+    public Integer getStatusValue() {
+    	return statusValue;
+    }
+    
+    public void setStatusValue(Integer statusValue) {
+    	 this.statusValue = statusValue;
+    }
 }

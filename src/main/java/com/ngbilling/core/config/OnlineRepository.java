@@ -20,7 +20,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.ngbilling.core.server.persistence.dto", entityManagerFactoryRef = "onlineEntityManagerFactory", transactionManagerRef = "onlineTransactionManager")
+@EnableJpaRepositories(basePackages = "com.ngbilling.core", entityManagerFactoryRef = "onlineEntityManagerFactory", transactionManagerRef = "onlineTransactionManager")
 public class OnlineRepository{
 
 	@Bean

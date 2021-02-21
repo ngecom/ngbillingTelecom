@@ -19,7 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.ngbilling.core.server.persistence.dto", entityManagerFactoryRef = "batchEntityManagerFactory", transactionManagerRef = "batchTransactionManager")
+@EnableJpaRepositories(basePackages = "com.ngbilling.core.server.batch", entityManagerFactoryRef = "batchEntityManagerFactory", transactionManagerRef = "batchTransactionManager")
 public class BatchRepository{
 
 	@Bean

@@ -1,7 +1,9 @@
 package com.ngbilling.core.server.persistence.dto.payment;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,19 +11,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ngbilling.core.payload.request.payment.PaymentInformationWS;
 import com.ngbilling.core.server.persistence.dao.payment.PaymentMethodDAO;
 import com.ngbilling.core.server.persistence.dao.payment.PaymentMethodTypeDAO;
+import com.ngbilling.core.server.persistence.dto.metafield.GroupCustomizedEntity;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
 
 /**
  * 
@@ -38,7 +48,7 @@ import com.ngbilling.core.server.persistence.dto.util.EntityType;
         allocationSize = 10
         )
 @Table(name = "payment_information")
-public class PaymentInformationDTO  implements Serializable{	
+public class PaymentInformationDTO  extends GroupCustomizedEntity implements Serializable{	
 	/**
 	 * 
 	 */
@@ -195,4 +205,16 @@ public class PaymentInformationDTO  implements Serializable{
 		//paymentInformation.setUser(this.user);
 		return paymentInformation;
     }
+
+	@Override
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "payment_information_meta_fields_map",
+            joinColumns = @JoinColumn(name = "payment_information_id"),
+            inverseJoinColumns = @JoinColumn(name = "meta_field_value_id")
+    )
+	public List<MetaFieldValue> getMetaFields() {
+		// TODO Auto-generated method stub
+		return getMetaFieldsList();
+	}
 }

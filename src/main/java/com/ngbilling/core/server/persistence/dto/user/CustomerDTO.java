@@ -25,8 +25,12 @@ package com.ngbilling.core.server.persistence.dto.user;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,6 +42,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -46,6 +51,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ngbilling.core.common.util.FormatLogger;
@@ -55,9 +61,13 @@ import com.ngbilling.core.server.persistence.dao.user.AccountTypeDAO;
 import com.ngbilling.core.server.persistence.dao.user.PartnerDAO;
 import com.ngbilling.core.server.persistence.dao.user.UserDAO;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDeliveryMethodDTO;
+import com.ngbilling.core.server.persistence.dto.metafield.CustomerAccountInfoTypeMetaField;
+import com.ngbilling.core.server.persistence.dto.metafield.GroupCustomizedEntity;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 import com.ngbilling.core.server.persistence.dto.partner.PartnerDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.service.user.UserService;
+import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
 
 
 @Entity
@@ -71,7 +81,7 @@ import com.ngbilling.core.server.service.user.UserService;
 )
 // No cache, mutable and critical
 @Table(name = "customer")
-public class CustomerDTO implements java.io.Serializable {
+public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serializable {
 
     /**
 	 * 
@@ -118,6 +128,9 @@ public class CustomerDTO implements java.io.Serializable {
     private AccountTypeDAO accountTypeDAO;
     
     @Autowired
+    private MetaFieldHelper metaFieldHelper;
+    
+    @Autowired
     private InvoiceDeliveryMethodDAO invoiceDeliveryMethodDAO;
     
     @Autowired
@@ -128,6 +141,9 @@ public class CustomerDTO implements java.io.Serializable {
     private BigDecimal monthlyLimit;
     private BigDecimal currentMonthlyAmount;
     private Date currentMonth;
+    
+    private Set<CustomerAccountInfoTypeMetaField> customerAccountInfoTypeMetaFields = new HashSet<CustomerAccountInfoTypeMetaField>();
+    private Map<Integer, List<MetaFieldValue>> aitMetaFieldMap = new HashMap<Integer, List<MetaFieldValue>>(0);
 
     public CustomerDTO() {
     }
@@ -546,5 +562,103 @@ public class CustomerDTO implements java.io.Serializable {
                 ", nextInvoiceDate=" + this.nextInvoiceDate +
                 '}';
     }
+    
+    @Transient
+    public void setAitMetaField(Integer entityId, Integer groupId, String name, Object value) {
+    	metaFieldHelper.setAitMetaField(entityId, this, groupId, name, value);
+    }
+
+    @Transient
+    public void setAitMetaField(MetaFieldValue field, Integer groupId) {
+        if (getAitMetaFieldMap().containsKey(groupId)) {
+            getAitMetaFieldMap().get(groupId).add(field);
+        } else {
+            List<MetaFieldValue> fields = new ArrayList<MetaFieldValue>();
+            fields.add(field);
+            getAitMetaFieldMap().put(groupId, fields);
+        }
+    }
+    
+    @Transient
+    public Map<Integer, List<MetaFieldValue>> getAitMetaFieldMap() {
+        return aitMetaFieldMap;
+    }
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<CustomerAccountInfoTypeMetaField> getCustomerAccountInfoTypeMetaFields() {
+        return this.customerAccountInfoTypeMetaFields;
+    }
+
+    @Transient
+    public void addCustomerAccountInfoTypeMetaField(MetaFieldValue value, AccountInformationTypeDTO accountInfoType, Date effectiveDate) {
+        CustomerAccountInfoTypeMetaField existed = getCustomerAccountInfoTypeMetaField(value.getField().getName(), accountInfoType.getId(), effectiveDate);
+        if (existed != null) {
+            existed.getMetaFieldValue().setValue(value.getValue());
+        } else {
+            CustomerAccountInfoTypeMetaField metaField = new CustomerAccountInfoTypeMetaField(this, accountInfoType, value, effectiveDate);
+            this.customerAccountInfoTypeMetaFields.add(metaField);
+        }
+    }
+
+    @Transient
+    public void insertCustomerAccountInfoTypeMetaField(MetaFieldValue value, AccountInformationTypeDTO accountInfoType, Date effectiveDate) {
+        CustomerAccountInfoTypeMetaField existed = getCustomerAccountInfoTypeMetaField(value.getField().getName(), accountInfoType.getId(), effectiveDate);
+        if (existed == null) {
+            CustomerAccountInfoTypeMetaField metaField = new CustomerAccountInfoTypeMetaField(this, accountInfoType, value, effectiveDate);
+            this.customerAccountInfoTypeMetaFields.add(metaField);
+        }
+    }
+
+    @Transient
+    public void removeCustomerAccountInfoTypeMetaFields(Integer groupId, Date effectiveDate) {
+        for (CustomerAccountInfoTypeMetaField existed : getCustomerAccountInfoTypeMetaFields(groupId, effectiveDate)) {
+            this.customerAccountInfoTypeMetaFields.remove(existed);
+        }
+    }
+
+    @Transient
+    public CustomerAccountInfoTypeMetaField getCustomerAccountInfoTypeMetaField(String name, Integer groupId, Date effectiveDate) {
+        for (CustomerAccountInfoTypeMetaField infoTypeMetaField : customerAccountInfoTypeMetaFields) {
+            if (groupId == infoTypeMetaField.getAccountInfoType().getId() && effectiveDate.equals(infoTypeMetaField.getEffectiveDate())) {
+                MetaFieldValue suspect = infoTypeMetaField.getMetaFieldValue();
+                if (suspect.getField().getName().equals(name)) {
+                    return infoTypeMetaField;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public List<CustomerAccountInfoTypeMetaField> getCustomerAccountInfoTypeMetaFields(Integer groupId, Date effectiveDate) {
+        List<CustomerAccountInfoTypeMetaField> fields = new ArrayList<CustomerAccountInfoTypeMetaField>();
+        for (CustomerAccountInfoTypeMetaField infoTypeMetaField : customerAccountInfoTypeMetaFields) {
+            if (groupId == infoTypeMetaField.getAccountInfoType().getId() && effectiveDate.equals(infoTypeMetaField.getEffectiveDate())) {
+                fields.add(infoTypeMetaField);
+            }
+        }
+        return fields;
+    }
+
+    @Transient
+    public void removeAitMetaFields() {
+        this.customerAccountInfoTypeMetaFields.removeAll(this.customerAccountInfoTypeMetaFields);
+    }
+
+    public void setCustomerAccountInfoTypeMetaFields(Set<CustomerAccountInfoTypeMetaField> customerAccountInfoTypeMetaFields) {
+        this.customerAccountInfoTypeMetaFields = customerAccountInfoTypeMetaFields;
+    }
+
+	@Override
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "payment_information_meta_fields_map",
+            joinColumns = @JoinColumn(name = "payment_information_id"),
+            inverseJoinColumns = @JoinColumn(name = "meta_field_value_id")
+    )
+	public List<MetaFieldValue> getMetaFields() {
+		// TODO Auto-generated method stub
+		return getMetaFieldsList();
+	}
 
 }

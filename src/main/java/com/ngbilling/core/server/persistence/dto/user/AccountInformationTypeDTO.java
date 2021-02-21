@@ -12,6 +12,8 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
+
 /**
  * Account Information Type entity.
  * 
@@ -20,7 +22,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @DiscriminatorValue("ACCOUNT_TYPE")
-public class AccountInformationTypeDTO implements Serializable {
+public class AccountInformationTypeDTO extends MetaFieldGroup implements Serializable {
 
     /**
 	 * 

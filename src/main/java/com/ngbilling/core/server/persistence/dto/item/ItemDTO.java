@@ -55,7 +55,6 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.boot.model.relational.Exportable;
 
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceLineDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
@@ -76,7 +75,7 @@ import com.ngbilling.core.server.util.ServerConstants;
 )
 @Table(name = "item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ItemDTO extends AbstractDescription implements Exportable {
+public class ItemDTO extends AbstractDescription {
 
     /**
 	 * 
@@ -764,10 +763,6 @@ public class ItemDTO extends AbstractDescription implements Exportable {
         return obj;
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

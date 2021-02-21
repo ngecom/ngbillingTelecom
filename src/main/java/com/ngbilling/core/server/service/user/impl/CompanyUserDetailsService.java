@@ -61,7 +61,7 @@ import com.ngbilling.core.server.service.user.UserService;
 public class CompanyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	UserDAO userRepository;
+	UserDAO userDAO;
 	
 	@Autowired
 	UserService userService;
@@ -83,7 +83,7 @@ public class CompanyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
 
-    	UserDTO user = userRepository.findByUserName(username)
+    	UserDTO user = userDAO.findByUserName(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         List<Integer> roleIds = new LinkedList<Integer>();

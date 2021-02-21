@@ -68,7 +68,7 @@ import com.ngbilling.core.server.persistence.dto.util.EntityType;
         allocationSize = 100)
 @Table(name = "payment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class PaymentDTO implements Serializable, Exportable {
+public class PaymentDTO implements Serializable {
 
     /**
 	 * 
@@ -562,10 +562,5 @@ public class PaymentDTO implements Serializable, Exportable {
         
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

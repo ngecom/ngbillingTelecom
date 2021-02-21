@@ -20,7 +20,7 @@ public abstract class AbstractJpaDAO<T extends Serializable> {
     }
 
     public T findOne(final long id) {
-        return entityManager.find(clazz, id);
+        return entityManager.find(clazz, id);  
     }
 
     @SuppressWarnings("unchecked")

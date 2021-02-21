@@ -46,6 +46,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
 
 @Entity
@@ -59,7 +60,7 @@ import com.ngbilling.core.server.util.ServerConstants;
 )
 @Table(name = "contact_type")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ContactTypeDTO  implements java.io.Serializable {
+public class ContactTypeDTO  extends AbstractDescription implements java.io.Serializable {
 
     /**
 	 * 
@@ -113,11 +114,6 @@ public class ContactTypeDTO  implements java.io.Serializable {
 
     public void setIsPrimary(Integer isPrimary) {
         this.isPrimary = isPrimary;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "contactType")
-    public Set<ContactMapDTO> getContactMaps() {
-        return this.contactMaps;
     }
 
     public void setContactMaps(Set<ContactMapDTO> contactMaps) {

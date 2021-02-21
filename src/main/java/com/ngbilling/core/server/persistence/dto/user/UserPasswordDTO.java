@@ -53,7 +53,7 @@ import com.ngbilling.core.common.util.CommonConstants;
         pkColumnValue = "user_password",
         allocationSize = 100)
 @Table(name = "user_password_map")
-public class UserPasswordDTO implements Serializable, Exportable {
+public class UserPasswordDTO implements Serializable {
     /**
 	 * 
 	 */
@@ -147,9 +147,4 @@ public class UserPasswordDTO implements Serializable, Exportable {
         };
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

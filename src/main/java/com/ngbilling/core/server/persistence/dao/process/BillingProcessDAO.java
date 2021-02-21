@@ -18,5 +18,4 @@ public interface BillingProcessDAO extends JpaRepository<BillingProcessDTO, Inte
             " AND a.company.id = :entity ")
 	public ScrollableResults findBillableUsersToProcess(int entity, Date dueDate); 
 	
-	public ScrollableResults findUsersToProces(int entity);
 }

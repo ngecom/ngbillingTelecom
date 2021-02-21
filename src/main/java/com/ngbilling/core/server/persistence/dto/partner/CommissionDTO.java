@@ -57,7 +57,7 @@ import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
         allocationSize=10
 )
 @Table(name="partner_commission")
-public class CommissionDTO implements Serializable, Exportable {
+public class CommissionDTO implements Serializable {
     /**
 	 * 
 	 */
@@ -164,9 +164,4 @@ public class CommissionDTO implements Serializable, Exportable {
         this.currencyDTO = currencyDTO;
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

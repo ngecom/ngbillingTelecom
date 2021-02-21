@@ -40,6 +40,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.Cache;
@@ -103,9 +104,11 @@ public class PluggableTaskDTO implements java.io.Serializable {
     @Column(name = "OPTLOCK")
     private Integer versionNum;
     
+    @Transient
     @Autowired
     private PluggableTaskTypeDAO pluggableTaskTypeDAO;
     
+    @Transient
     @Autowired
     private PluggableTaskDAO pluggableTaskDAO;
 

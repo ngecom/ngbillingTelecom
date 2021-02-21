@@ -66,7 +66,7 @@ import com.ngbilling.core.server.persistence.dto.util.EntityType;
         allocationSize = 10
 )
 @Table(name = "partner")
-public class PartnerDTO implements java.io.Serializable, Exportable {
+public class PartnerDTO implements java.io.Serializable{
     private int id;
 
     private UserDTO baseUserByUserId;
@@ -342,9 +342,4 @@ public class PartnerDTO implements java.io.Serializable, Exportable {
         return values.toArray(new Object[values.size()][]);
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

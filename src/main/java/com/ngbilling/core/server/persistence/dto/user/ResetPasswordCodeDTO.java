@@ -40,7 +40,7 @@ import org.hibernate.boot.model.relational.Exportable;
 @Entity
 // No cache, mutable and critical
 @Table(name = "reset_password_code")
-public class ResetPasswordCodeDTO implements Serializable, Exportable {
+public class ResetPasswordCodeDTO implements Serializable {
     /**
 	 * 
 	 */
@@ -110,10 +110,5 @@ public class ResetPasswordCodeDTO implements Serializable, Exportable {
         };
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

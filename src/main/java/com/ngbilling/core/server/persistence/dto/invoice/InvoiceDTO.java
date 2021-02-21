@@ -78,7 +78,7 @@ import com.ngbilling.core.server.util.ServerConstants;
         allocationSize = 100)
 @Table(name = "invoice")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class InvoiceDTO  implements Serializable, Exportable {
+public class InvoiceDTO  implements Serializable{
 
     /**
 	 * 
@@ -687,9 +687,4 @@ public class InvoiceDTO  implements Serializable, Exportable {
         return values.toArray(new Object[values.size()][]);
     }
 
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

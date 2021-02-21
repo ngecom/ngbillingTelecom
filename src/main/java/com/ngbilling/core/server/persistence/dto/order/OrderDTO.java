@@ -84,7 +84,7 @@ import com.ngbilling.core.server.util.ServerConstants;
 )
 @Table(name="purchase_order")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
-public class OrderDTO  implements Serializable, Exportable {
+public class OrderDTO  implements Serializable {
 
     /**
 	 * 
@@ -1053,11 +1053,5 @@ public class OrderDTO  implements Serializable, Exportable {
     public boolean isRecurring() {
         return (orderPeriodDTO.getId() != ServerConstants.ORDER_PERIOD_ONCE.intValue());
     }
-
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

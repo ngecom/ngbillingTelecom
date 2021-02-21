@@ -51,8 +51,6 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.hibernate.boot.model.relational.Exportable;
-
 import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
 import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
@@ -76,7 +74,7 @@ import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
         )
 // No cache, mutable and critical
 @Table(name = "base_user")
-public class UserDTO implements Serializable, Exportable {
+public class UserDTO implements Serializable {
 
     /**
 	 * 
@@ -736,11 +734,5 @@ public class UserDTO implements Serializable, Exportable {
         Object obj[][] = new Object[][]{aitList.toArray()};
         return obj;
     }
-
-	@Override
-	public String getExportIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
