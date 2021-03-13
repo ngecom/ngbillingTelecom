@@ -58,7 +58,7 @@ public class UserWS  {
 	@Min(value = 1, message = "validation.error.min,1")
     @Max(value = 0, message = "validation.error.max,0")
     private int id;
-    private Integer currencyId;
+    private String currencyCode;
     @Pattern(regexp= CommonConstants.PASSWORD_PATTERN_4_UNIQUE_CLASSES, message="validation.error.password.size,8,128")
     private String password;
     private boolean createCredentials = false;
@@ -73,7 +73,7 @@ public class UserWS  {
     @Pattern(regexp= CommonConstants.USERNAME_PATTERN, message="validation.error.invalid.username")
     private String userName;
     private int failedAttempts;
-    private Integer languageId;
+    private String languageCode;
     private Integer mainSubscriptionId;
 
     @Valid
@@ -282,13 +282,7 @@ public class UserWS  {
         this.createDatetime = createDatetime;
     }
 
-    public Integer getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Integer currencyId) {
-        this.currencyId = currencyId;
-    }
+    
 
     public int getDeleted() {
         return deleted;
@@ -362,13 +356,6 @@ public class UserWS  {
         this.userName = userName;
     }
 
-    public Integer getLanguageId() {
-        return languageId;
-    }
-
-    public void setLanguageId(Integer languageId) {
-        this.languageId = languageId;
-    }
 
     public String[] getBlacklistMatches() {
         return blacklistMatches;
@@ -703,8 +690,30 @@ public class UserWS  {
     public void setMainSubscriptionId(Integer mainSubscriptionId) {
         this.mainSubscriptionId = mainSubscriptionId;
     }
+    
+    
 
-    @Override
+    public String getCurrencyCode() {
+		return currencyCode;
+	}
+
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+	}
+
+
+	public String getLanguageCode() {
+		return languageCode;
+	}
+
+
+	public void setLanguageCode(String languageCode) {
+		this.languageCode = languageCode;
+	}
+
+
+	@Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(", autoRecharge=");
@@ -724,7 +733,7 @@ public class UserWS  {
         builder.append(", creditLimit=");
         builder.append(creditLimit);
         builder.append(", currencyId=");
-        builder.append(currencyId);
+        builder.append(currencyCode);
         builder.append(", customerId=");
         builder.append(customerId);
         builder.append(", deleted=");
@@ -750,7 +759,7 @@ public class UserWS  {
         builder.append(", language=");
         builder.append(language);
         builder.append(", languageId=");
-        builder.append(languageId);
+        builder.append(languageCode);
         builder.append(", lastLoginDate=");
         builder.append(lastLoginDate);
         builder.append(", lastStatusChange=");

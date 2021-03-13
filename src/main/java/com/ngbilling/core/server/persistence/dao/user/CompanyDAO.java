@@ -8,4 +8,5 @@ import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 @Repository
 public interface CompanyDAO extends JpaRepository<CompanyDTO, Integer>{
 
+	public CompanyDTO findByDescription(String companyName);
 }

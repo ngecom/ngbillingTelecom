@@ -10,5 +10,5 @@ public interface CurrencyDAO extends JpaRepository<CurrencyDTO, Integer>, Curren
 
 	public boolean findAssociationExistsForCurrency(Integer currencyId, String currencyName);
 
-	
+	public CurrencyDTO findByCode(String code);
 }

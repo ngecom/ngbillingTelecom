@@ -109,6 +109,18 @@ public class CommonConstants {
     public static final Integer REVIEW_STATUS_GENERATED = 1;
     public static final Integer REVIEW_STATUS_APPROVED = 2;
     public static final Integer REVIEW_STATUS_DISAPPROVED = 3;
+    
+ // user status in synch with db table user_status
+    public static final Integer STATUS_ACTIVE = 1; // this HAS to be the very first status
+    
+    // subscriber status in synch with db table subscriber_status
+    public static final Integer SUBSCRIBER_ACTIVE = 1; 
+    public static final Integer SUBSCRIBER_PENDING_UNSUBSCRIPTION = 2;
+    public static final Integer SUBSCRIBER_UNSUBSCRIBED = 3;
+    public static final Integer SUBSCRIBER_PENDING_EXPIRATION= 4;
+    public static final Integer SUBSCRIBER_EXPIRED = 5;
+    public static final Integer SUBSCRIBER_NONSUBSCRIBED = 6;
+    public static final Integer SUBSCRIBER_DISCONTINUED = 7;
 
     // these are the preference's types. This has to be in synch with the DB
     //public static Integer PREFERENCE_PAYMENT_WITH_PROCESS = 1); obsolete
