@@ -152,6 +152,12 @@ public class CurrencyCustomDAOImpl extends AbstractJpaDAO<CurrencyDTO> implement
 		return false;
 	}
 
+	@Override
+	public CurrencyDTO findByCode(String code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 

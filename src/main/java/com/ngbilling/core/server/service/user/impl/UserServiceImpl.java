@@ -8,9 +8,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ngbilling.core.common.exception.SessionInternalError;
 import com.ngbilling.core.common.util.CommonConstants;
 import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
 import com.ngbilling.core.payload.request.user.UserWS;
+import com.ngbilling.core.server.notification.NotificationNotFoundException;
 import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
 import com.ngbilling.core.server.persistence.dao.user.CompanyDAO;
 import com.ngbilling.core.server.persistence.dao.user.ContactDAO;
@@ -172,6 +174,11 @@ public class UserServiceImpl implements UserService {
 		return newRole;
 	}
 	
-	
+	@Override
+	public void sendCredentials(Integer entityId, Integer userId, Integer languageId, String link)
+			throws SessionInternalError, NotificationNotFoundException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -101,7 +101,27 @@ public class PluggableTaskParameterDTO implements Serializable {
     @Transient
     private String value = null;
 
-    public BigDecimal getFloatValue() {
+	public PluggableTaskParameterDTO(String name, String strValue, PluggableTaskDTO task) {
+		super();
+		this.name = name;
+		this.strValue = strValue;
+		this.task = task;
+	}
+	
+	 public PluggableTaskParameterDTO(String name, String strValue) {
+			super();
+			this.name = name;
+			this.strValue = strValue;
+		}
+	 
+	 
+	 
+	 public PluggableTaskParameterDTO()
+	 {
+		 
+	 }
+
+	public BigDecimal getFloatValue() {
         return floatValue;
     }
 

@@ -66,6 +66,8 @@ public class LoginController {
 					.badRequest()
 					.body(new MessageResponse("Error: company.already.exists"));
 		}
+		
+		
 
 		return ResponseEntity.ok(new MessageResponse(userWS.getUserName()+" User registered successfully!"));
 	}

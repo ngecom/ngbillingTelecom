@@ -1,15 +1,25 @@
 package com.ngbilling.core.server.persistence.dto.payment;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Version;
+import javax.persistence.JoinColumn;
+
+import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
 
 
 /**
@@ -36,6 +46,23 @@ public class PaymentMethodTemplateDTO implements Serializable{
 	
 	private int version;
 	
+	private Set<MetaField> paymentTemplateMetaFields;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+    		name = "payment_method_template_meta_fields_map",
+            joinColumns = @JoinColumn(name = "method_template_id", updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "meta_field_id", updatable = false)
+    )
+	@OrderBy("displayOrder")
+    public Set<MetaField> getPaymentTemplateMetaFields() {
+        return paymentTemplateMetaFields;
+	}
+	
+	public void setPaymentTemplateMetaFields(Set<MetaField> paymentTemplateMetaFields) {
+		this.paymentTemplateMetaFields = paymentTemplateMetaFields;
+	}
+	
 	@Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "payment_method_template_GEN")
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
@@ -46,6 +73,14 @@ public class PaymentMethodTemplateDTO implements Serializable{
 		this.id = id;
 	}
 
+	public void addPaymentTemplateMetaField(MetaField paymentTemplateMetaField) {
+		if (this.paymentTemplateMetaFields == null)
+			this.paymentTemplateMetaFields = new HashSet<MetaField>();
+		
+		this.paymentTemplateMetaFields.add(paymentTemplateMetaField);
+	}
+	
+	
 	@Column(name = "template_name", length = 50)
     public String getTemplateName() {
         return this.templateName;
