@@ -33,6 +33,9 @@ public class CurrencyCustomDAOImpl extends AbstractJpaDAO<CurrencyDTO> implement
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
 
 	@Override
 	public List<CurrencyDTO> findAllById(Iterable<Integer> ids) {
