@@ -65,4 +65,6 @@ ngecom:
     jwtExpirationMs: 86400000  
     process:
       time : 3
-      frequency : 4            
+      frequency : 4
+springdoc:
+    swagger-ui.path: /ngbillingAPI.html          

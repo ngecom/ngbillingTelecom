@@ -8,4 +8,5 @@ import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 
 @Repository
 public interface LanguageDAO extends JpaRepository<LanguageDTO, Integer>{
+	public LanguageDTO findByCode(String code);
 }
