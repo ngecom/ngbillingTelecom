@@ -17,6 +17,7 @@ import com.ngbilling.core.payload.request.metafield.MetaFieldType;
 import com.ngbilling.core.payload.request.order.ApplyToOrder;
 import com.ngbilling.core.payload.request.order.OrderStatusFlag;
 import com.ngbilling.core.payload.request.util.NotificationMediumType;
+import com.ngbilling.core.server.persistence.dao.invoice.InvoiceDeliveryMethodDAO;
 import com.ngbilling.core.server.persistence.dao.metafield.MetaFieldDAO;
 import com.ngbilling.core.server.persistence.dao.metafield.ValidationRuleDAO;
 import com.ngbilling.core.server.persistence.dao.notification.NotificationMessageDAO;
@@ -39,6 +40,7 @@ import com.ngbilling.core.server.persistence.dao.util.InternationalDescriptionDA
 import com.ngbilling.core.server.persistence.dao.util.JbillingTableDAO;
 import com.ngbilling.core.server.persistence.dao.util.LanguageDAO;
 import com.ngbilling.core.server.persistence.dao.util.PreferenceDAO;
+import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDeliveryMethodDTO;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
 import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
 import com.ngbilling.core.server.persistence.dto.notification.NotificationMessageDTO;
@@ -48,6 +50,7 @@ import com.ngbilling.core.server.persistence.dto.notification.NotificationMessag
 import com.ngbilling.core.server.persistence.dto.order.OrderChangeStatusDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderPeriodDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderStatusDTO;
+import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodDTO;
 import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodTemplateDTO;
 import com.ngbilling.core.server.persistence.dto.pluggableTask.PluggableTaskDTO;
 import com.ngbilling.core.server.persistence.dto.pluggableTask.PluggableTaskParameterDTO;
@@ -144,6 +147,11 @@ public class UtilServiceImpl implements UtilService{
     @Autowired
     private ReportDAO reportDAO;
 
+    @Autowired
+    private PaymentMethodDAO paymentMethodDAO;
+    
+    @Autowired
+    private InvoiceDeliveryMethodDAO invoiceDeliveryMethodDAO;
     
 	@Override
 	public LanguageDTO findByLanguageCode(String code) {
@@ -206,6 +214,25 @@ public class UtilServiceImpl implements UtilService{
     	accountTypeDTO.setBillingCycle(mainSubscriptionDTO);
     	accountTypeDTO.setDescription("description", ServerConstants.LANGUAGE_ENGLISH_ID, getMessage("default.account.type.name"));
     	accountTypeDTO = accountTypeDAO.save(accountTypeDTO);
+    	
+    	
+    	PaymentMethodDTO paymentMethodDTO=paymentMethodDAO.findById(ServerConstants.PAYMENT_METHOD_CHEQUE).get();
+    	paymentMethodDTO.getEntities().add(company);
+    	
+    	PaymentMethodDTO paymentMethodVisaDTO=paymentMethodDAO.findById(ServerConstants.PAYMENT_METHOD_VISA).get();
+    	paymentMethodVisaDTO.getEntities().add(company);
+    	
+    	PaymentMethodDTO paymentMethodMasterCardDTO=paymentMethodDAO.findById(ServerConstants.PAYMENT_METHOD_MASTERCARD).get();
+    	paymentMethodMasterCardDTO.getEntities().add(company);
+    	
+    	InvoiceDeliveryMethodDTO InvoiceDeliveryMethodDTOEmail=invoiceDeliveryMethodDAO.findById(ServerConstants.D_METHOD_EMAIL).get();
+    	InvoiceDeliveryMethodDTOEmail.getEntities().add(company);
+    	
+    	InvoiceDeliveryMethodDTO InvoiceDeliveryMethodDTOPaper=invoiceDeliveryMethodDAO.findById(ServerConstants.D_METHOD_PAPER).get();
+    	InvoiceDeliveryMethodDTOPaper.getEntities().add(company);
+    	
+    	InvoiceDeliveryMethodDTO InvoiceDeliveryMethodDTOEmailAndPaper=invoiceDeliveryMethodDAO.findById(ServerConstants.D_METHOD_EMAIL_AND_PAPER).get();
+    	InvoiceDeliveryMethodDTOEmailAndPaper.getEntities().add(company);
     	
     	List<ReportDTO> reportDTOList =reportDAO.findAll();
     	for (ReportDTO reportDTO : reportDTOList)
