@@ -115,6 +115,12 @@ public class PluggableTaskDTO implements java.io.Serializable {
     public PluggableTaskDTO() {
         type = new PluggableTaskTypeDTO();
     }
+    
+    public PluggableTaskDTO(Integer entityId, Integer processingOrder, PluggableTaskTypeDTO type) {
+        this.entityId=entityId;
+        this.processingOrder=processingOrder;
+        this.type=type;
+    }
 
     public PluggableTaskDTO(Integer entityId, PluggableTaskWS ws) {
         setEntityId(entityId);
