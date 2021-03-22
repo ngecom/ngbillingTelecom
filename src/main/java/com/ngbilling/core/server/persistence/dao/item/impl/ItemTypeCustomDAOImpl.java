@@ -2,17 +2,24 @@ package com.ngbilling.core.server.persistence.dao.item.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
 import com.ngbilling.core.server.persistence.dao.item.ItemTypeCustomDAO;
+import com.ngbilling.core.server.persistence.dao.item.ItemTypeDAO;
 import com.ngbilling.core.server.persistence.dto.item.ItemTypeDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderDTO;
 import com.ngbilling.core.server.util.ServerConstants;
 
-public class ItemTypeCustomDAOImpl extends AbstractJpaDAO<ItemTypeDTO> implements ItemTypeCustomDAO{
+public class ItemTypeCustomDAOImpl extends AbstractJpaDAO<ItemTypeDTO> implements ItemTypeDAO{
 
 	private static final String FIND_ALL_TYPES_LINKED_THROUGH_PRODUCT = "SELECT distinct t.id FROM ItemTypeDTO t " +
             "JOIN t.items it " +
@@ -175,6 +182,116 @@ public class ItemTypeCustomDAOImpl extends AbstractJpaDAO<ItemTypeDTO> implement
 		 query.setParameter("parentEntityId",  parentEntityId);
 
 		return (ItemTypeDTO) query.getSingleResult();
+	}
+	@Override
+	public List<ItemTypeDTO> findAll(Sort sort) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<ItemTypeDTO> findAllById(Iterable<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <S extends ItemTypeDTO> List<S> saveAll(Iterable<S> entities) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void flush() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public <S extends ItemTypeDTO> S saveAndFlush(S entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void deleteInBatch(Iterable<ItemTypeDTO> entities) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void deleteAllInBatch() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ItemTypeDTO getOne(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <S extends ItemTypeDTO> List<S> findAll(Example<S> example) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <S extends ItemTypeDTO> List<S> findAll(Example<S> example, Sort sort) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Page<ItemTypeDTO> findAll(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <S extends ItemTypeDTO> S save(S entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Optional<ItemTypeDTO> findById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public boolean existsById(Integer id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public long count() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void deleteById(Integer id) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void deleteAll(Iterable<? extends ItemTypeDTO> entities) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void deleteAll() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public <S extends ItemTypeDTO> Optional<S> findOne(Example<S> example) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <S extends ItemTypeDTO> Page<S> findAll(Example<S> example, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <S extends ItemTypeDTO> long count(Example<S> example) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public <S extends ItemTypeDTO> boolean exists(Example<S> example) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

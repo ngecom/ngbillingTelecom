@@ -22,9 +22,11 @@ import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
+import com.ngbilling.core.server.service.user.ProductService;
 import com.ngbilling.core.server.service.user.UserService;
 import com.ngbilling.core.server.service.util.UtilService;
 import com.ngbilling.core.server.util.ServerConstants;
+import com.ngbilling.core.server.util.credentials.PasswordService;
 import com.ngbilling.core.server.persistence.dao.user.CompanyDAO;
 import com.ngbilling.core.server.persistence.dao.user.RoleDAO;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +53,17 @@ public class SignupController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	UtilService utilService;
+	
     @Autowired
     private ModelMapper modelMapper;
+    
+    @Autowired
+	PasswordService passwordService;
+	
+	@Autowired
+	ProductService productService;
 	
 	@PostMapping("/entity")
 	public ResponseEntity<?> registerEntity(@RequestBody UserWS userWS){
@@ -88,7 +99,19 @@ public class SignupController {
 		userDTO = userService.createAdminUser(userDTO);
 		mappedEntity.setUserId(userDTO.getUserId());
 		mappedEntity.setInclude(1);
+		
 		ContactDTO adminContact = userService.createContact(mappedEntity, company,ServerConstants.TABLE_BASE_USER);
+		
+		LanguageDTO language = utilService.findByLanguageCode(userWS.getLanguageCode());
+				
+		utilService.initEntityDefault( company, userDTO, language);
+		
+		passwordService.createPassword(userDTO);
+        
+        productService.createInternalTypeCategory(company);
+		
+		
+		
 		return ResponseEntity.ok(new MessageResponse(userWS.getUserName()+" User registered successfully!"));
 	}
 	

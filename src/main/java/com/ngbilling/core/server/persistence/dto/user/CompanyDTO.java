@@ -63,6 +63,7 @@ import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodDTO;
 import com.ngbilling.core.server.persistence.dto.process.AgeingEntityStepDTO;
 import com.ngbilling.core.server.persistence.dto.process.BillingProcessConfigurationDTO;
 import com.ngbilling.core.server.persistence.dto.process.BillingProcessDTO;
+import com.ngbilling.core.server.persistence.dto.report.ReportDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 
@@ -150,7 +151,8 @@ public class CompanyDTO implements java.io.Serializable {
         this.billingProcessConfigurations = billingProcessConfigurations;
         this.invoiceDeliveryMethods = invoiceDeliveryMethods;
     }
-
+    
+   
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "entity_GEN")
     @Column(name = "id", unique = true, nullable = false)

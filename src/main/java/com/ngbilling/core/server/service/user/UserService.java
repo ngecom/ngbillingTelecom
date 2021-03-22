@@ -3,8 +3,10 @@ package com.ngbilling.core.server.service.user;
 import java.util.List;
 import java.util.Locale;
 
+import com.ngbilling.core.common.exception.SessionInternalError;
 import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
 import com.ngbilling.core.payload.request.user.UserWS;
+import com.ngbilling.core.server.notification.NotificationNotFoundException;
 import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.user.MainSubscriptionDTO;
@@ -29,4 +31,6 @@ public interface UserService {
 	public SubscriberStatusDTO findBySubscriptionStatus(Integer statusID);
 	public List<RoleDTO> findRoleTypeIdAndCompanyId(Integer roleTypeId, Integer companyId);
 	public RoleDTO createRole(Integer roleTypeId,CompanyDTO companyDTO);
+	void sendCredentials(Integer entityId, Integer userId, Integer languageId, String link)
+			throws SessionInternalError, NotificationNotFoundException;
 }
