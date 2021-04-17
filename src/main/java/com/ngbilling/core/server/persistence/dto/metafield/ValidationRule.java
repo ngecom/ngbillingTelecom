@@ -60,7 +60,8 @@ public class ValidationRule extends AbstractDescription implements Serializable 
     private int id;
 
     private ValidationRuleType ruleType;
-    private SortedMap<String, String> ruleAttributes = new TreeMap<String, String>();
+
+	private SortedMap<String, String> ruleAttributes = new TreeMap<String, String>();
     private boolean enabled = true;
 
     // transient, used for errors international description
@@ -70,6 +71,13 @@ public class ValidationRule extends AbstractDescription implements Serializable 
 
     public ValidationRule() {
     }
+    
+
+    public ValidationRule(ValidationRuleType ruleType, boolean enabled) {
+		super();
+		this.ruleType = ruleType;
+		this.enabled = enabled;
+	}
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "validation_rule_GEN")

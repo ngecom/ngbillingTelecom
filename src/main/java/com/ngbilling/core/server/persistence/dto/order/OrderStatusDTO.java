@@ -103,6 +103,12 @@ public class OrderStatusDTO  extends AbstractDescription implements java.io.Seri
     public OrderStatusDTO() {
 
     }
+    
+    public OrderStatusDTO(OrderStatusFlag orderStatusFlag, CompanyDTO entity, String content, Integer languageId) {
+    	this.orderStatusFlag=orderStatusFlag;
+    	this.entity=entity;
+    	this.setDescription(content, languageId);
+    }
 
     public OrderStatusFlag getOrderStatusFlag() {
         return orderStatusFlag;

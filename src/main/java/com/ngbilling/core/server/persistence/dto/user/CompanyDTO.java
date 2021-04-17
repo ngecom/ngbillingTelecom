@@ -106,6 +106,7 @@ public class CompanyDTO implements java.io.Serializable {
     private Set<ItemTypeDTO> itemTypes = new HashSet<ItemTypeDTO>(0);
     private Set<BillingProcessConfigurationDTO> billingProcessConfigurations = new HashSet<BillingProcessConfigurationDTO>(0);
     private Set<InvoiceDeliveryMethodDTO> invoiceDeliveryMethods = new HashSet<InvoiceDeliveryMethodDTO>(0);
+    private Set<ReportDTO> reports = new HashSet<ReportDTO>();
     private int versionNum;
     private Integer deleted;
 
@@ -399,6 +400,13 @@ public class CompanyDTO implements java.io.Serializable {
                    @JoinColumn(name = "report_id", updatable = false)
            }
     )
+    public Set<ReportDTO> getReports() {
+        return reports;
+    }
+
+    public void setReports(Set<ReportDTO> reports) {
+        this.reports = reports;
+    }
     
 
     /*

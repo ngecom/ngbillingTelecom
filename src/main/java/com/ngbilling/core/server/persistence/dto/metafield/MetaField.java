@@ -104,12 +104,26 @@ public class MetaField  extends AbstractDescription  implements Serializable {
 
     private Integer versionNum;
 
-    private String filename;
+	private String filename;
     // indicate that metafield is unique or not for a EntityType
     private boolean unique = false;
     
     public MetaField() {
     }
+    
+    public MetaField(CompanyDTO entity, String name, EntityType entityType, DataType dataType, boolean disabled,
+			boolean mandatory, Integer displayOrder, Boolean primary, MetaFieldType fieldUsage) {
+		super();
+		this.entity = entity;
+		this.name = name;
+		this.entityType = entityType;
+		this.dataType = dataType;
+		this.disabled = disabled;
+		this.mandatory = mandatory;
+		this.displayOrder = displayOrder;
+		this.primary = primary;
+		this.fieldUsage = fieldUsage;
+	}
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "meta_field_GEN")

@@ -80,6 +80,13 @@ public class PreferenceDTO implements java.io.Serializable {
         this.foreignId = foreignId;
         this.value = value;
     }
+    
+    public PreferenceDTO(JbillingTable jbillingTable, PreferenceTypeDTO preferenceType, int foreignId, String value) {
+        this.jbillingTable = jbillingTable;
+        this.preferenceType = preferenceType;
+        this.foreignId = foreignId;
+        this.value = value;
+    }
 
     @Id
     @GeneratedValue(strategy=GenerationType.TABLE, generator="preference_GEN")
