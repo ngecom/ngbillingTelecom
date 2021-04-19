@@ -15,7 +15,8 @@
 	<description>Next Generation OpenSource Billing System</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>14</java.version>
+		<maven.test.skip>true</maven.test.skip>
 	</properties>
 
 <dependencies>

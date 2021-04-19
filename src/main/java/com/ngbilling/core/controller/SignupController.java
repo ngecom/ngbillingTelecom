@@ -104,14 +104,13 @@ public class SignupController {
 		
 		LanguageDTO language = utilService.findByLanguageCode(userWS.getLanguageCode());
 				
-		utilService.initEntityDefault( company, userDTO, language);
+		utilService.initEntityDefault( company, userDTO, language,userService.getLocale(userDTO));
 		
 		passwordService.createPassword(userDTO);
         
         productService.createInternalTypeCategory(company);
 		
-		
-		
+
 		return ResponseEntity.ok(new MessageResponse(userWS.getUserName()+" User registered successfully!"));
 	}
 	
@@ -127,24 +126,7 @@ public class SignupController {
         return userDTO;
     }
 	
-	/*
-	 * This is applicable for EntityId
-	 */
-	private void createDefaultRoles(LanguageDTO language, CurrencyDTO currency, CompanyDTO company) {
 
-		int[] defaultRoleList = { ServerConstants.TYPE_ROOT, ServerConstants.TYPE_CLERK, ServerConstants.TYPE_CUSTOMER, ServerConstants.TYPE_PARTNER };
-
-
-		for (int defaultRole : defaultRoleList)  {
-
-			List roleList = userService.findRoleTypeIdAndCompanyId(defaultRole, company.getId());
-			if (roleList!=null&&roleList.size()>0) {
-				continue;
-			}
-			userService.createRole(defaultRole, company);
-		}
-	}
-	
 	private boolean allowSignup() {
         return jdbcTemplate.queryForObject("SELECT jb_allow_signup FROM jb_host_master", Boolean.class);
     }

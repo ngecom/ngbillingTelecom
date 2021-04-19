@@ -6,11 +6,13 @@ import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.JbillingTable;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 
+import java.util.Locale;
+
 public interface UtilService {
 
 	public LanguageDTO findByLanguageCode(String code);
 	public CurrencyDTO findByCurrencyCode(String code);
 	public JbillingTable findByName(String tableName);
-	public void initEntityDefault(CompanyDTO company, UserDTO rootUser, LanguageDTO language);
+	public void initEntityDefault(CompanyDTO company, UserDTO rootUser, LanguageDTO language, Locale locale);
 	
 }
