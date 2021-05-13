@@ -15,26 +15,14 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
+import com.ngbilling.core.payload.request.configuration.MediationConfigurationWS;
+import com.ngbilling.core.server.persistence.dto.pluggableTask.PluggableTaskDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.payload.request.configuration.MediationConfigurationWS;
-import com.ngbilling.core.server.persistence.dto.pluggableTask.PluggableTaskDTO;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @TableGenerator(
@@ -50,11 +38,12 @@ import com.ngbilling.core.server.persistence.dto.pluggableTask.PluggableTaskDTO;
 public class MediationConfiguration implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_cfg_GEN")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_cfg_GEN")
     private Integer id;
 
     @Column(name = "entity_id")
@@ -132,12 +121,12 @@ public class MediationConfiguration implements Serializable {
         this.orderValue = orderValue;
     }
 
-    public void setCreateDatetime(Date createDatetime) {
-        this.createDatetime = createDatetime;
-    }
-
     public Date getCreateDatetime() {
         return createDatetime;
+    }
+
+    public void setCreateDatetime(Date createDatetime) {
+        this.createDatetime = createDatetime;
     }
 
     public Integer getVersionNum() {
@@ -150,7 +139,7 @@ public class MediationConfiguration implements Serializable {
 
     public String toString() {
         return "ID: " + id + " name: " + name + " order value: " + orderValue +
-               " task: " + pluggableTask + " date: " + createDatetime +
-               " entity id: " + entityId;
+                " task: " + pluggableTask + " date: " + createDatetime +
+                " entity id: " + entityId;
     }
 }

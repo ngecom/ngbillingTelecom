@@ -23,58 +23,44 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.OrderBy;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.payload.request.process.BillingProcessWS;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderProcessDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.service.process.BillingProcessService;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@TableGenerator(name = "billing_process_GEN", 
-                table = "jbilling_seqs", 
-                pkColumnName = "name", 
-                valueColumnName = "next_id", 
-                pkColumnValue = "billing_process", 
-                allocationSize = 10)
+@TableGenerator(name = "billing_process_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "billing_process",
+        allocationSize = 10)
 @Table(name = "billing_process")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BillingProcessDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static final FormatLogger LOG = new FormatLogger(BillingProcessDTO.class);
+    private int id;
     private PeriodUnitDTO periodUnitDTO;
     private PaperInvoiceBatchDTO paperInvoiceBatch;
     private CompanyDTO entity;
@@ -88,8 +74,6 @@ public class BillingProcessDTO implements Serializable {
     private Set<ProcessRunDTO> processRuns = new HashSet<ProcessRunDTO>(0);
     private Set<BatchProcessInfoDTO> batchInfos = new HashSet<BatchProcessInfoDTO>(0);
     private int versionNum;
-    private static final FormatLogger LOG = new FormatLogger(BillingProcessDTO.class);
-    
     @Autowired
     private BillingProcessService billingProcessService;
 
@@ -108,8 +92,8 @@ public class BillingProcessDTO implements Serializable {
     }
 
     public BillingProcessDTO(int id, PeriodUnitDTO periodUnitDTO,
-            CompanyDTO entity, Date billingDate, int periodValue, int isReview,
-            int retriesToDo) {
+                             CompanyDTO entity, Date billingDate, int periodValue, int isReview,
+                             int retriesToDo) {
         this.id = id;
         this.periodUnitDTO = periodUnitDTO;
         this.entity = entity;
@@ -141,12 +125,12 @@ public class BillingProcessDTO implements Serializable {
     }
 
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="paper_invoice_batch_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paper_invoice_batch_id")
     public PaperInvoiceBatchDTO getPaperInvoiceBatch() {
         return this.paperInvoiceBatch;
     }
-    
+
     public void setPaperInvoiceBatch(PaperInvoiceBatchDTO paperInvoiceBatch) {
         this.paperInvoiceBatch = paperInvoiceBatch;
     }
@@ -171,22 +155,22 @@ public class BillingProcessDTO implements Serializable {
     }
 
     /**
-     * This function looks at period unit and period value and adds the same 
-     * to billing process date (or start date), subtracts 1 day 
+     * This function looks at period unit and period value and adds the same
+     * to billing process date (or start date), subtracts 1 day
      * to arrive at billing period end date.
      * Marking it transient as we are not storing this to db.
-    */
+     */
     @Transient
-    public Date getBillingPeriodEndDate() throws Exception{
-    	Calendar calendar = Calendar.getInstance();
-    	// first add the period value in the given period units
-		calendar.setTime(billingProcessService.getEndOfProcessPeriod(this));
-		// subtract 1 day
-		calendar.add(Calendar.DAY_OF_MONTH, -1);
-		return calendar.getTime();
-	}
+    public Date getBillingPeriodEndDate() throws Exception {
+        Calendar calendar = Calendar.getInstance();
+        // first add the period value in the given period units
+        calendar.setTime(billingProcessService.getEndOfProcessPeriod(this));
+        // subtract 1 day
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        return calendar.getTime();
+    }
 
-	@Column(name = "period_value", nullable = false)
+    @Column(name = "period_value", nullable = false)
     public int getPeriodValue() {
         return this.periodValue;
     }
@@ -236,7 +220,7 @@ public class BillingProcessDTO implements Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "billingProcess")
-    @OrderBy( clause = "id")
+    @OrderBy(clause = "id")
     public Set<ProcessRunDTO> getProcessRuns() {
         return this.processRuns;
     }
@@ -244,7 +228,7 @@ public class BillingProcessDTO implements Serializable {
     public void setProcessRuns(Set<ProcessRunDTO> processRuns) {
         this.processRuns = processRuns;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "billingProcess")
     public Set<BatchProcessInfoDTO> getBatchProcesses() {
         return this.batchInfos;
@@ -267,12 +251,12 @@ public class BillingProcessDTO implements Serializable {
     @Override
     public String toString() {
         StringBuffer ret = new StringBuffer("BillingProcessDTO: id: " + id + " periodUint " + periodUnitDTO + " paperInvoiceBatch "
-                + paperInvoiceBatch  + " entity " + entity + " billingDate " + billingDate
+                + paperInvoiceBatch + " entity " + entity + " billingDate " + billingDate
                 + " periodValue " + periodValue + " isReview " + isReview + " retriesToDo " + retriesToDo);
         ret.append(" orderProcesses (count) ").append(orderProcesses.size());
         ret.append(" invoices (count) ").append(invoices.size());//note, cached association
         ret.append(" processRuns ");
-        for (ProcessRunDTO run: processRuns) {
+        for (ProcessRunDTO run : processRuns) {
             ret.append(run.toString());
         }
         return ret.toString();

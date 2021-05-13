@@ -23,21 +23,10 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @TableGenerator(
@@ -51,13 +40,12 @@ import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 // No cache
 public class ProcessRunUserDTO implements java.io.Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public static final Integer STATUS_FAILED = 0;
+    public static final Integer STATUS_FAILED = 0;
     public static final Integer STATUS_SUCCEEDED = 1;
-
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private int id;
     private ProcessRunDTO processRun;
     private UserDTO user;

@@ -23,58 +23,37 @@
  */
 package com.ngbilling.core.server.persistence.dto.payment;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.boot.model.relational.Exportable;
-
 import com.ngbilling.core.server.persistence.dto.partner.PartnerPayout;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Entity
 @TableGenerator(
-        name = "payment_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "payment", 
+        name = "payment_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "payment",
         allocationSize = 100)
 @Table(name = "payment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PaymentDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    // credit card
+    PaymentInformationDTO creditCard;
+    private int id;
     private UserDTO baseUser;
     private CurrencyDTO currencyDTO;
     private PaymentMethodDTO paymentMethod;
@@ -90,21 +69,17 @@ public class PaymentDTO implements Serializable {
     private BigDecimal balance;
     private Date updateDatetime;
     private Integer isPreauth;
-    
-    // credit card
-    PaymentInformationDTO creditCard;
-    
     private Set<PaymentInvoiceMapDTO> invoicesMap = new HashSet<PaymentInvoiceMapDTO>(0);
     private Set<PaymentAuthorizationDTO> paymentAuthorizations = new HashSet<PaymentAuthorizationDTO>(0);
     private Set<PaymentDTO> payments = new HashSet<PaymentDTO>(0);
     private Set<PartnerPayout> partnerPayouts = new HashSet<PartnerPayout>(0);
-    
+
     private List<PaymentInstrumentInfoDTO> paymentInstrumentsInfo = new ArrayList<PaymentInstrumentInfoDTO>(0);
 
     private int versionNum;
     private Integer paymentPeriod;
     private String paymentNotes;
-    
+
     public PaymentDTO() {
     }
 
@@ -114,8 +89,8 @@ public class PaymentDTO implements Serializable {
 
 
     public PaymentDTO(int id, CurrencyDTO currencyDTO,
-            PaymentMethodDTO paymentMethod, BigDecimal amount, Date createDatetime,
-            int deleted, int isRefund, Integer isPreauth) {
+                      PaymentMethodDTO paymentMethod, BigDecimal amount, Date createDatetime,
+                      int deleted, int isRefund, Integer isPreauth) {
         this.id = id;
         this.currencyDTO = currencyDTO;
         this.paymentMethod = paymentMethod;
@@ -127,13 +102,13 @@ public class PaymentDTO implements Serializable {
     }
 
     public PaymentDTO(int id, UserDTO baseUser, CurrencyDTO currencyDTO,
-            PaymentMethodDTO paymentMethod, PaymentDTO payment, 
-            PaymentResultDTO paymentResult,
-            Integer attempt, BigDecimal amount, Date createDatetime,
-            Date paymentDate, int deleted, int isRefund, PartnerPayout payoutId,
-            BigDecimal balance, Date updateDatetime, int isPreauth,
-            Set<PaymentAuthorizationDTO> paymentAuthorizations,
-            Set<PaymentDTO> payments, Set<PartnerPayout> partnerPayouts) {
+                      PaymentMethodDTO paymentMethod, PaymentDTO payment,
+                      PaymentResultDTO paymentResult,
+                      Integer attempt, BigDecimal amount, Date createDatetime,
+                      Date paymentDate, int deleted, int isRefund, PartnerPayout payoutId,
+                      BigDecimal balance, Date updateDatetime, int isPreauth,
+                      Set<PaymentAuthorizationDTO> paymentAuthorizations,
+                      Set<PaymentDTO> payments, Set<PartnerPayout> partnerPayouts) {
         this.id = id;
         this.baseUser = baseUser;
         this.currencyDTO = currencyDTO;
@@ -156,11 +131,11 @@ public class PaymentDTO implements Serializable {
     }
 
     public PaymentDTO(int id2, BigDecimal amount2, BigDecimal balance2,
-            Date createDatetime2, Date updateDatetime2, Date paymentDate2,
-            Integer attempt2, int deleted2, PaymentMethodDTO paymentMethod2,
-            PaymentResultDTO paymentResult2, int isRefund2, Integer isPreauth2,
-            CurrencyDTO currency, UserDTO baseUser2) {
-        
+                      Date createDatetime2, Date updateDatetime2, Date paymentDate2,
+                      Integer attempt2, int deleted2, PaymentMethodDTO paymentMethod2,
+                      PaymentResultDTO paymentResult2, int isRefund2, Integer isPreauth2,
+                      CurrencyDTO currency, UserDTO baseUser2) {
+
         this.id = id2;
         this.amount = amount2;
         this.balance = balance2;
@@ -171,13 +146,13 @@ public class PaymentDTO implements Serializable {
         this.deleted = deleted2;
         this.paymentMethod = paymentMethod2;
         this.paymentResult = paymentResult2;
-        this .isRefund = isRefund2;
+        this.isRefund = isRefund2;
         this.isPreauth = isPreauth2;
         this.currencyDTO = currency;
         this.baseUser = baseUser2;
-        
+
     }
-    
+
     public PaymentDTO(PaymentDTO dto) {
         this.id = dto.id;
         this.baseUser = dto.baseUser;
@@ -334,7 +309,7 @@ public class PaymentDTO implements Serializable {
     /**
      * Returns the remaining balance left over from this payment. A payment amount can be
      * greater than the user's current owing balance, leaving a remainder.
-     * 
+     *
      * @return remaining balance of this payment
      */
     @Column(name = "balance", precision = 17, scale = 17)
@@ -374,7 +349,7 @@ public class PaymentDTO implements Serializable {
     public void setCreditCard(PaymentInformationDTO creditCard) {
         this.creditCard = creditCard;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "payment")
     public Set<PaymentAuthorizationDTO> getPaymentAuthorizations() {
         return this.paymentAuthorizations;
@@ -403,17 +378,17 @@ public class PaymentDTO implements Serializable {
         this.partnerPayouts = partnerPayouts;
     }
 
-    public void setInvoicesMap(Set<PaymentInvoiceMapDTO> invoicesMap) {
-        this.invoicesMap = invoicesMap;
-    }
-    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "payment")
     public Set<PaymentInvoiceMapDTO> getInvoicesMap() {
         return invoicesMap;
     }
-    
+
+    public void setInvoicesMap(Set<PaymentInvoiceMapDTO> invoicesMap) {
+        this.invoicesMap = invoicesMap;
+    }
+
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }
@@ -425,16 +400,16 @@ public class PaymentDTO implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "payment")
     @OrderBy("id")
     public List<PaymentInstrumentInfoDTO> getPaymentInstrumentsInfo() {
-		return paymentInstrumentsInfo;
-	}
+        return paymentInstrumentsInfo;
+    }
 
-	public void setPaymentInstrumentsInfo(List<PaymentInstrumentInfoDTO> paymentInstrumentsInfo) {
-		this.paymentInstrumentsInfo = paymentInstrumentsInfo;
-	}
-	
+    public void setPaymentInstrumentsInfo(List<PaymentInstrumentInfoDTO> paymentInstrumentsInfo) {
+        this.paymentInstrumentsInfo = paymentInstrumentsInfo;
+    }
+
     @Transient
     public EntityType[] getCustomizedEntityType() {
-        return new EntityType[] { EntityType.PAYMENT };
+        return new EntityType[]{EntityType.PAYMENT};
     }
 
     @Transient
@@ -448,26 +423,26 @@ public class PaymentDTO implements Serializable {
     }
 
     @Column(name = "payment_notes", nullable = true)
-    public String getPaymentNotes(){
+    public String getPaymentNotes() {
         return paymentNotes;
     }
 
-    public void setPaymentNotes(String paymentNotes){
+    public void setPaymentNotes(String paymentNotes) {
         this.paymentNotes = paymentNotes;
     }
-    
+
     @Column(name = "payment_period", nullable = true)
-    public Integer getPaymentPeriod(){
+    public Integer getPaymentPeriod() {
         return paymentPeriod;
     }
 
-    public void setPaymentPeriod(Integer period){
+    public void setPaymentPeriod(Integer period) {
         this.paymentPeriod = period;
     }
-    
+
     @Transient
     public String[] getFieldNames() {
-        String header[] =  new String[] {
+        String header[] = new String[]{
                 "id",
                 "userId",
                 "userName",
@@ -510,7 +485,7 @@ public class PaymentDTO implements Serializable {
                 "chequeNumber",
                 "chequeDate",
         };
-        
+
         List<String> list = new ArrayList<>(Arrays.asList(header));
         return list.toArray(new String[list.size()]);
     }
@@ -518,7 +493,7 @@ public class PaymentDTO implements Serializable {
     @Transient
     public Object[][] getFieldValues() {
         StringBuffer invoiceIds = new StringBuffer();
-        for (Iterator<PaymentInvoiceMapDTO> it = invoicesMap.iterator(); it.hasNext();) {
+        for (Iterator<PaymentInvoiceMapDTO> it = invoicesMap.iterator(); it.hasNext(); ) {
             invoiceIds.append(it.next().getInvoiceEntity().getId());
             if (it.hasNext()) invoiceIds.append(", ");
         }
@@ -527,39 +502,39 @@ public class PaymentDTO implements Serializable {
                 ? paymentAuthorizations.iterator().next()
                 : null);
 
-        Object values[][] =  new Object[][] {
-            {
-                id,
-                (baseUser != null ? baseUser.getId() : null),
-                (baseUser != null ? baseUser.getUserName() : null),
-                invoiceIds.toString(),
-                (paymentMethod != null ? paymentMethod.getDescription() : null),
-                (currencyDTO != null ? currencyDTO.getDescription() : null),
-                amount,
-                balance,
-                isRefund,
-                isPreauth,
-                createDatetime,
-                paymentDate,
-                paymentNotes,
+        Object values[][] = new Object[][]{
+                {
+                        id,
+                        (baseUser != null ? baseUser.getId() : null),
+                        (baseUser != null ? baseUser.getUserName() : null),
+                        invoiceIds.toString(),
+                        (paymentMethod != null ? paymentMethod.getDescription() : null),
+                        (currencyDTO != null ? currencyDTO.getDescription() : null),
+                        amount,
+                        balance,
+                        isRefund,
+                        isPreauth,
+                        createDatetime,
+                        paymentDate,
+                        paymentNotes,
 
-                (latestAuthorization != null ? latestAuthorization.getProcessor() : null),
-                (latestAuthorization != null ? latestAuthorization.getCode1() : null),
-                (latestAuthorization != null ? latestAuthorization.getCode2() : null),
-                (latestAuthorization != null ? latestAuthorization.getCode3() : null),
-                (latestAuthorization != null ? latestAuthorization.getApprovalCode() : null),
-                (latestAuthorization != null ? latestAuthorization.getAvs() : null),
-                (latestAuthorization != null ? latestAuthorization.getTransactionId() : null),
-                (latestAuthorization != null ? latestAuthorization.getMD5() : null),
-                (latestAuthorization != null ? latestAuthorization.getCardCode() : null),
-                (latestAuthorization != null ? latestAuthorization.getResponseMessage() : null),
-            }
+                        (latestAuthorization != null ? latestAuthorization.getProcessor() : null),
+                        (latestAuthorization != null ? latestAuthorization.getCode1() : null),
+                        (latestAuthorization != null ? latestAuthorization.getCode2() : null),
+                        (latestAuthorization != null ? latestAuthorization.getCode3() : null),
+                        (latestAuthorization != null ? latestAuthorization.getApprovalCode() : null),
+                        (latestAuthorization != null ? latestAuthorization.getAvs() : null),
+                        (latestAuthorization != null ? latestAuthorization.getTransactionId() : null),
+                        (latestAuthorization != null ? latestAuthorization.getMD5() : null),
+                        (latestAuthorization != null ? latestAuthorization.getCardCode() : null),
+                        (latestAuthorization != null ? latestAuthorization.getResponseMessage() : null),
+                }
         };
-        
+
         List<Object> paymentList = new ArrayList<>(Arrays.asList(values[0]));
-        Object obj[][] = new Object[][] {paymentList.toArray()};  
+        Object obj[][] = new Object[][]{paymentList.toArray()};
         return obj;
-        
+
     }
 
 

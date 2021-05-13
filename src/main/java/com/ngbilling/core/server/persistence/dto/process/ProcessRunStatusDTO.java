@@ -24,15 +24,14 @@
 
 package com.ngbilling.core.server.persistence.dto.process;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("process_run_status")
@@ -41,12 +40,12 @@ public class ProcessRunStatusDTO extends AbstractGenericStatus implements java.i
 
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
 
-	public ProcessRunStatusDTO() {
+    public ProcessRunStatusDTO() {
     }
 
 

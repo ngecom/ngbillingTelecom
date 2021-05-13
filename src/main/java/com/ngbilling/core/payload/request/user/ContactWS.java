@@ -30,15 +30,16 @@
  */
 package com.ngbilling.core.payload.request.user;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
 
 
-/** @author Emil */
+/**
+ * @author Emil
+ */
 public class ContactWS implements Serializable {
 
     private static final long serialVersionUID = 20140605L;
@@ -96,17 +97,17 @@ public class ContactWS implements Serializable {
     }
 
     public ContactWS(Integer id, String address1,
-            String address2, String city, String stateProvince,
-            String postalCode, String countryCode, int deleted) {
-            this.id = id;
-            this.address1 = address1;
-            this.address2 = address2;
-            this.city = city;
-            this.stateProvince = stateProvince;
-            this.postalCode = postalCode;
-            this.countryCode = countryCode;
-            this.deleted = deleted;
-        }
+                     String address2, String city, String stateProvince,
+                     String postalCode, String countryCode, int deleted) {
+        this.id = id;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.stateProvince = stateProvince;
+        this.postalCode = postalCode;
+        this.countryCode = countryCode;
+        this.deleted = deleted;
+    }
 
     public ContactWS(Integer id, String organizationName, String address1,
                      String address2, String city, String stateProvince,
@@ -340,38 +341,38 @@ public class ContactWS implements Serializable {
     public void setInclude(Boolean include) {
         this.include = include;
     }
-    
-    public Boolean getInvoiceAsReseller() {
-		return invoiceAsReseller;
-	}
 
-	public void setInvoiceAsReseller(Boolean invoiceAsReseller) {
-		this.invoiceAsReseller = invoiceAsReseller;
-	}
+    public Boolean getInvoiceAsReseller() {
+        return invoiceAsReseller;
+    }
+
+    public void setInvoiceAsReseller(Boolean invoiceAsReseller) {
+        this.invoiceAsReseller = invoiceAsReseller;
+    }
 
     @Override
     public String toString() {
         return "ContactWS{"
-               + "id=" + id
-               + ", title='" + title + '\''
-               + ", lastName='" + lastName + '\''
-               + ", firstName='" + firstName + '\''
-               + ", initial='" + initial + '\''
-               + ", organization='" + organizationName + '\''
-               + ", address1='" + address1 + '\''
-               + ", address2='" + address2 + '\''
-               + ", city='" + city + '\''
-               + ", stateProvince='" + stateProvince + '\''
-               + ", postalCode='" + postalCode + '\''
-               + ", countryCode='" + countryCode + '\''
-               + ", phone='" + (phoneCountryCode != null ? phoneCountryCode : "")
-                             + (phoneAreaCode != null ? phoneAreaCode : "")
-                             + (phoneNumber != null ?  phoneNumber : "") + '\''
-               + ", fax='" + (faxCountryCode != null ? faxCountryCode : "")
-                           + (faxAreaCode != null ? faxAreaCode : "")
-                           + (faxNumber != null ? faxNumber : "") + '\''
-               + ", email='" + email + '\''
-               + ", include='" + include + '\''
-               + '}';
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", lastName='" + lastName + '\''
+                + ", firstName='" + firstName + '\''
+                + ", initial='" + initial + '\''
+                + ", organization='" + organizationName + '\''
+                + ", address1='" + address1 + '\''
+                + ", address2='" + address2 + '\''
+                + ", city='" + city + '\''
+                + ", stateProvince='" + stateProvince + '\''
+                + ", postalCode='" + postalCode + '\''
+                + ", countryCode='" + countryCode + '\''
+                + ", phone='" + (phoneCountryCode != null ? phoneCountryCode : "")
+                + (phoneAreaCode != null ? phoneAreaCode : "")
+                + (phoneNumber != null ? phoneNumber : "") + '\''
+                + ", fax='" + (faxCountryCode != null ? faxCountryCode : "")
+                + (faxAreaCode != null ? faxAreaCode : "")
+                + (faxNumber != null ? faxNumber : "") + '\''
+                + ", email='" + email + '\''
+                + ", include='" + include + '\''
+                + '}';
     }
 }

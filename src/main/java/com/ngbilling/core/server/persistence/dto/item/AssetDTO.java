@@ -15,39 +15,15 @@
  */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
 
 
 /**
@@ -74,11 +50,11 @@ import com.ngbilling.core.server.util.ServerConstants;
                 query = "select count(a.id) from AssetDTO a where a.item.id = :item_id " +
                         "and deleted=0"),
         @NamedQuery(name = "AssetDTO.identifierForIdentifierAndCategory",
-                 query = "select a from AssetDTO a " +
-                		 "join a.item.itemTypes types " +
-                         "where types.id = :item_type_id " +
-                         "and a.identifier = :identifier " +
-                         "and a.deleted=0"),                
+                query = "select a from AssetDTO a " +
+                        "join a.item.itemTypes types " +
+                        "where types.id = :item_type_id " +
+                        "and a.identifier = :identifier " +
+                        "and a.deleted=0"),
         @NamedQuery(name = "AssetDTO.idsForItemType",
                 query = "select a.id from AssetDTO a " +
                         "join a.item.itemTypes types " +
@@ -95,13 +71,13 @@ import com.ngbilling.core.server.util.ServerConstants;
                         "and a.deleted=0")
 })
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class AssetDTO  implements Serializable {
+public class AssetDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     //unique per ItemTypeDTO
     private String identifier;
     private AssetStatusDTO assetStatus;
@@ -109,14 +85,18 @@ public class AssetDTO  implements Serializable {
     private int deleted;
     private ItemDTO item;
     private Set<AssetTransitionDTO> transitions = new HashSet<AssetTransitionDTO>(0);
-	private Set<AssetAssignmentDTO> assignments = new HashSet<AssetAssignmentDTO>(0);
+    private Set<AssetAssignmentDTO> assignments = new HashSet<AssetAssignmentDTO>(0);
     private int versionNum;
     private Date createDatetime;
     private OrderLineDTO orderLine;
     private String notes;
-    /** Can only contain assets is a group */
+    /**
+     * Can only contain assets is a group
+     */
     private Set<AssetDTO> containedAssets = new HashSet<AssetDTO>(0);
-    /** Parent group */
+    /**
+     * Parent group
+     */
     private AssetDTO group;
 
     //transient properties
@@ -128,6 +108,7 @@ public class AssetDTO  implements Serializable {
     private List<Integer> childEntityIds = null;
 
     private boolean isReserved = false;
+
     public AssetDTO() {
     }
 
@@ -146,8 +127,8 @@ public class AssetDTO  implements Serializable {
         this.global = dto.isGlobal();
         setEntities(dto.getEntities());
         setContainedAssets(dto.getContainedAssets());
-	    setTransitions(dto.getTransitions());
-	    setAssignments(dto.getAssignments());
+        setTransitions(dto.getTransitions());
+        setAssignments(dto.getAssignments());
     }
 
     @Id
@@ -161,8 +142,8 @@ public class AssetDTO  implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="group_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
     public AssetDTO getGroup() {
         return group;
     }
@@ -198,13 +179,13 @@ public class AssetDTO  implements Serializable {
         this.createDatetime = createDatetime;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_line_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_line_id")
     public OrderLineDTO getOrderLine() {
         return this.orderLine;
     }
 
-    public void setOrderLine(OrderLineDTO orderLine){
+    public void setOrderLine(OrderLineDTO orderLine) {
         this.orderLine = orderLine;
     }
 
@@ -279,30 +260,32 @@ public class AssetDTO  implements Serializable {
         return this.transitions;
     }
 
-    public void setTransitions(Set<AssetTransitionDTO> transitions){
+    public void setTransitions(Set<AssetTransitionDTO> transitions) {
         this.transitions = transitions;
     }
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "asset")
-	public Set<AssetAssignmentDTO> getAssignments() {
-		return assignments;
-	}
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "asset")
+    public Set<AssetAssignmentDTO> getAssignments() {
+        return assignments;
+    }
 
-	public void setAssignments(Set<AssetAssignmentDTO> assignments) {
-		this.assignments = assignments;
-	}
+    public void setAssignments(Set<AssetAssignmentDTO> assignments) {
+        this.assignments = assignments;
+    }
 
     @Version
-    @Column(name="optlock")
+    @Column(name = "optlock")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
 
     /**
      * Add an asset to the set of contained assets
+     *
      * @param assetDTO
      */
     public void addContainedAsset(AssetDTO assetDTO) {
@@ -312,6 +295,7 @@ public class AssetDTO  implements Serializable {
 
     /**
      * Remove the asset from the set of contained assets
+     *
      * @param assetDTO
      */
     public void removeContainedAsset(AssetDTO assetDTO) {
@@ -325,47 +309,47 @@ public class AssetDTO  implements Serializable {
      * @param assetDTOs
      */
     public void addContainedAssets(Collection<AssetDTO> assetDTOs) {
-        for(AssetDTO dto: assetDTOs) {
+        for (AssetDTO dto : assetDTOs) {
             addContainedAsset(dto);
         }
     }
-
 
 
     @Transient
     protected String getTable() {
         return ServerConstants.TABLE_ASSET;
     }
-    
+
     @Column(name = "global", nullable = false, updatable = true)
     public boolean isGlobal() {
-		return global;
-	}
-    
+        return global;
+    }
+
     public void setGlobal(boolean global) {
-		this.global = global;
-	}
+        this.global = global;
+    }
 
     /**
      * Load all lazy dependencies of entity if needed
      */
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY )
-	@JoinTable(name = "asset_entity_map", joinColumns = { 
-    		@JoinColumn(name = "asset_id", updatable = true) }, inverseJoinColumns = { 
-    		@JoinColumn(name = "entity_id", updatable = true) })
-	public Set<CompanyDTO> getEntities() {
-		return entities;
-	}
-	public void setEntities(Set<CompanyDTO> entities) {
-		this.entities= entities;
-	}
-	
-	@Transient
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(name = "asset_entity_map", joinColumns = {
+            @JoinColumn(name = "asset_id", updatable = true)}, inverseJoinColumns = {
+            @JoinColumn(name = "entity_id", updatable = true)})
+    public Set<CompanyDTO> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(Set<CompanyDTO> entities) {
+        this.entities = entities;
+    }
+
+    @Transient
     public Integer getEntityId() {
         return getEntity() != null ? getEntity().getId() : null;
     }
-	
-     public void touch() {
+
+    public void touch() {
         // touch entity only once
         if (isTouched) return;
         isTouched = true;
@@ -395,14 +379,14 @@ public class AssetDTO  implements Serializable {
                 ", isReserved='" + isReserved + '\'' +
                 '}';
     }
-    
+
 
     @Transient
     public List<Integer> getChildEntitiesIds() {
         if (this.childEntityIds == null) {
             this.childEntityIds = new ArrayList<Integer>();
-            for(CompanyDTO dto : this.entities) {
-            	this.childEntityIds.add(dto.getId());
+            for (CompanyDTO dto : this.entities) {
+                this.childEntityIds.add(dto.getId());
             }
 
         }

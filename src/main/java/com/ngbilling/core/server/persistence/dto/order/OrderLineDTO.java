@@ -24,38 +24,6 @@
 package com.ngbilling.core.server.persistence.dto.order;
 
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.common.util.CommonConstants;
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.server.persistence.dao.item.ItemDAO;
@@ -63,26 +31,55 @@ import com.ngbilling.core.server.persistence.dao.order.OrderLineTypeDAO;
 import com.ngbilling.core.server.persistence.dto.item.AssetAssignmentDTO;
 import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
 import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Entity
 @TableGenerator(
-        name="order_line_GEN",
-        table="jbilling_seqs",
+        name = "order_line_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="order_line",
+        pkColumnValue = "order_line",
         allocationSize = 100
-        )
-@Table(name="order_line")
+)
+@Table(name = "order_line")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 public class OrderLineDTO implements Serializable, Comparable {
 
+    public final static Comparator<OrderChangeDTO> OrderLineChangeDTOStartDateComparator;
+    public final static Comparator<OrderChangeDTO> OrderLineChangeDTOCreateDateTimeComparator;
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static final FormatLogger LOG = new FormatLogger(OrderLineDTO.class);
 
-	private static final FormatLogger LOG =  new FormatLogger(OrderLineDTO.class);
+    static {
+        OrderLineChangeDTOStartDateComparator = (change1, change2) -> {
+            Date charge1Start = change1.getStartDate();
+            Date charge2Start = change2.getStartDate();
+
+            // ascending order
+            int result = charge1Start.compareTo(charge2Start);
+            if (result != 0) {
+                return result;
+            }
+            // same start date case
+            return change1.getCreateDatetime().compareTo(change2.getCreateDatetime());
+        };
+    }
+
+    static {
+        OrderLineChangeDTOCreateDateTimeComparator = (change1, change2) -> change1.getCreateDatetime().compareTo(change2.getCreateDatetime());
+    }
 
     private int id;
     private OrderLineTypeDTO orderLineTypeDTO;
@@ -91,7 +88,6 @@ public class OrderLineDTO implements Serializable, Comparable {
     private ItemDAO itemDAO;
     @Autowired
     private OrderLineTypeDAO orderLineDAO;
-    
     private OrderDTO orderDTO;
     private BigDecimal amount;
     private BigDecimal quantity;
@@ -103,27 +99,21 @@ public class OrderLineDTO implements Serializable, Comparable {
     private Integer versionNum;
     private Boolean editable = null;
     private Set<AssetDTO> assets = new HashSet<AssetDTO>(2);
-	private Set<AssetAssignmentDTO> assetAssignments = new HashSet<AssetAssignmentDTO>(0);
+    private Set<AssetAssignmentDTO> assetAssignments = new HashSet<AssetAssignmentDTO>(0);
     private OrderLineDTO parentLine;
     private Set<OrderLineDTO> childLines = new HashSet<OrderLineDTO>(0);
-
     private String sipUri;
-    
     private Set<OrderChangeDTO> orderChanges = new HashSet<OrderChangeDTO>(0);
-
     private Date startDate;
     private Date endDate;
-
     // other fields, non-persistent
     private String priceStr = null;
     private Boolean totalReadOnly = null;
-
     private boolean isTouched = false;
-
     private boolean mediated = false;
     private BigDecimal mediatedQuantity;
-    private boolean isPercentage =false;
-    
+    private boolean isPercentage = false;
+
     public OrderLineDTO() {
     }
 
@@ -145,7 +135,7 @@ public class OrderLineDTO implements Serializable, Comparable {
         this.childLines.addAll(other.getChildLines());
         this.startDate = other.getStartDate();
         this.endDate = other.getEndDate();
-        this.isPercentage =other.isPercentage();
+        this.isPercentage = other.isPercentage();
     }
 
     public OrderLineDTO(int id, BigDecimal amount, Date createDatetime, Integer deleted) {
@@ -154,42 +144,44 @@ public class OrderLineDTO implements Serializable, Comparable {
         this.createDatetime = createDatetime;
         this.deleted = deleted != null ? deleted : 0;
     }
-    
+
     public OrderLineDTO(int id, OrderLineTypeDTO orderLineTypeDTO, ItemDTO item, OrderDTO orderDTO, BigDecimal amount,
-            BigDecimal quantity, BigDecimal price, Date createDatetime, Integer deleted,
-            String description) {
-       this.id = id;
-       this.orderLineTypeDTO = orderLineTypeDTO;
-       this.item = item;
-       this.orderDTO = orderDTO;
-       this.amount = amount;
-       this.quantity = quantity;
-       this.price = price;
-       this.createDatetime = createDatetime;
-       this.deleted = deleted;
-       this.description = description;
+                        BigDecimal quantity, BigDecimal price, Date createDatetime, Integer deleted,
+                        String description) {
+        this.id = id;
+        this.orderLineTypeDTO = orderLineTypeDTO;
+        this.item = item;
+        this.orderDTO = orderDTO;
+        this.amount = amount;
+        this.quantity = quantity;
+        this.price = price;
+        this.createDatetime = createDatetime;
+        this.deleted = deleted;
+        this.description = description;
     }
-    
-    @Id @GeneratedValue(strategy=GenerationType.TABLE, generator="order_line_GEN")
-    @Column(name="id", unique=true, nullable=false)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_line_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="type_id", nullable=false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id", nullable = false)
     public OrderLineTypeDTO getOrderLineType() {
         return this.orderLineTypeDTO;
     }
-    
+
     public void setOrderLineType(OrderLineTypeDTO orderLineTypeDTO) {
         this.orderLineTypeDTO = orderLineTypeDTO;
     }
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="orderLine")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderLine")
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.DETACH})
     public Set<AssetDTO> getAssets() {
         return assets;
@@ -200,14 +192,14 @@ public class OrderLineDTO implements Serializable, Comparable {
     }
 
     public void addAssets(Set<AssetDTO> assets) {
-        for(AssetDTO asset : assets) {
+        for (AssetDTO asset : assets) {
             addAsset(asset);
         }
     }
 
     public void addAsset(AssetDTO asset) {
-      assets.add(asset);
-      asset.setOrderLine(this);
+        assets.add(asset);
+        asset.setOrderLine(this);
     }
 
     public void removeAsset(AssetDTO asset) {
@@ -217,33 +209,33 @@ public class OrderLineDTO implements Serializable, Comparable {
 
     public Integer[] convertAssetIds() {
         Integer[] ids = new Integer[assets.size()];
-        int idx=0;
-        for(AssetDTO asset : assets) {
+        int idx = 0;
+        for (AssetDTO asset : assets) {
             ids[idx++] = asset.getId();
         }
         return ids;
     }
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "orderLine")
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST,
-			org.hibernate.annotations.CascadeType.REMOVE})
-	public Set<AssetAssignmentDTO> getAssetAssignments() {
-		return assetAssignments;
-	}
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderLine")
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST,
+            org.hibernate.annotations.CascadeType.REMOVE})
+    public Set<AssetAssignmentDTO> getAssetAssignments() {
+        return assetAssignments;
+    }
 
-	public void setAssetAssignments(Set<AssetAssignmentDTO> assetAssignments) {
-		this.assetAssignments = assetAssignments;
-	}
+    public void setAssetAssignments(Set<AssetAssignmentDTO> assetAssignments) {
+        this.assetAssignments = assetAssignments;
+    }
 
-	@Transient
-	public Integer[] getAssetAssignmentIds() {
-		Integer[] ids = new Integer[assetAssignments.size()];
-		int idx = 0;
-		for (AssetAssignmentDTO assign : assetAssignments) {
-			ids[idx++] = assign.getId();
-		}
-		return ids;
-	}
+    @Transient
+    public Integer[] getAssetAssignmentIds() {
+        Integer[] ids = new Integer[assetAssignments.size()];
+        int idx = 0;
+        for (AssetAssignmentDTO assign : assetAssignments) {
+            ids[idx++] = assign.getId();
+        }
+        return ids;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_line_id")
@@ -264,21 +256,22 @@ public class OrderLineDTO implements Serializable, Comparable {
         this.childLines = childLines;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="item_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     public ItemDTO getItem() {
         return this.item;
     }
-    
+
     public void setItem(ItemDTO item) {
         this.item = item;
     }
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     public OrderDTO getPurchaseOrder() {
         return this.orderDTO;
     }
-    
+
     public void setPurchaseOrder(OrderDTO orderDTO) {
         this.orderDTO = orderDTO;
     }
@@ -289,20 +282,20 @@ public class OrderLineDTO implements Serializable, Comparable {
      *
      * @return amount
      */
-    @Column(name="amount", nullable=false, precision=17, scale=17)
+    @Column(name = "amount", nullable = false, precision = 17, scale = 17)
     public BigDecimal getAmount() {
         return this.amount;
     }
-    
+
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
-    @Column(name="quantity", precision=17, scale=17)
+
+    @Column(name = "quantity", precision = 17, scale = 17)
     public BigDecimal getQuantity() {
         return this.quantity;
     }
-    
+
     @Transient
     public void setQuantity(Integer quantity) {
         setQuantity(new BigDecimal(quantity));
@@ -321,29 +314,30 @@ public class OrderLineDTO implements Serializable, Comparable {
      * Returns the price of a single unit of this item.
      *
      * @return unit price
-     */    
-    @Column(name="price", precision=17, scale=17)
+     */
+    @Column(name = "price", precision = 17, scale = 17)
     public BigDecimal getPrice() {
         return this.price;
     }
-    
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    @Column(name="create_datetime", nullable=false, length=29)
+    @Column(name = "create_datetime", nullable = false, length = 29)
     public Date getCreateDatetime() {
         return this.createDatetime;
     }
+
     public void setCreateDatetime(Date createDatetime) {
         this.createDatetime = createDatetime;
     }
-    
-    @Column(name="deleted", nullable=false)
+
+    @Column(name = "deleted", nullable = false)
     public int getDeleted() {
         return this.deleted;
     }
-    
+
     public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
@@ -357,10 +351,11 @@ public class OrderLineDTO implements Serializable, Comparable {
         this.useItem = useItem;
     }
 
-    @Column(name="description", length=1000)
+    @Column(name = "description", length = 1000)
     public String getDescription() {
         return this.description;
     }
+
     public void setDescription(String description) {
         if (description != null && description.length() > 1000) {
             description = description.substring(0, 1000);
@@ -371,14 +366,15 @@ public class OrderLineDTO implements Serializable, Comparable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
-        
+
     /*
      * Conveniant methods to ease migration from entity beans
      */
@@ -393,7 +389,7 @@ public class OrderLineDTO implements Serializable, Comparable {
 
     @Transient
     public boolean hasItem() {
-    	return getItem() != null;
+        return getItem() != null;
     }
 
     @Transient
@@ -403,6 +399,7 @@ public class OrderLineDTO implements Serializable, Comparable {
         }
         return editable;
     }
+
     public void setEditable(Boolean editable) {
         this.editable = editable;
     }
@@ -415,7 +412,7 @@ public class OrderLineDTO implements Serializable, Comparable {
     public void setPriceStr(String priceStr) {
         this.priceStr = priceStr;
     }
-    
+
     @Transient
     public Boolean getTotalReadOnly() {
         if (totalReadOnly == null) {
@@ -436,7 +433,7 @@ public class OrderLineDTO implements Serializable, Comparable {
     public void setTypeId(Integer typeId) {
         setOrderLineType(orderLineDAO.findById(typeId).get());
     }
-    
+
     @Transient
     public Integer getQuantityInt() {
         if (quantity == null) return null;
@@ -444,31 +441,31 @@ public class OrderLineDTO implements Serializable, Comparable {
     }
 
     @Column(name = "sip_uri", nullable = true)
-    public String getSipUri () {
+    public String getSipUri() {
         return sipUri;
     }
 
-    public void setSipUri (String sipUri) {
+    public void setSipUri(String sipUri) {
         this.sipUri = sipUri;
     }
 
     @Transient
     public boolean isMediated() {
-    	return mediated;
+        return mediated;
     }
 
     public void setMediated(boolean mediated) {
-    	this.mediated = mediated;
+        this.mediated = mediated;
     }
-    
-    @Transient
-	public BigDecimal getMediatedQuantity() {
-		return mediatedQuantity;
-	}
 
-	public void setMediatedQuantity(BigDecimal mediatedQuantity) {
-		this.mediatedQuantity = mediatedQuantity;
-	}
+    @Transient
+    public BigDecimal getMediatedQuantity() {
+        return mediatedQuantity;
+    }
+
+    public void setMediatedQuantity(BigDecimal mediatedQuantity) {
+        this.mediatedQuantity = mediatedQuantity;
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderLine")
     public Set<OrderChangeDTO> getOrderChanges() {
@@ -486,24 +483,23 @@ public class OrderLineDTO implements Serializable, Comparable {
 
     @Column(name = "start_date", nullable = true)
     @Temporal(TemporalType.DATE)
-    public Date getStartDate () {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate (Date startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
     @Column(name = "end_date", nullable = true)
     @Temporal(TemporalType.DATE)
-    public Date getEndDate () {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate (Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
 
     public void touch() {
         // touch entity with possible cycle dependencies only once
@@ -516,7 +512,7 @@ public class OrderLineDTO implements Serializable, Comparable {
         }
         getEditable();
 
-        for(AssetDTO asset: assets) {
+        for (AssetDTO asset : assets) {
             asset.touch();
         }
         if (getParentLine() != null) {
@@ -526,58 +522,38 @@ public class OrderLineDTO implements Serializable, Comparable {
             childLine.touch();
         }
 
-        
+
     }
 
     /**
      * Returns trye if the OrderLine is linked to asset with {@code id}
+     *
      * @param id
      * @return
      */
     public boolean containsAsset(int id) {
-        for(AssetDTO assetDTO : assets) {
-            if(assetDTO.getId() == id) return true;
+        for (AssetDTO assetDTO : assets) {
+            if (assetDTO.getId() == id) return true;
         }
         return false;
     }
 
     @Transient
-    public List<OrderChangeDTO> getOrderChangesSortedByStartDate () {
+    public List<OrderChangeDTO> getOrderChangesSortedByStartDate() {
         List<OrderChangeDTO> sortedchanges = new ArrayList<OrderChangeDTO>(getOrderChanges());
         Collections.sort(sortedchanges, OrderLineChangeDTOStartDateComparator);
         return sortedchanges;
     }
-    public final static Comparator<OrderChangeDTO> OrderLineChangeDTOStartDateComparator;
-
-    static {
-        OrderLineChangeDTOStartDateComparator = (change1, change2) -> {
-                Date charge1Start = change1.getStartDate();
-                Date charge2Start = change2.getStartDate();
-
-                // ascending order
-                int result = charge1Start.compareTo(charge2Start);
-                if (result != 0) {
-                    return result;
-                }
-                // same start date case
-                return change1.getCreateDatetime().compareTo(change2.getCreateDatetime());
-            };
-    }
 
     @Transient
-    public List<OrderChangeDTO> getOrderChangesSortedByCreateDateTime () {
+    public List<OrderChangeDTO> getOrderChangesSortedByCreateDateTime() {
         List<OrderChangeDTO> sortedchanges = new ArrayList<>(getOrderChanges());
         Collections.sort(sortedchanges, OrderLineChangeDTOCreateDateTimeComparator);
         return sortedchanges;
     }
-    public final static Comparator<OrderChangeDTO> OrderLineChangeDTOCreateDateTimeComparator;
-
-    static {
-        OrderLineChangeDTOCreateDateTimeComparator = (change1, change2) -> change1.getCreateDatetime().compareTo(change2.getCreateDatetime());
-    }
 
     @Transient
-    public void moveToOtherOrder (OrderDTO otherOrder) {
+    public void moveToOtherOrder(OrderDTO otherOrder) {
         this.getPurchaseOrder().getLines().remove(this);
         this.setPurchaseOrder(otherOrder);
         this.getPurchaseOrder().getLines().add(this);
@@ -604,31 +580,31 @@ public class OrderLineDTO implements Serializable, Comparable {
     }
 
     @Column(name = "is_Percentage", nullable = false, updatable = true)
-	public boolean isPercentage() {
-		return isPercentage;
-	}
+    public boolean isPercentage() {
+        return isPercentage;
+    }
 
-	public void setPercentage(boolean isPercentage) {
-		this.isPercentage = isPercentage;
-	}
-    
+    public void setPercentage(boolean isPercentage) {
+        this.isPercentage = isPercentage;
+    }
+
     @Override
     public String toString() {
         return "OrderLine:[id=" + id +
-        " orderLineType=" + ((orderLineTypeDTO == null) ? "null" : orderLineTypeDTO.getId()) +
-        " item=" +  ((item==null) ? "null" : item.getId()) +
-        " order id=" + ((orderDTO == null) ? "null" : orderDTO.getId()) +
-        " amount=" +  amount +
-        " quantity=" +  quantity +
-        " price=" +  price +
-        " isPercentage=" +  isPercentage +
-        " createDatetime=" +  createDatetime +
-        " deleted=" + deleted  +
-        " useItem=" + useItem +
-        " description=" + description + 
-        " versionNum=" + versionNum  +
-        " parentLineId=" + (parentLine != null ? parentLine.getId() : "null")  +
-        " editable=" + editable + "]";
+                " orderLineType=" + ((orderLineTypeDTO == null) ? "null" : orderLineTypeDTO.getId()) +
+                " item=" + ((item == null) ? "null" : item.getId()) +
+                " order id=" + ((orderDTO == null) ? "null" : orderDTO.getId()) +
+                " amount=" + amount +
+                " quantity=" + quantity +
+                " price=" + price +
+                " isPercentage=" + isPercentage +
+                " createDatetime=" + createDatetime +
+                " deleted=" + deleted +
+                " useItem=" + useItem +
+                " description=" + description +
+                " versionNum=" + versionNum +
+                " parentLineId=" + (parentLine != null ? parentLine.getId() : "null") +
+                " editable=" + editable + "]";
     }
 
 }

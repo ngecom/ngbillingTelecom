@@ -23,32 +23,22 @@ along with jbilling.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
 import com.ngbilling.core.server.persistence.dto.process.PeriodUnitDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 
+import javax.persistence.*;
+import java.util.Date;
+
 @Entity
 @TableGenerator(
-        name="partner_commission_proc_config_GEN",
-        table="jbilling_seqs",
+        name = "partner_commission_proc_config_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="partner_commission_proc_config",
-        allocationSize=10
+        pkColumnValue = "partner_commission_proc_config",
+        allocationSize = 10
 )
-@Table(name="partner_commission_proc_config")
+@Table(name = "partner_commission_proc_config")
 public class CommissionProcessConfigurationDTO {
     private int id;
     private CompanyDTO entity;
@@ -57,13 +47,13 @@ public class CommissionProcessConfigurationDTO {
     private int periodValue;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="partner_commission_proc_config_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "partner_commission_proc_config_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -77,31 +67,31 @@ public class CommissionProcessConfigurationDTO {
         this.entity = entity;
     }
 
-    @Column(name="next_run_date", length=13)
-    public Date getNextRunDate () {
+    @Column(name = "next_run_date", length = 13)
+    public Date getNextRunDate() {
         return nextRunDate;
     }
 
-    public void setNextRunDate (Date nextRunDate) {
+    public void setNextRunDate(Date nextRunDate) {
         this.nextRunDate = nextRunDate;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "period_unit_id")
-    public PeriodUnitDTO getPeriodUnit () {
+    public PeriodUnitDTO getPeriodUnit() {
         return periodUnit;
     }
 
-    public void setPeriodUnit (PeriodUnitDTO periodUnit) {
+    public void setPeriodUnit(PeriodUnitDTO periodUnit) {
         this.periodUnit = periodUnit;
     }
 
     @Column(name = "period_value")
-    public int getPeriodValue () {
+    public int getPeriodValue() {
         return periodValue;
     }
 
-    public void setPeriodValue (int periodValue) {
+    public void setPeriodValue(int periodValue) {
         this.periodValue = periodValue;
     }
 }

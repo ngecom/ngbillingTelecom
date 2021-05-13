@@ -8,8 +8,8 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class NgbillingTelecoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(NgbillingTelecoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(NgbillingTelecoApplication.class, args);
+    }
 
 }

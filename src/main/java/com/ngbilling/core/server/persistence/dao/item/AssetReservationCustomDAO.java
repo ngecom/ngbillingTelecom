@@ -5,8 +5,7 @@ import com.ngbilling.core.server.persistence.dto.item.AssetReservationDTO;
 
 public interface AssetReservationCustomDAO {
 
-	public AssetReservationDTO findActiveReservationByAsset(Integer assetId);
-
+    public AssetReservationDTO findActiveReservationByAsset(Integer assetId);
 
 
 }

@@ -15,27 +15,13 @@
  */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.payload.request.item.AssetStatusDTOEx;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 
 /**
  * Assets linked to a product always have a status.
@@ -80,10 +66,10 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class AssetStatusDTO extends AbstractDescription {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private ItemTypeDTO itemType;
     private int isDefault;
     private int isOrderSaved;
@@ -139,7 +125,7 @@ public class AssetStatusDTO extends AbstractDescription {
         this.itemType = itemType;
     }
 
-    @Column(name="is_internal")
+    @Column(name = "is_internal")
     public int getIsInternal() {
         return this.isInternal;
     }
@@ -148,7 +134,7 @@ public class AssetStatusDTO extends AbstractDescription {
         this.isInternal = isInternal1;
     }
 
-    @Column(name="is_order_saved")
+    @Column(name = "is_order_saved")
     public int getIsOrderSaved() {
         return this.isOrderSaved;
     }
@@ -157,7 +143,7 @@ public class AssetStatusDTO extends AbstractDescription {
         this.isOrderSaved = isOrderSaved;
     }
 
-    @Column(name="is_default")
+    @Column(name = "is_default")
     public int getIsDefault() {
         return this.isDefault;
     }
@@ -166,7 +152,7 @@ public class AssetStatusDTO extends AbstractDescription {
         this.isDefault = isDefault;
     }
 
-    @Column(name="is_available")
+    @Column(name = "is_available")
     public int getIsAvailable() {
         return this.isAvailable;
     }
@@ -181,10 +167,11 @@ public class AssetStatusDTO extends AbstractDescription {
     }
 
     @Version
-    @Column(name="optlock")
+    @Column(name = "optlock")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }

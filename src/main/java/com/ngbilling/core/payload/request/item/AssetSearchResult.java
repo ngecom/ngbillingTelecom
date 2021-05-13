@@ -10,14 +10,18 @@ import java.util.Arrays;
  * @author Gerhard Maree
  * @since 28/06/13
  */
-public class AssetSearchResult implements Serializable  {
+public class AssetSearchResult implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/** the total number of objects */
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    /**
+     * the total number of objects
+     */
     private int total;
-    /** the objects returned by the query */
+    /**
+     * the objects returned by the query
+     */
     private AssetWS[] objects;
 
     public int getTotal() {

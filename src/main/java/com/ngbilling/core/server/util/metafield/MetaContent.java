@@ -24,12 +24,11 @@
 
 package com.ngbilling.core.server.util.metafield;
 
-import java.util.List;
-
-import javax.persistence.Transient;
-
 import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
+
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * Interface for marking classes that can contain meta-fields. This interface enforces a set
@@ -42,6 +41,7 @@ public interface MetaContent {
 
     // for hibernate mappings
     public List<MetaFieldValue> getMetaFields();
+
     public void setMetaFields(List<MetaFieldValue> fields);
 
     /**
@@ -55,7 +55,7 @@ public interface MetaContent {
     /**
      * Returns the meta field by name if it's been defined for this object.
      *
-     * @param name meta field name
+     * @param name    meta field name
      * @param groupId group id
      * @return field if found, null if not set.
      */
@@ -82,12 +82,12 @@ public interface MetaContent {
      * the field does not already exist, or if the value class is of an incorrect type
      * then an IllegalArgumentException will be thrown.
      *
-     * @param name field name
+     * @param name  field name
      * @param value field value
      * @throws IllegalArgumentException thrown if field name does not exist, or if value is of an incorrect type.
      */
     public void setMetaField(Integer entityId, Integer groupId, String name, Object value) throws IllegalArgumentException;
-    
+
     /**
      * Usefull method for updating meta fields with validation before entity saving
      *

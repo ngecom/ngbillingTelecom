@@ -24,30 +24,6 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.payload.request.util.CurrencyWS;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderDTO;
@@ -57,25 +33,33 @@ import com.ngbilling.core.server.persistence.dto.process.ProcessRunTotalDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "currency")
 @TableGenerator(
-        name="currency_GEN",
-        table="jbilling_seqs",
+        name = "currency_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="currency",
+        pkColumnValue = "currency",
         allocationSize = 10
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CurrencyDTO extends AbstractDescription implements java.io.Serializable{
+public class CurrencyDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private String symbol;
     private String code;
     private String countryCode;
@@ -233,8 +217,8 @@ public class CurrencyDTO extends AbstractDescription implements java.io.Serializ
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "currency_entity_map",
-               joinColumns = {@JoinColumn(name = "currency_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "entity_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "currency_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "entity_id", updatable = false)}
     )
     public Set<CompanyDTO> getEntities_1() {
         return this.entities_1;
@@ -252,8 +236,8 @@ public class CurrencyDTO extends AbstractDescription implements java.io.Serializ
     public void setInvoices(Set<InvoiceDTO> invoices) {
         this.invoices = invoices;
     }
-    
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "currency")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "currency")
     public Set<ProcessRunTotalDTO> getProcessRunTotals() {
         return this.processRunTotals;
     }
@@ -263,10 +247,11 @@ public class CurrencyDTO extends AbstractDescription implements java.io.Serializ
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
@@ -294,13 +279,13 @@ public class CurrencyDTO extends AbstractDescription implements java.io.Serializ
         return rate;
     }
 
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
     @Transient
     public BigDecimal getRateAsDecimal() {
         return (rate == null ? null : new BigDecimal(rate));
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
     }
 
     @Transient
@@ -311,13 +296,13 @@ public class CurrencyDTO extends AbstractDescription implements java.io.Serializ
     public void setSysRate(BigDecimal sysRate) {
         this.sysRate = sysRate;
     }
-    
+
     @Transient
     public boolean isDeletable() {
-    	return (getEntities().isEmpty() && getBaseUsers().isEmpty() 
-    			&& getPurchaseOrders().isEmpty()
-    			&& getPayments().isEmpty() && getInvoices().isEmpty() 
-    			&& getProcessRunTotals().isEmpty() );
+        return (getEntities().isEmpty() && getBaseUsers().isEmpty()
+                && getPurchaseOrders().isEmpty()
+                && getPayments().isEmpty() && getInvoices().isEmpty()
+                && getProcessRunTotals().isEmpty());
     }
 
 }

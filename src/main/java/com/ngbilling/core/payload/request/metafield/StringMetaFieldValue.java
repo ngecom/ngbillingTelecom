@@ -1,16 +1,14 @@
 package com.ngbilling.core.payload.request.metafield;
 
+import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 
 @Entity
 @DiscriminatorValue("string")

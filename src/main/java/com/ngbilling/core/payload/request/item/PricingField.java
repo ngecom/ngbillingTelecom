@@ -23,6 +23,7 @@
  */
 package com.ngbilling.core.payload.request.item;
 
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -33,38 +34,34 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 /**
  * @author Emil
  */
 public class PricingField implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private static final String STRING_ENCODING = "UTF-8";
+    private static final String STRING_ENCODING = "UTF-8";
 
-	private String name;
+    private String name;
     private Type type;
     private Integer position = 1;
     private String value = null;
     private long resultId; // at the time, only used for mediation of batch
-
-    public enum Type { STRING, INTEGER, DECIMAL, DATE, BOOLEAN, LONG }
 
     public PricingField() {
     }
 
     /**
      * Constructs a new PricingField from a given encoded String.
-     *
+     * <p>
      * This constructor is designed for internal use only.
      *
-     * @see #encode(PricingField)
      * @param encoded encoded string to parse
+     * @see #encode(PricingField)
      */
     public PricingField(String encoded) {
         String[] fields = encoded.split(":");
@@ -77,13 +74,13 @@ public class PricingField implements Serializable {
         }
 
         try {
-    		this.name = fields[0] != null ? URLDecoder.decode(fields[0], STRING_ENCODING) : fields[0];
-	        this.position = Integer.parseInt(fields[1]);
-	        this.type = mapType(fields[2]);
-        	this.value = fields[3].equals("null") ? null : URLDecoder.decode(fields[3], STRING_ENCODING);
-		} catch (UnsupportedEncodingException e) {
-			// Should never happen
-		}
+            this.name = fields[0] != null ? URLDecoder.decode(fields[0], STRING_ENCODING) : fields[0];
+            this.position = Integer.parseInt(fields[1]);
+            this.type = mapType(fields[2]);
+            this.value = fields[3].equals("null") ? null : URLDecoder.decode(fields[3], STRING_ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            // Should never happen
+        }
     }
 
     /**
@@ -102,7 +99,7 @@ public class PricingField implements Serializable {
     /**
      * Constructs a new PricingField of type {@code STRING}
      *
-     * @param name field name
+     * @param name  field name
      * @param value field value
      */
     public PricingField(String name, String value) {
@@ -114,7 +111,7 @@ public class PricingField implements Serializable {
     /**
      * Constructs a new PricingField of type {@code DATE}
      *
-     * @param name field name
+     * @param name  field name
      * @param value field value
      */
     public PricingField(String name, Date value) {
@@ -126,7 +123,7 @@ public class PricingField implements Serializable {
     /**
      * Constructs a new PricingField of type {@code INTEGER}
      *
-     * @param name field name
+     * @param name  field name
      * @param value field value
      */
     public PricingField(String name, Integer value) {
@@ -138,19 +135,19 @@ public class PricingField implements Serializable {
     /**
      * Constructs a new PricingField of type {@code DECIMAL}
      *
-     * @param name field name
+     * @param name  field name
      * @param value field value
      */
     public PricingField(String name, BigDecimal value) {
         this.name = name;
         this.type = Type.DECIMAL;
-        setDecimalValue(value);        
+        setDecimalValue(value);
     }
 
     /**
      * Constructs a new PricingField of type {@code BOOLEAN}
      *
-     * @param name field name
+     * @param name  field name
      * @param value field value
      */
     public PricingField(String name, Boolean value) {
@@ -158,11 +155,175 @@ public class PricingField implements Serializable {
         this.type = Type.BOOLEAN;
         setBooleanValue(value);
     }
-    
+
     public PricingField(String name, Long value) {
-    	this.name = name;
-    	this.type = Type.LONG;
-    	setLongValue(value);
+        this.name = name;
+        this.type = Type.LONG;
+        setLongValue(value);
+    }
+
+    /**
+     * Returns an appropriate {@link Type} for the given string, or null if no matching type found.
+     * <p>
+     * Type strings:
+     * string
+     * integer
+     * float
+     * double
+     * decimal
+     * date
+     * boolean
+     *
+     * @param myType type string
+     * @return matching type
+     */
+    public static Type mapType(String myType) {  // todo: should be a member of the Type enum eg, Type$fromString(...);
+        if (myType.equalsIgnoreCase("string")) {
+            return Type.STRING;
+        } else if (myType.equalsIgnoreCase("integer")) {
+            return Type.INTEGER;
+        } else if (myType.equalsIgnoreCase("float") || myType.equalsIgnoreCase("double") || myType.equalsIgnoreCase("decimal")) {
+            return Type.DECIMAL;
+        } else if (myType.equalsIgnoreCase("date")) {
+            return Type.DATE;
+        } else if (myType.equalsIgnoreCase("boolean")) {
+            return Type.BOOLEAN;
+        } else if (myType.equalsIgnoreCase("long")) {
+            return Type.LONG;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Encodes a pricing field as a string. The encoded string is a semi-colon
+     * delimited string in the format {@code :name:position:type:value}, where name and position are
+     * optional.
+     * <p>
+     * Example:
+     * :src::string:310-1010
+     * :dst::string:1-800-123-4567
+     * :userid:integer:1234
+     *
+     * @param field field to encode
+     * @return encoded string
+     */
+    public static String encode(PricingField field) {
+        StringBuffer sb = new StringBuffer();
+        try {
+            sb.append(URLEncoder.encode(field.getName(), STRING_ENCODING))
+                    .append(':')
+                    .append(field.getPosition());
+
+            switch (field.getType()) {
+                case STRING:
+                    sb.append(":string:");
+                    break;
+
+                case INTEGER:
+                    sb.append(":integer:");
+                    break;
+
+                case LONG:
+                    sb.append(":long:");
+                    break;
+
+                case DECIMAL:
+                    sb.append(":float:");
+                    break;
+
+                case DATE:
+                    sb.append(":date:");
+                    break;
+                case BOOLEAN:
+                    sb.append(":boolean:");
+                    break;
+            }
+            sb.append(field.getStrValue() != null ? URLEncoder.encode(field.getStrValue(), STRING_ENCODING) : field.getStrValue());
+        } catch (UnsupportedEncodingException e) {
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Parses a comma separated list of encoded PricingField strings and returns
+     * an array of fields.
+     *
+     * @param pricingFields comma separated list of encoded pricing field strings
+     * @return array of fields
+     */
+    public static PricingField[] getPricingFieldsValue(String pricingFields) {
+        if (pricingFields == null)
+            return null;
+        String[] fields = pricingFields.split(",");
+        if (fields == null || fields.length == 0) {
+            return null;
+        }
+        List<PricingField> result = new ArrayList<PricingField>();
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i] != null && !fields[i].equals("") && fields[i].split(":").length == 4) {
+                result.add(new PricingField(fields[i]));
+            }
+        }
+        return result.toArray(new PricingField[result.size()]);
+    }
+
+    /**
+     * Returns a comma separated list of encoded PricingField strings from the given
+     * array of fields.
+     *
+     * @param pricingFields array of fields to convert
+     * @return comma separated list of encoded pricing field strings
+     */
+    public static String setPricingFieldsValue(PricingField[] pricingFields) {
+        PricingField[] fields = pricingFields; // defensive copy
+        StringBuffer result = new StringBuffer();
+        if (fields != null && fields.length > 0) {
+            for (int i = 0; i < fields.length; i++) {
+                result.append(PricingField.encode(fields[i]));
+                if (i < (fields.length - 1)) {
+                    result.append(',');
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * Convenience method to find a pricing field by name.
+     *
+     * @param fields    pricing fields
+     * @param fieldName name
+     * @return found pricing field or null if no field found.
+     */
+    public static PricingField find(List<PricingField> fields, String fieldName) {
+        if (fields != null) {
+            for (PricingField field : fields) {
+                if (field.getName().equals(fieldName))
+                    return field;
+            }
+        }
+        return null;
+    }
+
+    public static String setPricingFieldsValue(List<PricingField> pricingFields) {
+        PricingField[] fields = pricingFields.toArray(new PricingField[pricingFields.size()]);
+        return setPricingFieldsValue(fields);
+    }
+
+    public static void add(List<PricingField> fields, PricingField pricingField) {
+        PricingField fieldToAdd = PricingField.find(fields, pricingField.getName());
+        if (fieldToAdd != null) {
+            fields.remove(fieldToAdd);
+        }
+        fields.add(pricingField);
+    }
+
+    public static void addAll(List<PricingField> fields, List<PricingField> fieldsToAdd) {
+        for (PricingField fieldToAdd : fieldsToAdd) {
+            PricingField.add(fields, fieldToAdd);
+        }
     }
 
     public String getName() {
@@ -181,12 +342,12 @@ public class PricingField implements Serializable {
         this.type = type;
     }
 
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
     public Integer getPosition() {
         return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public long getResultId() {
@@ -204,14 +365,21 @@ public class PricingField implements Serializable {
      */
     public Object getValue() {
         switch (type) {
-            case STRING  : return value;
-            case DATE    : return getDateValue(); 
-            case INTEGER : return getIntValue();
-            case DECIMAL : return getDecimalValue();
-            case BOOLEAN : return getBooleanValue();
-            case LONG    : return getLongValue();
-            default: return null;
-        }        
+            case STRING:
+                return value;
+            case DATE:
+                return getDateValue();
+            case INTEGER:
+                return getIntValue();
+            case DECIMAL:
+                return getDecimalValue();
+            case BOOLEAN:
+                return getBooleanValue();
+            case LONG:
+                return getLongValue();
+            default:
+                return null;
+        }
     }
 
     @XmlTransient
@@ -222,7 +390,6 @@ public class PricingField implements Serializable {
     public void setStrValue(String value) {
         this.value = value;
     }
-
 
     @XmlTransient
     public Date getDateValue() {
@@ -288,194 +455,49 @@ public class PricingField implements Serializable {
     }
 
     /**
-     * @see #getDoubleValue()
      * @return decimal value as a float
+     * @see #getDoubleValue()
      */
     @XmlTransient
     public Double getFloatValue() {
         return getDoubleValue();
     }
 
+    @XmlTransient
+    public Boolean getBooleanValue() {
+        if (value == null) return null;
+        return Boolean.valueOf(this.value);
+    }
+
     public void setBooleanValue(Boolean value) {
         if (value != null) {
             this.value = value.toString();
         } else {
-           this.value = null;
+            this.value = null;
         }
     }
 
-    @XmlTransient
-    public Boolean getBooleanValue() {
-        if (value == null) return null;
-        return Boolean.valueOf(this.value);        
-    }
-    
     @XmlTransient
     public Long getLongValue() {
-    	if (value == null) {
-    		return null;
-    	}
-    	return Long.valueOf(this.value);
+        if (value == null) {
+            return null;
+        }
+        return Long.valueOf(this.value);
     }
-    
+
     public void setLongValue(Long value) {
-    	if (value != null) {
-    		this.value = value.toString();
-    	} else {
-    		this.value = null;
-    	}
-    }
-
-
-    /**
-     * Returns an appropriate {@link Type} for the given string, or null if no matching type found.
-     *
-     * Type strings:
-     *      string
-     *      integer
-     *      float
-     *      double
-     *      decimal
-     *      date
-     *      boolean
-     *
-     * @param myType type string
-     * @return matching type
-     */
-    public static Type mapType(String myType) {  // todo: should be a member of the Type enum eg, Type$fromString(...);
-        if (myType.equalsIgnoreCase("string")) {
-            return Type.STRING;
-        } else if (myType.equalsIgnoreCase("integer")) {
-            return Type.INTEGER;
-        } else if (myType.equalsIgnoreCase("float") || myType.equalsIgnoreCase("double") || myType.equalsIgnoreCase("decimal")) {
-            return Type.DECIMAL;
-        } else if (myType.equalsIgnoreCase("date")) {
-            return Type.DATE;
-        } else if (myType.equalsIgnoreCase("boolean")) {
-            return Type.BOOLEAN;
-        } else if (myType.equalsIgnoreCase("long")) {
-        	return Type.LONG;
+        if (value != null) {
+            this.value = value.toString();
         } else {
-            return null;
+            this.value = null;
         }
-    }
-
-    /**
-     * Encodes a pricing field as a string. The encoded string is a semi-colon
-     * delimited string in the format {@code :name:position:type:value}, where name and position are
-     * optional.
-     *
-     * Example:
-     *      :src::string:310-1010
-     *      :dst::string:1-800-123-4567
-     *      :userid:integer:1234
-     *  
-     * @param field field to encode
-     * @return encoded string
-     */
-    public static String encode(PricingField field) {
-    	StringBuffer sb = new StringBuffer();
-    	try {
-	    	sb.append(URLEncoder.encode(field.getName(), STRING_ENCODING))
-	            .append(':')
-	            .append(field.getPosition());
-	
-	        switch(field.getType()) {
-	            case STRING:
-	                sb.append(":string:");
-	                break;
-	
-	            case INTEGER:
-	                sb.append(":integer:");
-	                break;
-	            
-	            case LONG:
-	            	sb.append(":long:");
-	            	break;
-	
-	            case DECIMAL:
-	                sb.append(":float:");
-	                break;
-	
-	            case DATE:
-	                sb.append(":date:");
-	                break;
-	            case BOOLEAN:
-	                sb.append(":boolean:");
-	                break;
-	        }
-			sb.append(field.getStrValue() != null ? URLEncoder.encode(field.getStrValue(), STRING_ENCODING) : field.getStrValue());
-		} catch (UnsupportedEncodingException e) {}
-
-        return sb.toString();
-    }
-
-    /**
-     * Parses a comma separated list of encoded PricingField strings and returns
-     * an array of fields.
-     *
-     * @param pricingFields comma separated list of encoded pricing field strings
-     * @return array of fields
-     */
-    public static PricingField[] getPricingFieldsValue(String pricingFields) {
-        if (pricingFields == null)
-            return null;
-        String[] fields = pricingFields.split(",");
-        if (fields == null || fields.length == 0) {
-            return null;
-        }
-        List<PricingField> result = new ArrayList<PricingField>();
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] != null && !fields[i].equals("") && fields[i].split(":").length == 4) {
-                result.add(new PricingField(fields[i]));
-            }
-        }
-        return result.toArray(new PricingField[result.size()]);
-    }
-
-    /**
-     * Returns a comma separated list of encoded PricingField strings from the given
-     * array of fields.
-     *
-     * @param pricingFields array of fields to convert
-     * @return comma separated list of encoded pricing field strings
-     */
-    public static String setPricingFieldsValue(PricingField[] pricingFields) {
-        PricingField[] fields = pricingFields; // defensive copy
-        StringBuffer result = new StringBuffer();
-        if (fields != null && fields.length > 0) {
-            for (int i = 0; i < fields.length; i++) {
-                result.append(PricingField.encode(fields[i]));
-                if (i < (fields.length - 1)) {
-                    result.append(',');
-                }
-            }
-        }
-        return result.toString();
-    }
-
-    /**
-     * Convenience method to find a pricing field by name.
-     *
-     * @param fields pricing fields
-     * @param fieldName name
-     * @return found pricing field or null if no field found.
-     */
-    public static PricingField find(List<PricingField> fields, String fieldName) {
-        if(fields != null) {
-            for (PricingField field : fields) {
-                if (field.getName().equals(fieldName))
-                    return field;
-            }
-        }
-        return null;
     }
 
     @Override
     public String toString() {
         return "name: " + name
                 + " type: " + type
-                + " value: " + getValue() 
+                + " value: " + getValue()
                 + " position: " + position
                 + " resultId: " + resultId;
     }
@@ -504,23 +526,6 @@ public class PricingField implements Serializable {
         return result;
     }
 
-	public static String setPricingFieldsValue(List<PricingField> pricingFields) {
-		PricingField[] fields = pricingFields.toArray(new PricingField[pricingFields.size()]);
-		return setPricingFieldsValue(fields);
-	}
-
-    public static void add(List<PricingField> fields, PricingField pricingField) {
-        PricingField fieldToAdd = PricingField.find(fields, pricingField.getName());
-        if (fieldToAdd != null) {
-            fields.remove(fieldToAdd);
-        }
-        fields.add(pricingField);
-    }
-
-    public static void addAll(List<PricingField> fields, List<PricingField> fieldsToAdd) {
-        for(PricingField fieldToAdd: fieldsToAdd) {
-            PricingField.add(fields, fieldToAdd);
-        }
-    }
+    public enum Type {STRING, INTEGER, DECIMAL, DATE, BOOLEAN, LONG}
 
 }

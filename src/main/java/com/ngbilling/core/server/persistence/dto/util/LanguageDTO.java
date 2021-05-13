@@ -24,52 +24,39 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.server.persistence.dto.notification.NotificationMessageDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @TableGenerator(
-        name="language_GEN",
-        table="jbilling_seqs",
+        name = "language_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="language",
+        pkColumnValue = "language",
         allocationSize = 10
 )
-@Table(name="language")
+@Table(name = "language")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
-public class LanguageDTO  implements java.io.Serializable {
-     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public static final int ENGLISH_LANGUAGE_ID = 1;
-
-     private int id;
-     private String code;
-     private String description;
-     private Set<NotificationMessageDTO> notificationMessages = new HashSet<NotificationMessageDTO>(0);
-     private Set<CompanyDTO> entities = new HashSet<CompanyDTO>(0);
-     private Set<UserDTO> baseUsers = new HashSet<UserDTO>(0);
+public class LanguageDTO implements java.io.Serializable {
+    public static final int ENGLISH_LANGUAGE_ID = 1;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
+    private String code;
+    private String description;
+    private Set<NotificationMessageDTO> notificationMessages = new HashSet<NotificationMessageDTO>(0);
+    private Set<CompanyDTO> entities = new HashSet<CompanyDTO>(0);
+    private Set<UserDTO> baseUsers = new HashSet<UserDTO>(0);
 
     public LanguageDTO() {
     }
@@ -77,7 +64,7 @@ public class LanguageDTO  implements java.io.Serializable {
     public LanguageDTO(int id) {
         this.id = id;
     }
-    
+
     public LanguageDTO(int id, String code, String description) {
         this.id = id;
         this.code = code;
@@ -85,66 +72,66 @@ public class LanguageDTO  implements java.io.Serializable {
     }
 
     public LanguageDTO(int id, String code, String description, Set<NotificationMessageDTO> notificationMessages, Set<CompanyDTO> entities, Set<UserDTO> baseUsers) {
-       this.id = id;
-       this.code = code;
-       this.description = description;
-       this.notificationMessages = notificationMessages;
-       this.entities = entities;
-       this.baseUsers = baseUsers;
+        this.id = id;
+        this.code = code;
+        this.description = description;
+        this.notificationMessages = notificationMessages;
+        this.entities = entities;
+        this.baseUsers = baseUsers;
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator = "language_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "language_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
-    @Column(name="code", nullable=false, length=2)
+
+    @Column(name = "code", nullable = false, length = 2)
     public String getCode() {
         return this.code;
     }
-    
+
     public void setCode(String code) {
         this.code = code;
     }
-    
-    @Column(name="description", nullable=false, length=50)
+
+    @Column(name = "description", nullable = false, length = 50)
     public String getDescription() {
         return this.description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="language")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "language")
     public Set<NotificationMessageDTO> getNotificationMessages() {
         return this.notificationMessages;
     }
-    
+
     public void setNotificationMessages(Set<NotificationMessageDTO> notificationMessages) {
         this.notificationMessages = notificationMessages;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="language")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "language")
     public Set<CompanyDTO> getEntities() {
         return this.entities;
     }
-    
+
     public void setEntities(Set<CompanyDTO> entities) {
         this.entities = entities;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="language")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "language")
     public Set<UserDTO> getBaseUsers() {
         return this.baseUsers;
     }
-    
+
     public void setBaseUsers(Set<UserDTO> baseUsers) {
         this.baseUsers = baseUsers;
     }

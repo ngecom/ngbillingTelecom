@@ -1,9 +1,33 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_trace_param
+    include-exception: true
+reflectoring:
+  trace: true
 spring:
   application:
     name: NgBilling
   main:
     banner-mode: off
-  online: 
+  messages:
+    basename: lang/res
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  thymeleaf:
+    cache: false
+    prefix: file:./src/main/resources/templates/
+    check-template: true
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+  online:
     datasource:
       driver-class-name: org.postgresql.Driver
       password: postgres
@@ -17,15 +41,15 @@ spring:
         leak-detection-threshold: 0
         max-lifetime: 1800000
         maximum-pool-size: 30
-        minimum-idle: 5                                                                                                     
+        minimum-idle: 5
         poolName: onlineConnectionPool
   jpa:
-      properties:
-          hibernate:
-              dialect: org.hibernate.dialect.PostgreSQLDialect
-              jdbc:
-                  lob:
-                    non_contextual_creation: true   
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
   batch:
     datasource:
       driver-class-name: org.postgresql.Driver
@@ -40,7 +64,7 @@ spring:
         leak-detection-threshold: 0
         max-lifetime: 1800000
         maximum-pool-size: 30
-        minimum-idle: 5                                                                                                     
+        minimum-idle: 5
         poolName: onlineConnectionPool
     initialize-schema: always
     job:
@@ -62,9 +86,9 @@ spring:
 ngecom:
   app:
     jwtSecret: ngBillingKey
-    jwtExpirationMs: 86400000  
+    jwtExpirationMs: 86400000
     process:
-      time : 3
-      frequency : 4
+      time: 3
+      frequency: 4
 springdoc:
-    swagger-ui.path: /ngbillingAPI.html          
+  swagger-ui.path: /ngbillingAPI.html

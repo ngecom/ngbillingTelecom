@@ -28,19 +28,18 @@
  */
 package com.ngbilling.core.common.util;
 
-import java.util.GregorianCalendar;
-
 import com.ngbilling.core.server.util.ServerConstants;
+
+import java.util.GregorianCalendar;
 
 /**
  * @author emilc
- *
  */
 public class MapPeriodToCalendar {
-    public static int map(Integer period) 
+    public static int map(Integer period)
             throws Exception {
         int retValue;
-        
+
         if (period == null) {
             throw new Exception("Can't map a period that is null");
         }
@@ -55,11 +54,11 @@ public class MapPeriodToCalendar {
         } else { // error !
             throw new Exception("Period not supported:" + period);
         }
-        
+
         return retValue;
     }
-    
-    public static int periodToDays(Integer period) throws Exception{
+
+    public static int periodToDays(Integer period) throws Exception {
         int retValue = 0;
         if (period == null) {
             throw new Exception("Can't convert a period that is null");
@@ -77,7 +76,7 @@ public class MapPeriodToCalendar {
         } else { // error !
             throw new Exception("Period not supported:" + period);
         }
-        
+
         return retValue;
     }
 }

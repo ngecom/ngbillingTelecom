@@ -25,10 +25,10 @@
 package com.ngbilling.core.payload.request.process;
 
 
+import com.ngbilling.core.common.util.Util;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
-
-import com.ngbilling.core.common.util.Util;
 
 
 /**
@@ -40,10 +40,10 @@ import com.ngbilling.core.common.util.Util;
 public class ProcessRunTotalWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer processRunId;
     private Integer currencyId;
     private String totalInvoiced;
@@ -81,10 +81,6 @@ public class ProcessRunTotalWS implements Serializable {
         return totalInvoiced;
     }
 
-    public BigDecimal getTotalInvoicedAsDecimal() {
-        return Util.string2decimal(totalInvoiced);
-    }
-
     public void setTotalInvoiced(String totalInvoiced) {
         this.totalInvoiced = totalInvoiced;
     }
@@ -93,12 +89,12 @@ public class ProcessRunTotalWS implements Serializable {
         this.totalInvoiced = (totalInvoiced != null ? totalInvoiced.toString() : null);
     }
 
-    public String getTotalPaid() {
-        return totalPaid;
+    public BigDecimal getTotalInvoicedAsDecimal() {
+        return Util.string2decimal(totalInvoiced);
     }
 
-    public BigDecimal getTotalPaidAsDecimal() {
-        return Util.string2decimal(totalPaid);
+    public String getTotalPaid() {
+        return totalPaid;
     }
 
     public void setTotalPaid(String totalPaid) {
@@ -109,12 +105,12 @@ public class ProcessRunTotalWS implements Serializable {
         this.totalPaid = (totalPaid != null ? totalPaid.toString() : null);
     }
 
-    public String getTotalNotPaid() {
-        return totalNotPaid;
+    public BigDecimal getTotalPaidAsDecimal() {
+        return Util.string2decimal(totalPaid);
     }
 
-    public BigDecimal getTotalNotPaidAsDecimal() {
-        return Util.string2decimal(totalNotPaid);
+    public String getTotalNotPaid() {
+        return totalNotPaid;
     }
 
     public void setTotalNotPaid(String totalNotPaid) {
@@ -124,16 +120,20 @@ public class ProcessRunTotalWS implements Serializable {
     public void setTotalNotPaid(BigDecimal totalNotPaid) {
         this.totalNotPaid = (totalNotPaid != null ? totalNotPaid.toString() : null);
     }
-    
+
+    public BigDecimal getTotalNotPaidAsDecimal() {
+        return Util.string2decimal(totalNotPaid);
+    }
+
     @Override
     public String toString() {
         return "ProcessRunTotalWS{"
-               + "id=" + id
-               + ", processRunId=" + processRunId
-               + ", currencyId=" + currencyId
-               + ", totalInvoiced=" + totalInvoiced
-               + ", totalPaid=" + totalPaid
-               + ", totalNotPaid=" + totalNotPaid
-               + '}';
+                + "id=" + id
+                + ", processRunId=" + processRunId
+                + ", currencyId=" + currencyId
+                + ", totalInvoiced=" + totalInvoiced
+                + ", totalPaid=" + totalPaid
+                + ", totalNotPaid=" + totalNotPaid
+                + '}';
     }
 }

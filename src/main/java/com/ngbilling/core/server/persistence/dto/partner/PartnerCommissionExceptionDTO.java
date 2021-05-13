@@ -23,32 +23,22 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
+import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
-import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
-
 @Entity
 @TableGenerator(
-        name="partner_commission_exception_GEN",
-        table="jbilling_seqs",
+        name = "partner_commission_exception_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="partner_commission_exception",
-        allocationSize=10
+        pkColumnValue = "partner_commission_exception",
+        allocationSize = 10
 )
-@Table(name="partner_commission_exception")
+@Table(name = "partner_commission_exception")
 public class PartnerCommissionExceptionDTO {
     private int id;
     private PartnerDTO partner;
@@ -58,60 +48,60 @@ public class PartnerCommissionExceptionDTO {
     private ItemDTO item;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="partner_commission_exception_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "partner_commission_exception_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="partner_id", nullable=false)
-    public PartnerDTO getPartner () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id", nullable = false)
+    public PartnerDTO getPartner() {
         return partner;
     }
 
-    public void setPartner (PartnerDTO partner) {
+    public void setPartner(PartnerDTO partner) {
         this.partner = partner;
     }
 
-    @Column(name="start_date", length=13)
-    public Date getStartDate () {
+    @Column(name = "start_date", length = 13)
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate (Date startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    @Column(name="end_date", length=13)
-    public Date getEndDate () {
+    @Column(name = "end_date", length = 13)
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate (Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    @Column(name="percentage", nullable=false, precision=17, scale=17)
-    public BigDecimal getPercentage () {
+    @Column(name = "percentage", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getPercentage() {
         return percentage;
     }
 
-    public void setPercentage (BigDecimal percentage) {
+    public void setPercentage(BigDecimal percentage) {
         this.percentage = percentage;
     }
 
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="item_id")
-    public ItemDTO getItem () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    public ItemDTO getItem() {
         return item;
     }
 
-    public void setItem (ItemDTO item) {
+    public void setItem(ItemDTO item) {
         this.item = item;
     }
 }

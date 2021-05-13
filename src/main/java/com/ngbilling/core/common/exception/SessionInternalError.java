@@ -24,28 +24,27 @@
 
 package com.ngbilling.core.common.exception;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
+import com.ngbilling.core.common.util.FormatLogger;
 import org.slf4j.LoggerFactory;
 
-import com.ngbilling.core.common.util.FormatLogger;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 
 public class SessionInternalError extends RuntimeException {
 
     protected SessionInternalErrorMessages sessionInternalErrorMessages = new SessionInternalErrorMessages();
-	private String errorMessages[] = null;
-	private String params[] = null;
-	private String uuid;
-	
+    private String errorMessages[] = null;
+    private String params[] = null;
+    private String uuid;
+
     public SessionInternalError() {
     }
 
     public SessionInternalError(String s) {
         super(s);
     }
-    
+
     public SessionInternalError(String s, Class className, Exception e) {
         super(e);
         FormatLogger log = new FormatLogger(className);
@@ -55,7 +54,7 @@ public class SessionInternalError extends RuntimeException {
         pw.close();
 
         log.fatal(s + e.getMessage() + "\n" + sw.toString());
-        
+
     }
 
     public SessionInternalError(Exception e) {
@@ -86,14 +85,14 @@ public class SessionInternalError extends RuntimeException {
         super(message + getErrorsAsString(errors));
         setErrorMessages(errors);
     }
-    
+
     public SessionInternalError(String message, String[] errors, String[] params) {
         super(message + getErrorsAsString(errors));
         setErrorMessages(errors);
         setParams(params);
     }
 
-    private static String getErrorsAsString(String[] errors){
+    private static String getErrorsAsString(String[] errors) {
         StringBuilder builder = new StringBuilder();
         if (errors != null) {
             builder.append(". Errors: ");
@@ -105,44 +104,44 @@ public class SessionInternalError extends RuntimeException {
         return builder.toString();
     }
 
-	public void setErrorMessages(String errors[]) {
-        sessionInternalErrorMessages.setErrorMessages(errors);
-	}
+    public String[] getErrorMessages() {
+        return sessionInternalErrorMessages.getErrorMessages();
+    }
 
-	public String[] getErrorMessages() {
-		return sessionInternalErrorMessages.getErrorMessages();
-	}
+    public void setErrorMessages(String errors[]) {
+        sessionInternalErrorMessages.setErrorMessages(errors);
+    }
 
     public SessionInternalErrorMessages getFaultInfo() {
         return this.sessionInternalErrorMessages;
     }
-	
+
     public String[] getParams() {
-		return params;
-	}
+        return params;
+    }
 
-	public void setParams(String[] params) {
-		this.params = params;
-	}
-	
-	public boolean hasParams() {
-		return getParams() != null && getParams().length > 0;
-	}
+    public void setParams(String[] params) {
+        this.params = params;
+    }
 
-	public String getUuid() {
-		return uuid;
-	}
+    public boolean hasParams() {
+        return getParams() != null && getParams().length > 0;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void copyErrorInformation(Throwable throwable) {
-		if(throwable instanceof SessionInternalError){
-			SessionInternalError internal = (SessionInternalError) throwable;
-			this.setErrorMessages(internal.getErrorMessages());
-			this.setParams(internal.getParams());
-		}
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void copyErrorInformation(Throwable throwable) {
+        if (throwable instanceof SessionInternalError) {
+            SessionInternalError internal = (SessionInternalError) throwable;
+            this.setErrorMessages(internal.getErrorMessages());
+            this.setParams(internal.getParams());
+        }
+    }
 
 }

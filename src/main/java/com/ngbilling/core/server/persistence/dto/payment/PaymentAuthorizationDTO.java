@@ -23,42 +23,30 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.payment;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 @TableGenerator(
-        name = "payment_authorization_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "payment_authorization", 
+        name = "payment_authorization_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "payment_authorization",
         allocationSize = 100)
 @Table(name = "payment_authorization")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PaymentAuthorizationDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private PaymentDTO payment;
     private String processor;
     private String code1;
@@ -77,7 +65,7 @@ public class PaymentAuthorizationDTO implements Serializable {
     }
 
     public PaymentAuthorizationDTO(int id, String processor, String code1,
-            Date createDatetime) {
+                                   Date createDatetime) {
         this.id = id;
         this.processor = processor;
         this.code1 = code1;
@@ -101,9 +89,9 @@ public class PaymentAuthorizationDTO implements Serializable {
     }
 
     public PaymentAuthorizationDTO(int id, PaymentDTO payment,
-            String processor, String code1, String code2, String code3,
-            String approvalCode, String avs, String transactionId, String md5,
-            Date createDatetime, String cardCode, String responseMessage) {
+                                   String processor, String code1, String code2, String code3,
+                                   String approvalCode, String avs, String transactionId, String md5,
+                                   Date createDatetime, String cardCode, String responseMessage) {
         this.id = id;
         this.payment = payment;
         this.processor = processor;
@@ -248,12 +236,12 @@ public class PaymentAuthorizationDTO implements Serializable {
     public void setVersionNum(int versionNum) {
         this.versionNum = versionNum;
     }
-    
+
     @Transient
     public PaymentAuthorizationDTO getOldDTO() {
-        PaymentAuthorizationDTO oldDTO = 
+        PaymentAuthorizationDTO oldDTO =
                 new PaymentAuthorizationDTO();
-        
+
         oldDTO.setAvs(this.getAvs());
         oldDTO.setApprovalCode(this.getApprovalCode());
         oldDTO.setCardCode(this.getCardCode());
@@ -266,9 +254,9 @@ public class PaymentAuthorizationDTO implements Serializable {
         oldDTO.setProcessor(this.getProcessor());
         oldDTO.setResponseMessage(this.getResponseMessage());
         oldDTO.setTransactionId(this.getTransactionId());
-        oldDTO.setPayment(this.getPayment() != null ? 
+        oldDTO.setPayment(this.getPayment() != null ?
                 this.getPayment() : null);
-        
+
         return oldDTO;
     }
 

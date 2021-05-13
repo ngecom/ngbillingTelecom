@@ -24,36 +24,6 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cascade;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.payload.request.user.UserWS;
 import com.ngbilling.core.server.persistence.dao.invoice.InvoiceDeliveryMethodDAO;
@@ -68,6 +38,11 @@ import com.ngbilling.core.server.persistence.dto.partner.PartnerDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.service.user.UserService;
 import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.*;
 
 
 @Entity
@@ -84,11 +59,11 @@ import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
 public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private static final FormatLogger LOG = new FormatLogger(CustomerDTO.class);
+    private static final FormatLogger LOG = new FormatLogger(CustomerDTO.class);
 
     private int id;
     private UserDTO baseUser;
@@ -123,25 +98,25 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
     private UserDAO userDAO;
     @Autowired
     private PartnerDAO partnerDAO;
-    
+
     @Autowired
     private AccountTypeDAO accountTypeDAO;
-    
+
     @Autowired
     private MetaFieldHelper metaFieldHelper;
-    
+
     @Autowired
     private InvoiceDeliveryMethodDAO invoiceDeliveryMethodDAO;
-    
+
     @Autowired
     private UserService userService;
-    
+
     //#4501 - custom auto recharge
     private BigDecimal rechargeThreshold;
     private BigDecimal monthlyLimit;
     private BigDecimal currentMonthlyAmount;
     private Date currentMonth;
-    
+
     private Set<CustomerAccountInfoTypeMetaField> customerAccountInfoTypeMetaFields = new HashSet<CustomerAccountInfoTypeMetaField>();
     private Map<Integer, List<MetaFieldValue>> aitMetaFieldMap = new HashMap<Integer, List<MetaFieldValue>>(0);
 
@@ -388,12 +363,12 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
         return useParentPricing;
     }
 
-    public boolean useParentPricing() {
-        return useParentPricing;
-    }
-
     public void setUseParentPricing(boolean useParentPricing) {
         this.useParentPricing = useParentPricing;
+    }
+
+    public boolean useParentPricing() {
+        return useParentPricing;
     }
 
     @Column(name = "auto_recharge")
@@ -533,7 +508,6 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
         this.currentMonth = currentMonth;
     }
 
-  
 
     @Transient
     public EntityType[] getCustomizedEntityType() {
@@ -562,10 +536,10 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
                 ", nextInvoiceDate=" + this.nextInvoiceDate +
                 '}';
     }
-    
+
     @Transient
     public void setAitMetaField(Integer entityId, Integer groupId, String name, Object value) {
-    	metaFieldHelper.setAitMetaField(entityId, this, groupId, name, value);
+        metaFieldHelper.setAitMetaField(entityId, this, groupId, name, value);
     }
 
     @Transient
@@ -578,15 +552,19 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
             getAitMetaFieldMap().put(groupId, fields);
         }
     }
-    
+
     @Transient
     public Map<Integer, List<MetaFieldValue>> getAitMetaFieldMap() {
         return aitMetaFieldMap;
     }
-    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<CustomerAccountInfoTypeMetaField> getCustomerAccountInfoTypeMetaFields() {
         return this.customerAccountInfoTypeMetaFields;
+    }
+
+    public void setCustomerAccountInfoTypeMetaFields(Set<CustomerAccountInfoTypeMetaField> customerAccountInfoTypeMetaFields) {
+        this.customerAccountInfoTypeMetaFields = customerAccountInfoTypeMetaFields;
     }
 
     @Transient
@@ -645,20 +623,16 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
         this.customerAccountInfoTypeMetaFields.removeAll(this.customerAccountInfoTypeMetaFields);
     }
 
-    public void setCustomerAccountInfoTypeMetaFields(Set<CustomerAccountInfoTypeMetaField> customerAccountInfoTypeMetaFields) {
-        this.customerAccountInfoTypeMetaFields = customerAccountInfoTypeMetaFields;
-    }
-
-	@Override
+    @Override
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "payment_information_meta_fields_map",
             joinColumns = @JoinColumn(name = "payment_information_id"),
             inverseJoinColumns = @JoinColumn(name = "meta_field_value_id")
     )
-	public List<MetaFieldValue> getMetaFields() {
-		// TODO Auto-generated method stub
-		return getMetaFieldsList();
-	}
+    public List<MetaFieldValue> getMetaFields() {
+        // TODO Auto-generated method stub
+        return getMetaFieldsList();
+    }
 
 }

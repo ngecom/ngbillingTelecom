@@ -15,54 +15,43 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
+import com.ngbilling.core.payload.request.configuration.MediationRecordLineWS;
+import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import com.ngbilling.core.payload.request.configuration.MediationRecordLineWS;
-import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
-
 /**
  * This table links a mediation record (CDR) to one or more order lines. It specified how much each
- * order line was affected (usually, added some $). The description is to facilitate showing a 
+ * order line was affected (usually, added some $). The description is to facilitate showing a
  * meaningful call details on the screen or invoice.
  * The only field that is copied from the CDR, beside the ID, is the date (again, for conveninance).
  * Other information, like the phone number called, is not here. That should come from the CDR
  * repository (DB hopefully). The description can be used as an alternative.
  * The idea is to keep this table CDR format agnostic, and industry agnostic.
+ *
  * @author emilc
  */
 @Entity
 @TableGenerator(
-        name="mediation_record_line_GEN",
-        table="jbilling_seqs",
+        name = "mediation_record_line_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="mediation_record_line",
+        pkColumnValue = "mediation_record_line",
         allocationSize = 100
-        )
+)
 @Table(name = "mediation_record_line")
 // no cache : it is hardly ever re-read 
 public class MediationRecordLineDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private MediationRecordDTO record;
     private OrderLineDTO orderLine;
     private Date eventDate;
@@ -92,14 +81,16 @@ public class MediationRecordLineDTO implements Serializable {
         this.eventDate = ws.getEventDate();
         this.amount = ws.getAmount();
         this.quantity = ws.getQuantity();
-        this.description = ws.getDescription();        
+        this.description = ws.getDescription();
     }
 
-    @Id @GeneratedValue(strategy=GenerationType.TABLE, generator="mediation_record_line_GEN")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_record_line_GEN")
     @Column(name = "id", nullable = false)
-    public int  getId() {
+    public int getId() {
         return id;
     }
+
     // needed by Hibernate
     protected void setId(int key) {
         this.id = key;
@@ -109,6 +100,7 @@ public class MediationRecordLineDTO implements Serializable {
     public BigDecimal getAmount() {
         return amount;
     }
+
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
@@ -117,6 +109,7 @@ public class MediationRecordLineDTO implements Serializable {
     public BigDecimal getQuantity() {
         return quantity;
     }
+
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
@@ -168,7 +161,7 @@ public class MediationRecordLineDTO implements Serializable {
     protected void setOptlock(int optlock) {
         this.optlock = optlock;
     }
-    
+
     public String toString() {
         return "Mediation record line: id " + id + " record " + record.getKey() + " date " + eventDate +
                 " order line id " + orderLine.getId() + " amount " + amount + " optlock " + optlock;

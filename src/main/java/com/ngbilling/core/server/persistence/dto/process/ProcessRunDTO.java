@@ -23,44 +23,31 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 @Entity
 @TableGenerator(
-        name = "process_run_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "process_run", 
+        name = "process_run_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "process_run",
         allocationSize = 100)
 @Table(name = "process_run")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProcessRunDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private BillingProcessDTO billingProcessDTO;
     private Date runDate;
     private Date started;
@@ -81,9 +68,9 @@ public class ProcessRunDTO implements java.io.Serializable {
     }
 
     public ProcessRunDTO(int id, BillingProcessDTO billingProcessDTO,
-            Date runDate, Date started, Date finished,
-            Integer invoicesGenerated, Date paymentFinished,
-            Set<ProcessRunTotalDTO> processRunTotals) {
+                         Date runDate, Date started, Date finished,
+                         Integer invoicesGenerated, Date paymentFinished,
+                         Set<ProcessRunTotalDTO> processRunTotals) {
         this.id = id;
         this.billingProcessDTO = billingProcessDTO;
         this.runDate = runDate;
@@ -192,7 +179,7 @@ public class ProcessRunDTO implements java.io.Serializable {
     public String toString() {
         StringBuffer ret = new StringBuffer(" ProcesRunDTO: id: " + id + " runDate: " + runDate + " started: " + started +
                 "  finished " + finished + " invoiceGenerated " + invoicesGenerated +
-                " status: " + status + " paymentFinished: " + paymentFinished + 
+                " status: " + status + " paymentFinished: " + paymentFinished +
                 " processRunTotals: ");
 
         for (ProcessRunTotalDTO total : processRunTotals) {

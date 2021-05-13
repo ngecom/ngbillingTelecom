@@ -23,43 +23,30 @@
  */
 package com.ngbilling.core.server.persistence.dto.notification;
 
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-
 @Entity
 @TableGenerator(
-        name = "notification_message_arch_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "notification_message_arch", 
+        name = "notification_message_arch_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "notification_message_arch",
         allocationSize = 100)
 @Table(name = "notification_message_arch")
 public class NotificationMessageArchDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private UserDTO baseUser;
     private Integer typeId;
     private Date createDatetime;
@@ -77,8 +64,8 @@ public class NotificationMessageArchDTO implements Serializable {
     }
 
     public NotificationMessageArchDTO(int id, UserDTO baseUser, Integer typeId,
-            Date createDatetime, String resultMessage,
-            Set<NotificationMessageArchLineDTO> notificationMessageArchLines) {
+                                      Date createDatetime, String resultMessage,
+                                      Set<NotificationMessageArchLineDTO> notificationMessageArchLines) {
         this.id = id;
         this.baseUser = baseUser;
         this.typeId = typeId;
@@ -146,7 +133,7 @@ public class NotificationMessageArchDTO implements Serializable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

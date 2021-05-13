@@ -1,108 +1,96 @@
 package com.ngbilling.core.server.persistence.dto.payment;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
 import lombok.ToString;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 /**
- * 
  * @author khobab
- *
  */
 @Entity
 @TableGenerator(
-        name="payment_instrument_info_GEN",
-        table="jbilling_seqs",
+        name = "payment_instrument_info_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="payment_instrument_info",
+        pkColumnValue = "payment_instrument_info",
         allocationSize = 10
-        )
+)
 @Table(name = "payment_instrument_info")
 @ToString
-public class PaymentInstrumentInfoDTO implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class PaymentInstrumentInfoDTO implements Serializable {
 
-	private Integer id;
-	
-	private PaymentDTO payment;
-	private PaymentResultDTO result;
-	private PaymentMethodDTO paymentMethod;
-	private PaymentInformationDTO paymentInformation;
-	
-	public PaymentInstrumentInfoDTO() {
-	}
-	
-	public PaymentInstrumentInfoDTO(PaymentDTO payment, PaymentResultDTO result, PaymentMethodDTO paymentMethod, PaymentInformationDTO paymentInformation) {
-    	this.payment = payment;
-    	this.result = result;
-    	this.paymentMethod = paymentMethod;
-    	this.paymentInformation = paymentInformation;
-	}
-	
-	@Id @GeneratedValue(generator="payment_instrument_info_GEN", strategy=GenerationType.TABLE)
-	@Column(name="id", unique=true, nullable=false)
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "payment_id")
-	public PaymentDTO getPayment() {
-		return payment;
-	}
+    private Integer id;
 
-	public void setPayment(PaymentDTO payment) {
-		this.payment = payment;
-	}
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "result_id")
-	public PaymentResultDTO getResult() {
-		return result;
-	}
+    private PaymentDTO payment;
+    private PaymentResultDTO result;
+    private PaymentMethodDTO paymentMethod;
+    private PaymentInformationDTO paymentInformation;
 
-	public void setResult(PaymentResultDTO result) {
-		this.result = result;
-	}
+    public PaymentInstrumentInfoDTO() {
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "method_id")
-	public PaymentMethodDTO getPaymentMethod() {
-		return paymentMethod;
-	}
+    public PaymentInstrumentInfoDTO(PaymentDTO payment, PaymentResultDTO result, PaymentMethodDTO paymentMethod, PaymentInformationDTO paymentInformation) {
+        this.payment = payment;
+        this.result = result;
+        this.paymentMethod = paymentMethod;
+        this.paymentInformation = paymentInformation;
+    }
 
-	public void setPaymentMethod(PaymentMethodDTO paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
+    @Id
+    @GeneratedValue(generator = "payment_instrument_info_GEN", strategy = GenerationType.TABLE)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return id;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "instrument_id")
-	public PaymentInformationDTO getPaymentInformation() {
-		return paymentInformation;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setPaymentInformation(PaymentInformationDTO paymentInformation) {
-		this.paymentInformation = paymentInformation;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
+    public PaymentDTO getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentDTO payment) {
+        this.payment = payment;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "result_id")
+    public PaymentResultDTO getResult() {
+        return result;
+    }
+
+    public void setResult(PaymentResultDTO result) {
+        this.result = result;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "method_id")
+    public PaymentMethodDTO getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethodDTO paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "instrument_id")
+    public PaymentInformationDTO getPaymentInformation() {
+        return paymentInformation;
+    }
+
+    public void setPaymentInformation(PaymentInformationDTO paymentInformation) {
+        this.paymentInformation = paymentInformation;
+    }
 }

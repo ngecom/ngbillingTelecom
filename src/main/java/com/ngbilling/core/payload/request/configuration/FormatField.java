@@ -22,35 +22,37 @@ public class FormatField {
     private Integer length;
     private boolean isKey;
     private String durationFormat;
-    
+
+    public FormatField() {
+        isKey = false;
+    }
+
     public void isKeyTrue() {
         this.isKey = true;
+    }
+
+    public boolean getIsKey() {
+        return isKey;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
 
-    public FormatField() {
-        isKey = false;
-    }
-    
-    public boolean getIsKey() {
-        return isKey;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getType() {
-        return type;
-    }
-    
     public String toString() {
-        return "name: " + name + " type: " + type + " isKey: " + isKey + 
+        return "name: " + name + " type: " + type + " isKey: " + isKey +
                 " startPosition " + startPosition + " length " + length;
     }
 

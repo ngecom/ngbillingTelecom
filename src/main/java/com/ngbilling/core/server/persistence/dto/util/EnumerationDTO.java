@@ -1,84 +1,68 @@
 /**
- * 
+ *
  */
 package com.ngbilling.core.server.persistence.dto.util;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OrderBy;
 
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Vikas Bodani
  * @since 08-Aug-2011
- * 
+ *
  */
 
 @Entity
 @TableGenerator(
-        name = "enumeration_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "enumeration", 
+        name = "enumeration_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "enumeration",
         allocationSize = 10
-        )
+)
 @Table(name = "enumeration")
 @NamedQueries({
         @NamedQuery(name = "EnumerationDTO.findByEntityAndId",
-                    query = "from EnumerationDTO as enum " +
-                            "where enum.entity.id = :entityId " +
-                            "and enum.id = :enumerationId"),
+                query = "from EnumerationDTO as enum " +
+                        "where enum.entity.id = :entityId " +
+                        "and enum.id = :enumerationId"),
         @NamedQuery(name = "EnumerationDTO.findByEntityAndName",
-                    query = "from EnumerationDTO as enum " +
-                            "where enum.entity.id = :entityId " +
-                            "and enum.name = :name"),
+                query = "from EnumerationDTO as enum " +
+                        "where enum.entity.id = :entityId " +
+                        "and enum.name = :name"),
         @NamedQuery(name = "EnumerationDTO.findAll",
-                    query = "from EnumerationDTO as enum " +
-                            "where enum.entity.id = :entityId " +
-                            "order by enum.id desc"),
+                query = "from EnumerationDTO as enum " +
+                        "where enum.entity.id = :entityId " +
+                        "order by enum.id desc"),
         @NamedQuery(name = "EnumerationDTO.getCountAll",
-                    query = "select count(enum.id) " +
-                            "from EnumerationDTO as enum " +
-                            "where enum.entity.id = :entityId")
+                query = "select count(enum.id) " +
+                        "from EnumerationDTO as enum " +
+                        "where enum.entity.id = :entityId")
 })
 //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class EnumerationDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private String name;
-    private List<EnumerationValueDTO> values= new ArrayList<EnumerationValueDTO>(0);
+    private List<EnumerationValueDTO> values = new ArrayList<EnumerationValueDTO>(0);
     private CompanyDTO entity;
     private int versionNum;
-    
+
     public EnumerationDTO() {
     }
 
@@ -90,10 +74,10 @@ public class EnumerationDTO implements Serializable {
         this.id = id;
         this.name = name;
         this.values = values;
-        this.entity= entity;
+        this.entity = entity;
     }
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "enumeration_GEN")
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
@@ -115,7 +99,7 @@ public class EnumerationDTO implements Serializable {
     }
 
     @Column(name = "name", nullable = false, length = 50)
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Size(min = 1, max = 50, message = "validation.error.size,1,50")
     public String getName() {
         return name;
@@ -125,8 +109,8 @@ public class EnumerationDTO implements Serializable {
         this.name = name;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="enumeration", orphanRemoval = true)
-    @Fetch (FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "enumeration", orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
     @OrderBy(clause = "id")
     @Valid
     public List<EnumerationValueDTO> getValues() {
@@ -146,7 +130,7 @@ public class EnumerationDTO implements Serializable {
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
-    
+
     @Override
     public String toString() {
         return "EnumerationDTO [id=" + id + ", name=" + name + ", values #=" + values.size() + "]";

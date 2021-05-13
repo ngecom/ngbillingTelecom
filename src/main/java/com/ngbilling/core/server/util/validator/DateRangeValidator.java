@@ -24,16 +24,14 @@
 
 package com.ngbilling.core.server.util.validator;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Date;
+import com.ngbilling.core.common.util.FormatLogger;
+import org.apache.commons.text.WordUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import org.apache.commons.text.WordUtils;
-
-import com.ngbilling.core.common.util.FormatLogger;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Date;
 
 /**
  * DateRangeValidator
@@ -59,12 +57,12 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Object
 
             Date startDate = (Date) getAccessorMethod(klass, startDateFieldName).invoke(object);
             Date endDate = (Date) getAccessorMethod(klass, endDateFieldName).invoke(object);
-            
+
             String className = klass.getSimpleName();
-            if(className.equals("ItemDTOEx"))
-            	return startDate == null || endDate == null || startDate.before(endDate) || startDate.equals(endDate);
+            if (className.equals("ItemDTOEx"))
+                return startDate == null || endDate == null || startDate.before(endDate) || startDate.equals(endDate);
             else
-            	return startDate == null || endDate == null || startDate.before(endDate);
+                return startDate == null || endDate == null || startDate.before(endDate);
 
         } catch (IllegalAccessException e) {
             LOG.debug("Illegal access to the date range property fields.");
@@ -84,7 +82,7 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Object
      * that the property follows normal getter/setter naming conventions so that
      * the method name can be resolved introspectively.
      *
-     * @param klass class of the target object
+     * @param klass        class of the target object
      * @param propertyName property name
      * @return accessor method
      */

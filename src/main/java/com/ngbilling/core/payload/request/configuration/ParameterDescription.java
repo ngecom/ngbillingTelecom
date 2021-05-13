@@ -24,45 +24,47 @@
 package com.ngbilling.core.payload.request.configuration;
 
 public class ParameterDescription {
-	public enum Type { STR, INT, FLOAT, DATE, BOOLEAN }
-
     private final String name;
-	private final boolean required;
-	private final Type type;
-	private boolean isPassword;
-	
-	
-	public ParameterDescription(String name, boolean required, Type type, boolean isPassword) {
-		super();
-		this.name = name;
-		this.required = required;
-		this.type = type;
-		this.isPassword = isPassword;
-	}
-	public ParameterDescription(String name, boolean required, Type type) {
-		super();
-		this.name = name;
-		this.required = required;
-		this.type = type;
-	}
-	
-	public boolean getIsPassword() {
-		return isPassword;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public boolean isRequired() {
-		return required;
-	}
-	public Type getType() {
-		return type;
-	}
+    private final boolean required;
+    private final Type type;
+    private boolean isPassword;
+    public ParameterDescription(String name, boolean required, Type type, boolean isPassword) {
+        super();
+        this.name = name;
+        this.required = required;
+        this.type = type;
+        this.isPassword = isPassword;
+    }
 
-	@Override
-	public String toString() {
-		return "ParameterDescription [name=" + name + ", required=" + required
-				+ ", type=" + type + "]";
-	}
+
+    public ParameterDescription(String name, boolean required, Type type) {
+        super();
+        this.name = name;
+        this.required = required;
+        this.type = type;
+    }
+
+    public boolean getIsPassword() {
+        return isPassword;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return "ParameterDescription [name=" + name + ", required=" + required
+                + ", type=" + type + "]";
+    }
+
+    public enum Type {STR, INT, FLOAT, DATE, BOOLEAN}
 }

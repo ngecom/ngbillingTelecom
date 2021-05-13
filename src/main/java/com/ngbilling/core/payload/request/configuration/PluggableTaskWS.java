@@ -24,48 +24,45 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 
 public class PluggableTaskWS {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     private Integer id;
 
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Min(value = 1, message = "validation.error.min,1")
     private Integer processingOrder;
 
-    @Size(min=0, max = 1000, message = "validation.error.size,1,1000")
+    @Size(min = 0, max = 1000, message = "validation.error.size,1,1000")
     private String notes;
 
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     private Integer typeId;
     private Map<String, String> parameters = new HashMap<String, String>();
     private int versionNumber;
     private Integer owningId;
-    
+
     public PluggableTaskWS() {
     }
-    
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
 
+    public String getNotes() {
+        return notes;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
-
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public Integer getId() {
         return id;
@@ -105,11 +102,11 @@ public class PluggableTaskWS {
     public void setParameters(Hashtable<String, String> parameters) {
         this.parameters = parameters;
     }
-    
+
     public int getVersionNumber() {
         return versionNumber;
     }
-    
+
     public void setVersionNumber(int versionNumber) {
         this.versionNumber = versionNumber;
     }
@@ -128,5 +125,5 @@ public class PluggableTaskWS {
         return sb.toString();
     }
 
-   
+
 }

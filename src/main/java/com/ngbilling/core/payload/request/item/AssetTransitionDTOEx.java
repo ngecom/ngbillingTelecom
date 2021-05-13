@@ -22,16 +22,16 @@ import java.util.Date;
  * Version of AssetTransitionDTO safe for external communication.
  *
  * @author Gerhard
- * @since 15/04/13
  * @see com.sapienter.jbilling.server.item.db.AssetTransitionDTO
+ * @since 15/04/13
  */
 public class AssetTransitionDTOEx implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Date createDatetime;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Date createDatetime;
     private Integer previousStatusId;
     private Integer newStatusId;
     private Integer assignedToId;

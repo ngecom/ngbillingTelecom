@@ -24,18 +24,17 @@
 
 package com.ngbilling.core.payload.request.user;
 
-import java.util.Collection;
-import java.util.Locale;
-
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import java.util.Collection;
+import java.util.Locale;
 
 /**
  * A spring security {@link org.springframework.security.core.userdetails.UserDetails}
  * implementation that includes the users company id.
- *
+ * <p>
  * The UserDetailsService expects to encounter usernames that also include a company ID token. This
  * class maintains the username in this format. Do not change this behaviour as it will break "remember me"
  * and other advanced security features that use the UserDetailsService!
@@ -43,13 +42,13 @@ import com.ngbilling.core.server.persistence.dto.user.UserDTO;
  * @author Brian Cowdery
  * @since 04-10-2010
  */
-public class CompanyUserDetails extends User{
+public class CompanyUserDetails extends User {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final UserDTO user;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private final UserDTO user;
     private final Locale locale;
     private final Integer mainRoleId;
     private final Integer companyId;
@@ -62,15 +61,15 @@ public class CompanyUserDetails extends User{
                               Collection<GrantedAuthority> authorities,
                               UserDTO user, Locale locale,
                               Integer id, Integer mainRoleId, Integer companyId, Integer currencyId, Integer languageId) {
-    	super(username, password, enabled, accountNonExpired, credentialsNonExpired,
-				accountNonLocked, authorities);
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired,
+                accountNonLocked, authorities);
         this.user = user;
         this.locale = locale;
         this.mainRoleId = mainRoleId;
         this.companyId = companyId;
         this.currencyId = currencyId;
         this.languageId = languageId;
-        this.userId =  id;
+        this.userId = id;
     }
 
     /**
@@ -84,22 +83,22 @@ public class CompanyUserDetails extends User{
 
     /**
      * Returns the username without the company ID token.
-     *
+     * <p>
      * This class must store the company ID with the username when returned from
      * {@link #getUsername()} for "remember me" and other advanced security features
      * to work with our implementation of the UserDetailsService.
-     * 
+     *
      * @return raw username
      */
     public String getPlainUsername() {
         return user.getUserName();
     }
-    
+
     /**
      * Returns the users {@link Locale} according to their language and/or country code.
      *
-     * @see com.sapienter.jbilling.server.user.UserBL#getLocale() 
      * @return user locale
+     * @see com.sapienter.jbilling.server.user.UserBL#getLocale()
      */
     public Locale getLocale() {
         return locale;
@@ -116,7 +115,7 @@ public class CompanyUserDetails extends User{
 
     /**
      * Returns the user ID as an Integer. This is the same as calling {@link #getId()}.
-     * 
+     *
      * @return user ID
      */
     public Integer getUserId() {
@@ -152,13 +151,14 @@ public class CompanyUserDetails extends User{
 
     /**
      * Returns first name for greeting.
+     *
      * @return
      */
     public String getGreetingName() {
         return this.user.getContact().getFirstName();
     }
 
-   @Override
+    @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("CompanyUserDetails");
@@ -169,7 +169,7 @@ public class CompanyUserDetails extends User{
         sb.append(", currencyId=").append(getCurrencyId());
         sb.append(", languageId=").append(getLanguageId());
         sb.append(", enabled=").append(isEnabled());
-        sb.append(", accountExpired=").append(!isAccountNonExpired());  
+        sb.append(", accountExpired=").append(!isAccountNonExpired());
         sb.append(", credentialsExpired=").append(!isCredentialsNonExpired());
         sb.append(", accountLocked=").append(!isAccountNonLocked());
         sb.append('}');

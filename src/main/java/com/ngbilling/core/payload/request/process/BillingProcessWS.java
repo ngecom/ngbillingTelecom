@@ -35,14 +35,14 @@ import java.util.List;
  * @since 25-10-2010
  */
 public class BillingProcessWS {
-    
+
     // PaperInvoiceBatchDTO excluded from WS
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer entityId;
     private Integer periodUnitId;
     private Integer periodValue;
@@ -164,6 +164,7 @@ public class BillingProcessWS {
 
     /**
      * Unsupported, web-service security enforced using {@link #getOwningEntityId()}
+     *
      * @return null
      */
     public Integer getOwningUserId() {
@@ -173,18 +174,18 @@ public class BillingProcessWS {
     @Override
     public String toString() {
         return "BillingProcessWS{"
-               + "id=" + id
-               + ", entityId=" + entityId
-               + ", periodUnitId=" + periodUnitId
-               + ", periodValue=" + periodValue
-               + ", billingDate=" + billingDate
-               + ", billingDateEnd=" + billingDateEnd
-               + ", isReview=" + isReview
-               + ", retries=" + retries
-               + ", retriesToDo=" + retriesToDo
-               + ", invoiceIds=" + (invoiceIds != null ? invoiceIds.size() : null)
-               + ", orderProcesses=" + (orderProcesses != null ? orderProcesses.size() : null)
-               + ", processRuns=" + (processRuns != null ? processRuns.size() : null)
-               + '}';
+                + "id=" + id
+                + ", entityId=" + entityId
+                + ", periodUnitId=" + periodUnitId
+                + ", periodValue=" + periodValue
+                + ", billingDate=" + billingDate
+                + ", billingDateEnd=" + billingDateEnd
+                + ", isReview=" + isReview
+                + ", retries=" + retries
+                + ", retriesToDo=" + retriesToDo
+                + ", invoiceIds=" + (invoiceIds != null ? invoiceIds.size() : null)
+                + ", orderProcesses=" + (orderProcesses != null ? orderProcesses.size() : null)
+                + ", processRuns=" + (processRuns != null ? processRuns.size() : null)
+                + '}';
     }
 }

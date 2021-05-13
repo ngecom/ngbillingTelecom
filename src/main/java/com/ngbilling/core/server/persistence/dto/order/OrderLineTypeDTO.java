@@ -24,35 +24,26 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.order;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
-@Table(name="order_line_type")
+@Table(name = "order_line_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class OrderLineTypeDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private Integer editable;
     private Set<OrderLineDTO> orderLineDTOs = new HashSet<OrderLineDTO>(0);
 
@@ -65,35 +56,35 @@ public class OrderLineTypeDTO extends AbstractDescription implements java.io.Ser
     }
 
     public OrderLineTypeDTO(int id, Integer editable, Set<OrderLineDTO> orderLineDTOs) {
-       this.id = id;
-       this.editable = editable;
-       this.orderLineDTOs = orderLineDTOs;
+        this.id = id;
+        this.editable = editable;
+        this.orderLineDTOs = orderLineDTOs;
     }
-   
-    @Id 
-    @Column(name="id", unique=true, nullable=false)
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
-    @Column(name="editable", nullable=false)
+
+    @Column(name = "editable", nullable = false)
     public Integer getEditable() {
         return this.editable;
     }
-    
+
     public void setEditable(Integer editable) {
         this.editable = editable;
     }
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="orderLineType")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderLineType")
     public Set<OrderLineDTO> getOrderLines() {
         return this.orderLineDTOs;
     }
-    
+
     public void setOrderLines(Set<OrderLineDTO> orderLineDTOs) {
         this.orderLineDTOs = orderLineDTOs;
     }
@@ -105,7 +96,8 @@ public class OrderLineTypeDTO extends AbstractDescription implements java.io.Ser
 
     @Transient
     public String getTitle(Integer languageId) {
-        return getDescription(languageId, "description");
+        //return getDescription(languageId, "description");
+        return null;
     }
 
 }

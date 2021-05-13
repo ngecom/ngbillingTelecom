@@ -24,35 +24,6 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.user;
 
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.OrderBy;
-
 import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDeliveryMethodDTO;
 import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
@@ -66,26 +37,37 @@ import com.ngbilling.core.server.persistence.dto.process.BillingProcessDTO;
 import com.ngbilling.core.server.persistence.dto.report.ReportDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "entity")
 @TableGenerator(
-    name = "entity_GEN",
-    table = "jbilling_seqs",
-    pkColumnName = "name",
-    valueColumnName = "next_id",
-    pkColumnValue = "entity",
-    allocationSize = 10
+        name = "entity_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "entity",
+        allocationSize = 10
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CompanyDTO implements java.io.Serializable {
 
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private CurrencyDTO currencyDTO;
     private LanguageDTO language;
     private String externalId;
@@ -152,8 +134,8 @@ public class CompanyDTO implements java.io.Serializable {
         this.billingProcessConfigurations = billingProcessConfigurations;
         this.invoiceDeliveryMethods = invoiceDeliveryMethods;
     }
-    
-   
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "entity_GEN")
     @Column(name = "id", unique = true, nullable = false)
@@ -211,7 +193,7 @@ public class CompanyDTO implements java.io.Serializable {
     public void setCreateDatetime(Date createDatetime) {
         this.createDatetime = createDatetime;
     }
-    
+
     @Column(name = "invoice_as_reseller", nullable = true)
     public boolean isInvoiceAsReseller() {
         return invoiceAsReseller;
@@ -220,34 +202,34 @@ public class CompanyDTO implements java.io.Serializable {
     public void setInvoiceAsReseller(boolean invoiceAsReseller) {
         this.invoiceAsReseller = invoiceAsReseller;
     }
-  
-    @OneToOne(fetch = FetchType.LAZY, optional=true)
-    @JoinTable(name="reseller_entityid_map",
-      joinColumns = {
-        @JoinColumn(name="entity_id", referencedColumnName = "id", unique = true)           
-      },
-      inverseJoinColumns = {
-        @JoinColumn(name="user_id", referencedColumnName = "id", unique = true)
-      }     
+
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinTable(name = "reseller_entityid_map",
+            joinColumns = {
+                    @JoinColumn(name = "entity_id", referencedColumnName = "id", unique = true)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "id", unique = true)
+            }
     )
-    public UserDTO getReseller(){
-    	return reseller;
+    public UserDTO getReseller() {
+        return reseller;
     }
-    
-    public void setReseller(UserDTO reseller){
-    	this.reseller = reseller;
+
+    public void setReseller(UserDTO reseller) {
+        this.reseller = reseller;
     }
-    
+
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "parent_id")
-    public CompanyDTO getParent(){
+    public CompanyDTO getParent() {
         return this.parent;
     }
 
-    public void setParent(CompanyDTO parent){
+    public void setParent(CompanyDTO parent) {
         this.parent = parent;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "company")
     @OrderBy(
             clause = "status_id"
@@ -321,7 +303,7 @@ public class CompanyDTO implements java.io.Serializable {
     public void setItems(Set<ItemDTO> items) {
         this.items = items;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "company")
     public Set<EventLogDTO> getEventLogs() {
         return this.eventLogs;
@@ -367,7 +349,7 @@ public class CompanyDTO implements java.io.Serializable {
     public void setItemTypes(Set<ItemTypeDTO> itemTypes) {
         this.itemTypes = itemTypes;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "entity")
     public Set<BillingProcessConfigurationDTO> getBillingProcessConfigurations() {
         return this.billingProcessConfigurations;
@@ -393,12 +375,12 @@ public class CompanyDTO implements java.io.Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "entity_report_map",
-           joinColumns = {
-                   @JoinColumn(name = "entity_id", updatable = false)
-           },
-           inverseJoinColumns = {
-                   @JoinColumn(name = "report_id", updatable = false)
-           }
+            joinColumns = {
+                    @JoinColumn(name = "entity_id", updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "report_id", updatable = false)
+            }
     )
     public Set<ReportDTO> getReports() {
         return reports;
@@ -407,11 +389,11 @@ public class CompanyDTO implements java.io.Serializable {
     public void setReports(Set<ReportDTO> reports) {
         this.reports = reports;
     }
-    
+
 
     /*
-    * Conveniant methods to ease migration from entity beans
-    */
+     * Conveniant methods to ease migration from entity beans
+     */
     @Transient
     public Integer getCurrencyId() {
         return currencyDTO.getId();
@@ -434,14 +416,14 @@ public class CompanyDTO implements java.io.Serializable {
 
     @Column(name = "deleted", nullable = false)
     public Integer getDeleted() {
-		return deleted;
-	}
+        return deleted;
+    }
 
-	public void setDeleted(Integer deleted) {
-		this.deleted = deleted;
-	}
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return " CompanyDTO: " + id;
     }

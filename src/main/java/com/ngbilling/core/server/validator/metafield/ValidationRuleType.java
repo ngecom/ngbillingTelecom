@@ -3,15 +3,15 @@ package com.ngbilling.core.server.validator.metafield;
 /**
  * Package of available validation rule types
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public enum ValidationRuleType {
 
-    EMAIL (new EmailValidationRuleModel()),
-    RANGE (new RangeValidationRuleModel()),
-    REGEX (new RegExValidationRuleModel()),
-    SCRIPT (new ScriptValidationRuleModel()),
-    PAYMENT_CARD (new PaymentCardValidationRuleModel());
+    EMAIL(new EmailValidationRuleModel()),
+    RANGE(new RangeValidationRuleModel()),
+    REGEX(new RegExValidationRuleModel()),
+    SCRIPT(new ScriptValidationRuleModel()),
+    PAYMENT_CARD(new PaymentCardValidationRuleModel());
 
     // CUSTOM (new CustomValidationRuleModel());;
 

@@ -25,32 +25,31 @@ You may download the latest source from webdataconsulting.github.io.
 */
 
 
+import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
-
 
 /**
-* BooleanReportParameterDTO
-*
-* @author Brian Cowdery
-* @since 07/03/11
-*/
+ * BooleanReportParameterDTO
+ *
+ * @author Brian Cowdery
+ * @since 07/03/11
+ */
 @Entity
 @DiscriminatorValue("boolean")
 public class BooleanReportParameterDTO extends ReportParameterDTO<Boolean> {
 
-   private Boolean value;   
+    private Boolean value;
 
-   @Transient
-   public Boolean getValue() {
-       return value;
-   }
+    @Transient
+    public Boolean getValue() {
+        return value;
+    }
 
-   public void setValue(Boolean value) {
-       this.value = value;
-   }
+    public void setValue(Boolean value) {
+        this.value = value;
+    }
 }

@@ -1,12 +1,11 @@
 package com.ngbilling.core.payload.request.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -15,23 +14,23 @@ import javax.validation.constraints.Size;
 public class EnumerationWS {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
+    private Integer id;
 
     @Min(value = 1, message = "enumeration.entityId.negative")
     private Integer entityId;
 
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Size(min = 1, max = 50, message = "validation.error.size,1,50")
     private String name;
 
     @Valid
     private List<EnumerationValueWS> values;
 
-    public EnumerationWS(){
+    public EnumerationWS() {
         this(null);
     }
 
@@ -82,18 +81,18 @@ public class EnumerationWS {
         this.values = values;
     }
 
-    public boolean addValue(EnumerationValueWS valueWS){
-        if(null == values){
+    public boolean addValue(EnumerationValueWS valueWS) {
+        if (null == values) {
             values = new ArrayList<EnumerationValueWS>();
         }
         return values.add(valueWS);
     }
 
-    public boolean addValue(String value){
-        if(null == value){
+    public boolean addValue(String value) {
+        if (null == value) {
             return false;
         }
-        if (null == values){
+        if (null == values) {
             values = new ArrayList<EnumerationValueWS>();
         }
         return values.add(new EnumerationValueWS(value));

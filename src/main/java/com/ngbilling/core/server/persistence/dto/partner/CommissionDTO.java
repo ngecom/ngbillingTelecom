@@ -23,46 +23,29 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
+import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
-import org.hibernate.boot.model.relational.Exportable;
-
-import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
-
 @Entity
 @TableGenerator(
-        name="partner_commission_GEN",
-        table="jbilling_seqs",
+        name = "partner_commission_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="partner_commission",
-        allocationSize=10
+        pkColumnValue = "partner_commission",
+        allocationSize = 10
 )
-@Table(name="partner_commission")
+@Table(name = "partner_commission")
 public class CommissionDTO implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private BigDecimal amount;
     private PartnerDTO partner;
     private CommissionType type;
@@ -71,67 +54,67 @@ public class CommissionDTO implements Serializable {
     private CurrencyDTO currencyDTO;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="partner_commission_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "partner_commission_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @Column(name="amount", nullable=false, precision=17, scale=17)
-    public BigDecimal getAmount () {
+    @Column(name = "amount", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount (BigDecimal amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    public CommissionType getType () {
+    public CommissionType getType() {
         return type;
     }
 
-    public void setType (CommissionType type) {
+    public void setType(CommissionType type) {
         this.type = type;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="partner_id", nullable=false)
-    public PartnerDTO getPartner () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id", nullable = false)
+    public PartnerDTO getPartner() {
         return partner;
     }
 
-    public void setPartner (PartnerDTO partner) {
+    public void setPartner(PartnerDTO partner) {
         this.partner = partner;
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commission")
-    public List<InvoiceCommissionDTO> getInvoiceCommissions () {
+    public List<InvoiceCommissionDTO> getInvoiceCommissions() {
         return invoiceCommissions;
     }
 
-    public void setInvoiceCommissions (List<InvoiceCommissionDTO> invoiceCommissions) {
+    public void setInvoiceCommissions(List<InvoiceCommissionDTO> invoiceCommissions) {
         this.invoiceCommissions = invoiceCommissions;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commission_process_run_id")
-    public CommissionProcessRunDTO getCommissionProcessRun () {
+    public CommissionProcessRunDTO getCommissionProcessRun() {
         return commissionProcessRun;
     }
 
-    public void setCommissionProcessRun (CommissionProcessRunDTO commissionProcessRun) {
+    public void setCommissionProcessRun(CommissionProcessRunDTO commissionProcessRun) {
         this.commissionProcessRun = commissionProcessRun;
     }
 
     @Transient
     public String[] getFieldNames() {
-        return new String[] {
+        return new String[]{
                 "Agent ID",
                 "Agent Name",
                 "Currency",
@@ -143,7 +126,7 @@ public class CommissionDTO implements Serializable {
     @Transient
     public Object[][] getFieldValues() {
 
-        return new Object[][] {
+        return new Object[][]{
                 {
                         partner.getId(),
                         partner.getBaseUser().getUserName(),

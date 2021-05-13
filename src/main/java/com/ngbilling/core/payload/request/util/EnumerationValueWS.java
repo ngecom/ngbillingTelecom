@@ -1,8 +1,7 @@
 package com.ngbilling.core.payload.request.util;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Created by vojislav on 14.1.15.
@@ -10,20 +9,21 @@ import javax.validation.constraints.Size;
 public class EnumerationValueWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     @Size(min = 1, max = 50, message = "enumeration.value.missing")
     private String value;
 
-    public EnumerationValueWS() {}
+    public EnumerationValueWS() {
+    }
 
     public EnumerationValueWS(Integer id) {
         this(id, null);
     }
 
-    public EnumerationValueWS(String value){
+    public EnumerationValueWS(String value) {
         this(null, value);
     }
 

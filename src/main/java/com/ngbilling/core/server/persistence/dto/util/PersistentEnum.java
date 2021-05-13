@@ -25,13 +25,12 @@ along with jbilling.  If not, see <http://www.gnu.org/licenses/>.
 package com.ngbilling.core.server.persistence.dto.util;
 
 /**
+ * @author Igor Poteryaev <igor.poteryaev@jbilling.com>
  * @see http://www.gabiaxel.com/2011/01/better-enum-mapping-with-hibernate.html
  * For simpler grails alternative @see http://blog.tamashumi.com/2013/06/grails-enum-custom-database-value.html
  * TODO: http://www.abnsoft.info/2014/01/14/hibernate-enum-usertype-how-to-use-java-enum-class-hibernate/
- * 
- * @author Igor Poteryaev <igor.poteryaev@jbilling.com>
- * @since  2015-04-10
+ * @since 2015-04-10
  */
 public interface PersistentEnum {
-    int getId ();
+    int getId();
 }

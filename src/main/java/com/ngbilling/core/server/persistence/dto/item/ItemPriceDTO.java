@@ -24,45 +24,32 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.item;
 
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
+import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @TableGenerator(
-        name="item_price_GEN",
-        table="jbilling_seqs",
+        name = "item_price_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="item_price",
+        pkColumnValue = "item_price",
         allocationSize = 100
-        )
-@Table(name="item_price")
+)
+@Table(name = "item_price")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ItemPriceDTO  implements java.io.Serializable {
+public class ItemPriceDTO implements java.io.Serializable {
 
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private CurrencyDTO currencyDTO;
     private ItemDTO item;
     private BigDecimal price;
@@ -77,17 +64,17 @@ public class ItemPriceDTO  implements java.io.Serializable {
     public ItemPriceDTO() {
     }
 
-    
+
     public ItemPriceDTO(Integer id, BigDecimal price) {
         this.id = id;
         this.price = price;
     }
 
     public ItemPriceDTO(Integer id, ItemDTO item, BigDecimal price, CurrencyDTO currencyDTO) {
-       this.id = id;
-       this.item = item;
-       this.price = price;
-       this.currencyDTO = currencyDTO;
+        this.id = id;
+        this.item = item;
+        this.price = price;
+        this.currencyDTO = currencyDTO;
     }
 
     public ItemPriceDTO(ItemPriceDTO other) {
@@ -97,48 +84,49 @@ public class ItemPriceDTO  implements java.io.Serializable {
         price = other.price;
         versionNum = other.versionNum;
     }
-   
-    @Id @GeneratedValue(strategy=GenerationType.TABLE, generator="item_price_GEN")
-    @Column(name="id", unique=true, nullable=false)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_price_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="currency_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id")
     public CurrencyDTO getCurrency() {
         return this.currencyDTO;
     }
-    
+
     public void setCurrency(CurrencyDTO currencyDTO) {
         this.currencyDTO = currencyDTO;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="item_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
     public ItemDTO getItem() {
         return this.item;
     }
-    
+
     public void setItem(ItemDTO item) {
         this.item = item;
     }
-    
-    @Column(name="price", nullable=false, precision=17, scale=17)
+
+    @Column(name = "price", nullable = false, precision = 17, scale = 17)
     public BigDecimal getPrice() {
         return this.price;
     }
-    
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

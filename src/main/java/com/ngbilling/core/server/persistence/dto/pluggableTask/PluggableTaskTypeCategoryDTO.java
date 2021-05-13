@@ -23,19 +23,13 @@
  */
 package com.ngbilling.core.server.persistence.dto.pluggableTask;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "pluggable_task_type_category")
@@ -43,11 +37,11 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class PluggableTaskTypeCategoryDTO extends AbstractDescription implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     public Integer Id;
 
     @Column(name = "interface_name")

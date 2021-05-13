@@ -24,34 +24,20 @@
 
 package com.ngbilling.core.server.util.metafield;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.ngbilling.core.common.exception.MetaFieldException;
 import com.ngbilling.core.payload.request.metafield.MetaFieldValueWS;
 import com.ngbilling.core.server.persistence.dao.metafield.MetaFieldDAO;
-import com.ngbilling.core.server.persistence.dto.metafield.CustomerAccountInfoTypeMetaField;
-import com.ngbilling.core.server.persistence.dto.metafield.CustomizedEntity;
-import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
+import com.ngbilling.core.server.persistence.dto.metafield.*;
 import com.ngbilling.core.server.persistence.dto.payment.PaymentInformationDTO;
 import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodTypeDTO;
 import com.ngbilling.core.server.persistence.dto.user.CustomerDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.service.metafield.MetaFieldService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 /**
  * Helper class for working with custom fields. It is needed because some classes
@@ -63,13 +49,13 @@ import com.ngbilling.core.server.service.metafield.MetaFieldService;
  */
 @Component
 public class MetaFieldHelper {
-	
-	@Autowired
-	private MetaFieldDAO metaFieldDAO; 
-	
-	@Autowired
-	private MetaFieldService metaFieldService;
-	
+
+    @Autowired
+    private MetaFieldDAO metaFieldDAO;
+
+    @Autowired
+    private MetaFieldService metaFieldService;
+
     /**
      * Returns the meta field by name if it's been defined for this object.
      *
@@ -77,7 +63,7 @@ public class MetaFieldHelper {
      * @param name             meta field name
      * @return field if found, null if not set.
      */
-    public  MetaFieldValue getMetaField(MetaContent customizedEntity, String name) {
+    public MetaFieldValue getMetaField(MetaContent customizedEntity, String name) {
         return getMetaField(customizedEntity, name, null);
     }
 
@@ -89,11 +75,11 @@ public class MetaFieldHelper {
      * @param groupId          group id
      * @return field if found, null if not set.
      */
-    public  MetaFieldValue getMetaField(MetaContent customizedEntity, String name, Integer groupId) {
+    public MetaFieldValue getMetaField(MetaContent customizedEntity, String name, Integer groupId) {
         for (MetaFieldValue value : customizedEntity.getMetaFields()) {
             if (value.getField() != null && value.getField().getName().equals(name)) {
                 if (null != groupId) {
-                    if(null != value.getField().getMetaFieldGroups()){
+                    if (null != value.getField().getMetaFieldGroups()) {
                         for (MetaFieldGroup group : value.getField().getMetaFieldGroups()) {
                             if (group.getId() == groupId) {
                                 return value;
@@ -115,7 +101,7 @@ public class MetaFieldHelper {
      * @param customizedEntity entity for searching fields
      * @param field            field to update.
      */
-    public  void setMetaField(MetaContent customizedEntity, MetaFieldValue field, Integer groupId) {
+    public void setMetaField(MetaContent customizedEntity, MetaFieldValue field, Integer groupId) {
         MetaFieldValue oldValue = customizedEntity.getMetaField(field.getField().getName(), groupId);
         if (oldValue != null) {
             customizedEntity.getMetaFields().remove(oldValue);
@@ -123,15 +109,15 @@ public class MetaFieldHelper {
         customizedEntity.getMetaFields().add(field);
     }
 
-    public  void setMetaField(Integer entityId, MetaContent customizedEntity, String name, Object value){
+    public void setMetaField(Integer entityId, MetaContent customizedEntity, String name, Object value) {
         setMetaField(entityId, null, customizedEntity, name, value);
     }
 
-    public  void setMetaField(Integer entityId, MetaContent customizedEntity, Integer groupId, String name, Object value){
+    public void setMetaField(Integer entityId, MetaContent customizedEntity, Integer groupId, String name, Object value) {
         setMetaField(entityId, groupId, customizedEntity, name, value);
     }
-    
-    public  void setAitMetaField(Integer entityId, CustomerDTO entity, Integer groupId, String name, Object value){
+
+    public void setAitMetaField(Integer entityId, CustomerDTO entity, Integer groupId, String name, Object value) {
         setAitMetaField(entityId, groupId, entity, name, value);
     }
 
@@ -141,11 +127,11 @@ public class MetaFieldHelper {
      * then an IllegalArgumentException will be thrown.
      *
      * @param customizedEntity entity for search/set fields
-     * @param name field name
-     * @param value	field value
+     * @param name             field name
+     * @param value            field value
      * @throws IllegalArgumentException thrown if field name does not exist, or if value is of an incorrect type.
      */
-    public  void setMetaField(Integer entityId, Integer groupId, MetaContent customizedEntity, String name, Object value) throws IllegalArgumentException {
+    public void setMetaField(Integer entityId, Integer groupId, MetaContent customizedEntity, String name, Object value) throws IllegalArgumentException {
         MetaFieldValue fieldValue = customizedEntity.getMetaField(name, groupId);
         if (fieldValue != null) { // common case during editing
             try {
@@ -159,7 +145,7 @@ public class MetaFieldHelper {
                 throw new IllegalArgumentException("Meta Fields could not be specified for current entity");
             }
             MetaField fieldName = null;
-            if(null != groupId){
+            if (null != groupId) {
                 fieldName = metaFieldDAO.getFieldByNameTypeAndGroup(entityId, types, name, groupId);
             } else if (ArrayUtils.contains(types, EntityType.PAYMENT_METHOD_TYPE)) {
                 PaymentMethodTypeDTO type = ((PaymentInformationDTO) customizedEntity).getPaymentMethodType();
@@ -183,40 +169,41 @@ public class MetaFieldHelper {
     /**
      * Sets the value of an ait meta field in a map.
      *
-     * @param entity	:	 customer entity for search/set fields
-     * @param name	:	field name
-     * @param value	:	field value
+     * @param entity :	 customer entity for search/set fields
+     * @param name   :	field name
+     * @param value  :	field value
      * @throws IllegalArgumentException thrown if field name does not exist, or if value is of an incorrect type.
      */
-    public  void setAitMetaField(Integer entityId, Integer groupId, CustomerDTO entity, String name, Object value) throws IllegalArgumentException {
-    	EntityType[] types = entity.getCustomizedEntityType();
+    public void setAitMetaField(Integer entityId, Integer groupId, CustomerDTO entity, String name, Object value) throws IllegalArgumentException {
+        EntityType[] types = entity.getCustomizedEntityType();
         if (types == null) {
-        	throw new IllegalArgumentException("Meta Fields could not be specified for current entity");
+            throw new IllegalArgumentException("Meta Fields could not be specified for current entity");
         }
         MetaField fieldName = null;
-        if(null != groupId){
-        	fieldName = metaFieldDAO.getFieldByNameTypeAndGroup(entityId, types, name, groupId);
+        if (null != groupId) {
+            fieldName = metaFieldDAO.getFieldByNameTypeAndGroup(entityId, types, name, groupId);
         }
         if (fieldName == null) {
-        	throw new IllegalArgumentException("Meta Field with name " + name + " was not defined for current entity");
+            throw new IllegalArgumentException("Meta Field with name " + name + " was not defined for current entity");
         }
         MetaFieldValue field = fieldName.createValue();
         try {
-        	field.setValue(value);
+            field.setValue(value);
         } catch (Exception ex) {
-        	throw new IllegalArgumentException("Incorrect type for meta field with name " + name, ex);
+            throw new IllegalArgumentException("Incorrect type for meta field with name " + name, ex);
         }
         entity.setAitMetaField(field, groupId);
     }
 
     /**
      * Usefull method for updating meta fields with validation before entity saving
-     * @param entity    target entity
-     * @param dto       dto with new data
+     *
+     * @param entity target entity
+     * @param dto    dto with new data
      */
-    public  void updateMetaFieldsWithValidation(Integer entityId, Integer accountTypeId, MetaContent entity, MetaContent dto, Boolean global) {
+    public void updateMetaFieldsWithValidation(Integer entityId, Integer accountTypeId, MetaContent entity, MetaContent dto, Boolean global) {
         List<EntityType> entityTypes = new LinkedList(Arrays.asList(entity.getCustomizedEntityType()));
-        if(entityTypes.contains(EntityType.ACCOUNT_TYPE)){
+        if (entityTypes.contains(EntityType.ACCOUNT_TYPE)) {
             entityTypes.remove(EntityType.ACCOUNT_TYPE);
         }
 
@@ -233,85 +220,84 @@ public class MetaFieldHelper {
             // TODO: (VCA) - we want the null values for the validation
             // if ( null != newValue && null != newValue.getValue() ) {
 
-            if(newValue != null){
+            if (newValue != null) {
                 entity.setMetaField(entityId, null, fieldName, newValue.getValue());
-            }else if((global != null) && global.equals(Boolean.TRUE) && (prevValue != null)){
+            } else if ((global != null) && global.equals(Boolean.TRUE) && (prevValue != null)) {
                 /*
                  * if user edits a global category and retains its global scope
                  * then don't filter out null meta-fields and retain previous values
                  * */
                 entity.setMetaField(entityId, null, fieldName, prevValue.getValue());
-            }else{
+            } else {
                 /*
                  * if user edits a global category and marks it as non-global only then filter out null meta-fields
                  * */
                 entity.setMetaField(entityId, null, fieldName, null);
             }
-             // } //else {
-              //no point creating null/empty-value records in db
-              //}
+            // } //else {
+            //no point creating null/empty-value records in db
+            //}
         }
 
         // Updating and validating of ait meta fields is done in a separate method
         for (MetaFieldValue value : entity.getMetaFields()) {
-        	metaFieldService.validateMetaField(value.getField(), value, entity);
+            metaFieldService.validateMetaField(value.getField(), value, entity);
         }
 
         removeEmptyMetaFields(entity);
     }
 
-    public  void updateMetaFieldsWithValidation(Integer entityId, Integer accountTypeId, MetaContent entity, MetaContent dto) {
+    public void updateMetaFieldsWithValidation(Integer entityId, Integer accountTypeId, MetaContent entity, MetaContent dto) {
         updateMetaFieldsWithValidation(entityId, accountTypeId, entity, dto, null);
     }
 
-	/**
-	 * Usefull method for updating ait meta fields with validation before entity
-	 * saving
-	 * 
-	 * @param entity
-	 *            target entity
-	 * @param dto
-	 *            dto with new data
-	 */
-	public  void updateAitMetaFieldsWithValidation(Integer entityId,
-			Integer accountTypeId, CustomerDTO entity, MetaContent dto) {
-		if (null != accountTypeId) {
-			Map<Integer, List<MetaField>> groupMetaFields = metaFieldService.getAvailableAccountTypeFieldsMap(accountTypeId);
+    /**
+     * Usefull method for updating ait meta fields with validation before entity
+     * saving
+     *
+     * @param entity target entity
+     * @param dto    dto with new data
+     */
+    public void updateAitMetaFieldsWithValidation(Integer entityId,
+                                                  Integer accountTypeId, CustomerDTO entity, MetaContent dto) {
+        if (null != accountTypeId) {
+            Map<Integer, List<MetaField>> groupMetaFields = metaFieldService.getAvailableAccountTypeFieldsMap(accountTypeId);
 
-			for (Map.Entry<Integer, List<MetaField>> entry : groupMetaFields
-					.entrySet()) {
-				Integer groupId = entry.getKey();
-				List<MetaField> fields = entry.getValue();
+            for (Map.Entry<Integer, List<MetaField>> entry : groupMetaFields
+                    .entrySet()) {
+                Integer groupId = entry.getKey();
+                List<MetaField> fields = entry.getValue();
 
-				for (MetaField field : fields) {
-					String fieldName = field.getName();
-					MetaFieldValue newValue = dto.getMetaField(fieldName,
-							groupId);
-					if (newValue == null) {
-						newValue = dto.getMetaField(field.getId());
-					}
-					entity.setAitMetaField(entityId, groupId, fieldName,
-							newValue != null ? newValue.getValue() : null);
-				}
-			}
-		}
+                for (MetaField field : fields) {
+                    String fieldName = field.getName();
+                    MetaFieldValue newValue = dto.getMetaField(fieldName,
+                            groupId);
+                    if (newValue == null) {
+                        newValue = dto.getMetaField(field.getId());
+                    }
+                    entity.setAitMetaField(entityId, groupId, fieldName,
+                            newValue != null ? newValue.getValue() : null);
+                }
+            }
+        }
 
-		for (Map.Entry<Integer, List<MetaFieldValue>> entry : entity
-				.getAitMetaFieldMap().entrySet()) {
-			for (MetaFieldValue value : entry.getValue()) {
-				metaFieldService.validateMetaField(value.getField(), value, entity);
-			}
-		}
+        for (Map.Entry<Integer, List<MetaFieldValue>> entry : entity
+                .getAitMetaFieldMap().entrySet()) {
+            for (MetaFieldValue value : entry.getValue()) {
+                metaFieldService.validateMetaField(value.getField(), value, entity);
+            }
+        }
 
-		removeEmptyAitMetaFields(entity);
-	}
+        removeEmptyAitMetaFields(entity);
+    }
 
     /**
      * Usefull method for updating meta fields with validation before entity saving
-     * @param entity    target entity
-     * @param dto       dto with new data
+     *
+     * @param entity target entity
+     * @param dto    dto with new data
      */
-    public  void updatePaymentMethodMetaFieldsWithValidation(Integer entityId, Integer paymentMethodTypeId, PaymentInformationDTO entity, MetaContent dto) {
+    public void updatePaymentMethodMetaFieldsWithValidation(Integer entityId, Integer paymentMethodTypeId, PaymentInformationDTO entity, MetaContent dto) {
 
         for (MetaField field : metaFieldService.getPaymentMethodMetaFields(paymentMethodTypeId)) {
             String fieldName = field.getName();
@@ -319,7 +305,7 @@ public class MetaFieldHelper {
             if (newValue == null) {
                 newValue = dto.getMetaField(field.getId());
             }
-            
+
             entity.setMetaField(entityId, null, fieldName,
                     newValue != null ? newValue.getValue() : null);
         }
@@ -327,14 +313,14 @@ public class MetaFieldHelper {
         // Updating and validating of ait meta fields is done in a separate method
 
         for (MetaFieldValue value : entity.getMetaFields()) {
-        	metaFieldService.validateMetaField(value.getField(), value, entity);
+            metaFieldService.validateMetaField(value.getField(), value, entity);
         }
     }
 
-    public  MetaField findPaymentMethodMetaField(String fieldName, Integer paymentMethodTypeId) {
+    public MetaField findPaymentMethodMetaField(String fieldName, Integer paymentMethodTypeId) {
 
         for (MetaField field : metaFieldService.getPaymentMethodMetaFields(paymentMethodTypeId)) {
-            if(field.getName().equals(fieldName)){
+            if (field.getName().equals(fieldName)) {
                 return field;
             }
         }
@@ -345,11 +331,11 @@ public class MetaFieldHelper {
      * Update MetaFieldValues in entity with the values in dto. Only values of MetaFields in {@code metaFieldCollection}
      * will be updated
      *
-     * @param metaFieldCollection   meta fields that will be updated
-     * @param entity                destination object
-     * @param dto                   source object
+     * @param metaFieldCollection meta fields that will be updated
+     * @param entity              destination object
+     * @param dto                 source object
      */
-    public  void updateMetaFieldsWithValidation(Collection<MetaField> metaFieldCollection, MetaContent entity, MetaContent dto) {
+    public void updateMetaFieldsWithValidation(Collection<MetaField> metaFieldCollection, MetaContent entity, MetaContent dto) {
         Map<String, MetaField> metaFields = new LinkedHashMap<String, MetaField>();
         for (MetaField field : metaFieldCollection) {
             metaFields.put(field.getName(), field);
@@ -365,22 +351,22 @@ public class MetaFieldHelper {
             }
 
             //create a new value and set it to the default if it exists
-            if(newValue == null) {
+            if (newValue == null) {
                 MetaField metaField = metaFields.get(fieldName);
                 newValue = metaField.createValue();
-                if(metaField.getDefaultValue() != null) {
+                if (metaField.getDefaultValue() != null) {
                     newValue.setValue(metaField.getDefaultValue().getValue());
                 }
             }
 
-            if(newValue != null) {
+            if (newValue != null) {
                 entity.setMetaField(newValue, null);
             }
         }
 
         //do validation
         for (MetaFieldValue value : entity.getMetaFields()) {
-        	metaFieldService.validateMetaField(value.getField(), value, entity);
+            metaFieldService.validateMetaField(value.getField(), value, entity);
         }
 
         removeEmptyMetaFields(entity);
@@ -391,13 +377,13 @@ public class MetaFieldHelper {
      *
      * @param entity
      */
-    public  void removeEmptyMetaFields(MetaContent entity) {
+    public void removeEmptyMetaFields(MetaContent entity) {
         List<MetaFieldValue> metaFields = entity.getMetaFields();
         List<MetaFieldValue> valuesToRemove = new ArrayList<MetaFieldValue>(metaFields.size());
 
-        for(MetaFieldValue mfValue : metaFields) {
+        for (MetaFieldValue mfValue : metaFields) {
             Object value = mfValue.getValue();
-            if(value == null ||
+            if (value == null ||
                     value.toString().trim().isEmpty()) {
                 valuesToRemove.add(mfValue);
             }
@@ -411,31 +397,31 @@ public class MetaFieldHelper {
      *
      * @param customer
      */
-	public  void removeEmptyAitMetaFields(CustomerDTO customer) {
-		List<CustomerAccountInfoTypeMetaField> valuesToRemove = new ArrayList<CustomerAccountInfoTypeMetaField>();
+    public void removeEmptyAitMetaFields(CustomerDTO customer) {
+        List<CustomerAccountInfoTypeMetaField> valuesToRemove = new ArrayList<CustomerAccountInfoTypeMetaField>();
 
-		Set<CustomerAccountInfoTypeMetaField> metaFieldsSet = customer
-				.getCustomerAccountInfoTypeMetaFields();
+        Set<CustomerAccountInfoTypeMetaField> metaFieldsSet = customer
+                .getCustomerAccountInfoTypeMetaFields();
 
-		for (CustomerAccountInfoTypeMetaField metaField : metaFieldsSet) {
-			MetaFieldValue value = metaField.getMetaFieldValue();
+        for (CustomerAccountInfoTypeMetaField metaField : metaFieldsSet) {
+            MetaFieldValue value = metaField.getMetaFieldValue();
 
-			if (value.getValue() == null
-					|| value.getValue().toString().trim().isEmpty()) {
-				valuesToRemove.add(metaField);
-			}
-		}
-		metaFieldsSet.removeAll(valuesToRemove);
-	}
-    
+            if (value.getValue() == null
+                    || value.getValue().toString().trim().isEmpty()) {
+                valuesToRemove.add(metaField);
+            }
+        }
+        metaFieldsSet.removeAll(valuesToRemove);
+    }
+
     /**
      * Create missing MetaFieldValues in entity from the values in {@code metaFieldCollection}.
      * Then do validation.
      *
-     * @param metaFieldCollection   meta fields that will be updated
-     * @param entity                destination object
+     * @param metaFieldCollection meta fields that will be updated
+     * @param entity              destination object
      */
-    public  void updateMetaFieldDefaultValuesWithValidation(Collection<MetaField> metaFieldCollection, MetaContent entity) {
+    public void updateMetaFieldDefaultValuesWithValidation(Collection<MetaField> metaFieldCollection, MetaContent entity) {
         Map<String, MetaField> metaFields = new LinkedHashMap<String, MetaField>();
         for (MetaField field : metaFieldCollection) {
             metaFields.put(field.getName(), field);
@@ -451,10 +437,10 @@ public class MetaFieldHelper {
             }
 
             //create a new value and set it to the default if it exists
-            if(value == null) {
+            if (value == null) {
                 MetaField metaField = metaFields.get(fieldName);
                 value = metaField.createValue();
-                if(metaField.getDefaultValue() != null) {
+                if (metaField.getDefaultValue() != null) {
                     value.setValue(metaField.getDefaultValue().getValue());
                 }
                 entity.setMetaField(value, null);
@@ -463,14 +449,14 @@ public class MetaFieldHelper {
 
         //do validation
         for (MetaFieldValue value : entity.getMetaFields()) {
-        	metaFieldService.validateMetaField(value.getField(), value, entity);
+            metaFieldService.validateMetaField(value.getField(), value, entity);
         }
         removeEmptyMetaFields(entity);
     }
 
-    public  MetaFieldValue getMetaField(MetaContent customizedEntity, Integer metaFieldNameId) {
+    public MetaFieldValue getMetaField(MetaContent customizedEntity, Integer metaFieldNameId) {
         for (MetaFieldValue value : customizedEntity.getMetaFields()) {
-            if (value.getField() != null && value.getField().getId()==metaFieldNameId){
+            if (value.getField() != null && value.getField().getId() == metaFieldNameId) {
                 return value;
             }
         }
@@ -485,14 +471,14 @@ public class MetaFieldHelper {
      * @param clearId
      * @return
      */
-    public  MetaFieldValueWS[] copy(MetaFieldValueWS[] source, boolean clearId) {
-        if(source == null) {
+    public MetaFieldValueWS[] copy(MetaFieldValueWS[] source, boolean clearId) {
+        if (source == null) {
             return new MetaFieldValueWS[0];
         }
 
         MetaFieldValueWS[] copy = Arrays.copyOf(source, source.length);
-        if(clearId) {
-            for(MetaFieldValueWS ws: copy) {
+        if (clearId) {
+            for (MetaFieldValueWS ws : copy) {
                 ws.setId(0);
             }
         }
@@ -505,23 +491,48 @@ public class MetaFieldHelper {
      * @param metaFieldValues
      * @return
      */
-    public  MetaFieldValueWS[] toWSArray(Collection<MetaFieldValue> metaFieldValues) {
-        if(metaFieldValues == null) {
+    public MetaFieldValueWS[] toWSArray(Collection<MetaFieldValue> metaFieldValues) {
+        if (metaFieldValues == null) {
             return new MetaFieldValueWS[0];
         }
 
         MetaFieldValueWS[] result = new MetaFieldValueWS[metaFieldValues.size()];
         int idx = 0;
-        for(MetaFieldValue mf : metaFieldValues) {
+        for (MetaFieldValue mf : metaFieldValues) {
             result[idx++] = metaFieldService.getWS(mf);
         }
         return result;
     }
 
     /**
+     * Set the values of meta fields (as specified by {@code metaFieldNames}) on {@code entity} with values
+     * found in {@code metaFields}.
+     *
+     * @param metaFieldNames These MetaFields will get their values set
+     * @param entity
+     * @param metaFields     New values for MetaFields
+     */
+    public void fillMetaFieldsFromWS(Set<MetaField> metaFieldNames, CustomizedEntity entity, MetaFieldValueWS[] metaFields) {
+        Map<String, MetaField> metaFieldMap = new HashMap<String, MetaField>(metaFieldNames.size() * 2);
+        for (MetaField metaField : metaFieldNames) {
+            metaFieldMap.put(metaField.getName(), metaField);
+        }
+
+        if (metaFields != null) {
+            for (MetaFieldValueWS fieldValue : metaFields) {
+                MetaField metaField = metaFieldMap.get(fieldValue.getFieldName());
+                if (metaField == null) {
+                    throw new MetaFieldException("MetaField [" + fieldValue.getFieldName() + "] does not exist for entity " + entity);
+                }
+                entity.setMetaField(metaField, fieldValue.getValue());
+            }
+        }
+    }
+
+    /**
      * Comparator for sorting meta field values after retrieving from DB
      */
-    public final  class MetaFieldValuesOrderComparator implements Comparator<MetaFieldValue> {
+    public final class MetaFieldValuesOrderComparator implements Comparator<MetaFieldValue> {
         public int compare(MetaFieldValue o1, MetaFieldValue o2) {
             if (o1.getField().getDisplayOrder() == null && o2.getField().getDisplayOrder() == null) {
                 return 0;
@@ -530,31 +541,6 @@ public class MetaFieldHelper {
                 return o1.getField().getDisplayOrder().compareTo(o2.getField().getDisplayOrder());
             } else {
                 return -1 * o2.getField().getDisplayOrder().compareTo(o1.getField().getDisplayOrder());
-            }
-        }
-    }
-
-    /**
-     * Set the values of meta fields (as specified by {@code metaFieldNames}) on {@code entity} with values
-     * found in {@code metaFields}.
-     *
-     * @param metaFieldNames    These MetaFields will get their values set
-     * @param entity
-     * @param metaFields        New values for MetaFields
-     */
-    public  void fillMetaFieldsFromWS(Set<MetaField> metaFieldNames, CustomizedEntity entity, MetaFieldValueWS[] metaFields) {
-        Map<String, MetaField> metaFieldMap = new HashMap<String, MetaField>(metaFieldNames.size() * 2);
-        for(MetaField metaField : metaFieldNames) {
-            metaFieldMap.put(metaField.getName(), metaField);
-        }
-
-        if (metaFields != null) {
-            for (MetaFieldValueWS fieldValue : metaFields) {
-                MetaField metaField = metaFieldMap.get(fieldValue.getFieldName());
-                if(metaField == null) {
-                	 throw new MetaFieldException("MetaField ["+fieldValue.getFieldName()+"] does not exist for entity "+entity);
-                }
-                entity.setMetaField(metaField, fieldValue.getValue());
             }
         }
     }

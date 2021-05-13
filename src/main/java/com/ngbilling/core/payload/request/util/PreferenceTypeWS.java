@@ -26,14 +26,13 @@ package com.ngbilling.core.payload.request.util;
 import java.io.Serializable;
 
 
-
 public class PreferenceTypeWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private String description;
     private String defaultValue;
 
@@ -72,9 +71,9 @@ public class PreferenceTypeWS implements Serializable {
     @Override
     public String toString() {
         return "PreferenceTypeWS{"
-               + "id=" + id
-               + ", description='" + description + '\''
-               + ", defaultValue='" + defaultValue + '\''
-               + '}';
+                + "id=" + id
+                + ", description='" + description + '\''
+                + ", defaultValue='" + defaultValue + '\''
+                + '}';
     }
 }

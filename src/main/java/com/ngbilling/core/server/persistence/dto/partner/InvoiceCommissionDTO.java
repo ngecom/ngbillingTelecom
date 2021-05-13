@@ -23,31 +23,21 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @TableGenerator(
-        name="invoice_commission_GEN",
-        table="jbilling_seqs",
+        name = "invoice_commission_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="invoice_commission",
-        allocationSize=10
+        pkColumnValue = "invoice_commission",
+        allocationSize = 10
 )
-@Table(name="invoice_commission")
+@Table(name = "invoice_commission")
 public class InvoiceCommissionDTO {
     private int id;
     private CommissionProcessRunDTO commissionProcessRun;
@@ -62,99 +52,99 @@ public class InvoiceCommissionDTO {
 
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="invoice_commission_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice_commission_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="partner_id", nullable=false)
-    public PartnerDTO getPartner () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id", nullable = false)
+    public PartnerDTO getPartner() {
         return partner;
     }
 
-    public void setPartner (PartnerDTO partner) {
+    public void setPartner(PartnerDTO partner) {
         this.partner = partner;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
-    public InvoiceDTO getInvoice () {
+    public InvoiceDTO getInvoice() {
         return invoice;
     }
 
-    public void setInvoice (InvoiceDTO invoice) {
+    public void setInvoice(InvoiceDTO invoice) {
         this.invoice = invoice;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commission_process_run_id")
-    public CommissionProcessRunDTO getCommissionProcessRun () {
+    public CommissionProcessRunDTO getCommissionProcessRun() {
         return commissionProcessRun;
     }
 
-    public void setCommissionProcessRun (CommissionProcessRunDTO commissionProcessRun) {
+    public void setCommissionProcessRun(CommissionProcessRunDTO commissionProcessRun) {
         this.commissionProcessRun = commissionProcessRun;
     }
 
-    @Column(name="standard_amount", nullable=false, precision=17, scale=17)
-    public BigDecimal getStandardAmount () {
+    @Column(name = "standard_amount", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getStandardAmount() {
         return standardAmount;
     }
 
-    public void setStandardAmount (BigDecimal standardAmount) {
+    public void setStandardAmount(BigDecimal standardAmount) {
         this.standardAmount = standardAmount;
     }
 
-    @Column(name="master_amount", nullable=false, precision=17, scale=17)
-    public BigDecimal getMasterAmount () {
+    @Column(name = "master_amount", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getMasterAmount() {
         return masterAmount;
     }
 
-    public void setMasterAmount (BigDecimal masterAmount) {
+    public void setMasterAmount(BigDecimal masterAmount) {
         this.masterAmount = masterAmount;
     }
 
-    @Column(name="exception_amount", nullable=false, precision=17, scale=17)
-    public BigDecimal getExceptionAmount () {
+    @Column(name = "exception_amount", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getExceptionAmount() {
         return exceptionAmount;
     }
 
-    public void setExceptionAmount (BigDecimal exceptionAmount) {
+    public void setExceptionAmount(BigDecimal exceptionAmount) {
         this.exceptionAmount = exceptionAmount;
     }
 
-    @Column(name="referral_amount", nullable=false, precision=17, scale=17)
-    public BigDecimal getReferralAmount () {
+    @Column(name = "referral_amount", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getReferralAmount() {
         return referralAmount;
     }
 
-    public void setReferralAmount (BigDecimal referralAmount) {
+    public void setReferralAmount(BigDecimal referralAmount) {
         this.referralAmount = referralAmount;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="referral_partner_id", nullable=true)
-    public PartnerDTO getReferralPartner () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "referral_partner_id", nullable = true)
+    public PartnerDTO getReferralPartner() {
         return referralPartner;
     }
 
-    public void setReferralPartner (PartnerDTO referralPartner) {
+    public void setReferralPartner(PartnerDTO referralPartner) {
         this.referralPartner = referralPartner;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commission_id")
-    public CommissionDTO getCommission () {
+    public CommissionDTO getCommission() {
         return commission;
     }
 
-    public void setCommission (CommissionDTO commission) {
+    public void setCommission(CommissionDTO commission) {
         this.commission = commission;
     }
 }

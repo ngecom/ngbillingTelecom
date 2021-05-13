@@ -23,36 +23,25 @@
  */
 package com.ngbilling.core.server.persistence.dto.notification;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
 
 @Entity
 @TableGenerator(
-        name = "notification_message_arch_line_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "notification_message_arch_line", 
+        name = "notification_message_arch_line_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "notification_message_arch_line",
         allocationSize = 100)
 @Table(name = "notification_message_arch_line")
 public class NotificationMessageArchLineDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private NotificationMessageArchDTO notificationMessageArch;
     private int section;
     private String content;
@@ -68,8 +57,8 @@ public class NotificationMessageArchLineDTO implements Serializable {
     }
 
     public NotificationMessageArchLineDTO(int id,
-            NotificationMessageArchDTO notificationMessageArch, int section,
-            String content) {
+                                          NotificationMessageArchDTO notificationMessageArch, int section,
+                                          String content) {
         this.id = id;
         this.notificationMessageArch = notificationMessageArch;
         this.section = section;
@@ -117,7 +106,7 @@ public class NotificationMessageArchLineDTO implements Serializable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

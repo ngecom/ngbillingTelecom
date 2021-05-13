@@ -24,41 +24,29 @@
 package com.ngbilling.core.server.persistence.dto.partner;
 
 
+import com.ngbilling.core.server.persistence.dto.payment.PaymentDTO;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import com.ngbilling.core.server.persistence.dto.payment.PaymentDTO;
-
 @Entity
 @TableGenerator(
-        name="partner_payout_GEN",
-        table="jbilling_seqs",
+        name = "partner_payout_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="partner_payout",
-        allocationSize=10
+        pkColumnValue = "partner_payout",
+        allocationSize = 10
 )
-@Table(name="partner_payout")
-public class PartnerPayout  implements java.io.Serializable {
+@Table(name = "partner_payout")
+public class PartnerPayout implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private PaymentDTO payment;
     private PartnerDTO partner;
     private Date startingDate;
@@ -96,8 +84,9 @@ public class PartnerPayout  implements java.io.Serializable {
         this.balanceLeft = balanceLeft;
     }
 
-    @Id  @GeneratedValue(strategy=GenerationType.TABLE, generator="partner_payout_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "partner_payout_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -106,8 +95,8 @@ public class PartnerPayout  implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="payment_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id")
     public PaymentDTO getPayment() {
         return this.payment;
     }
@@ -116,8 +105,8 @@ public class PartnerPayout  implements java.io.Serializable {
         this.payment = payment;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="partner_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id")
     public PartnerDTO getPartner() {
         return this.partner;
     }
@@ -126,7 +115,7 @@ public class PartnerPayout  implements java.io.Serializable {
         this.partner = partner;
     }
 
-    @Column(name="starting_date", nullable=false, length=13)
+    @Column(name = "starting_date", nullable = false, length = 13)
     public Date getStartingDate() {
         return this.startingDate;
     }
@@ -135,7 +124,7 @@ public class PartnerPayout  implements java.io.Serializable {
         this.startingDate = startingDate;
     }
 
-    @Column(name="ending_date", nullable=false, length=13)
+    @Column(name = "ending_date", nullable = false, length = 13)
     public Date getEndingDate() {
         return this.endingDate;
     }
@@ -144,7 +133,7 @@ public class PartnerPayout  implements java.io.Serializable {
         this.endingDate = endingDate;
     }
 
-    @Column(name="payments_amount", nullable=false, precision=17, scale=17)
+    @Column(name = "payments_amount", nullable = false, precision = 17, scale = 17)
     public BigDecimal getPaymentsAmount() {
         return this.paymentsAmount;
     }
@@ -153,7 +142,7 @@ public class PartnerPayout  implements java.io.Serializable {
         this.paymentsAmount = paymentsAmount;
     }
 
-    @Column(name="refunds_amount", nullable=false, precision=17, scale=17)
+    @Column(name = "refunds_amount", nullable = false, precision = 17, scale = 17)
     public BigDecimal getRefundsAmount() {
         return this.refundsAmount;
     }
@@ -162,7 +151,7 @@ public class PartnerPayout  implements java.io.Serializable {
         this.refundsAmount = refundsAmount;
     }
 
-    @Column(name="balance_left", nullable=false, precision=17, scale=17)
+    @Column(name = "balance_left", nullable = false, precision = 17, scale = 17)
     public BigDecimal getBalanceLeft() {
         return this.balanceLeft;
     }
@@ -172,10 +161,11 @@ public class PartnerPayout  implements java.io.Serializable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }

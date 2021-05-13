@@ -24,18 +24,12 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.server.persistence.dto.util;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * CountryDTO
@@ -49,10 +43,10 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class CountryDTO extends AbstractDescription implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private String code;
 
     public CountryDTO() {
@@ -87,5 +81,6 @@ public class CountryDTO extends AbstractDescription implements Serializable {
     public String toString() {
         return code;
     }
+
 
 }

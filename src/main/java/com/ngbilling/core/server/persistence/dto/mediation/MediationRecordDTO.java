@@ -15,33 +15,20 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
+import com.ngbilling.core.payload.request.configuration.MediationRecordWS;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import com.ngbilling.core.payload.request.configuration.MediationRecordWS;
 
 @TableGenerator(
         name = "mediation_record_GEN",
         table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue = "mediation_record", 
+        pkColumnValue = "mediation_record",
         allocationSize = 100)
 @Entity
 @Table(name = "mediation_record")
@@ -49,10 +36,10 @@ import com.ngbilling.core.payload.request.configuration.MediationRecordWS;
 public class MediationRecordDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private String key;
     private Date started;
     private MediationProcess process;
@@ -105,7 +92,7 @@ public class MediationRecordDTO implements Serializable {
     public Date getStarted() {
         return started;
     }
-    
+
     protected void setStarted(Date started) {
         this.started = started;
     }
@@ -130,7 +117,7 @@ public class MediationRecordDTO implements Serializable {
         this.recordStatus = recordStatus;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="record")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "record")
     public Collection<MediationRecordLineDTO> getLines() {
         return lines;
     }

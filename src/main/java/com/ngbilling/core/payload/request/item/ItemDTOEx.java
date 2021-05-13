@@ -24,30 +24,22 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.payload.request.item;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.ngbilling.core.common.util.Util;
+import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
+import com.ngbilling.core.server.util.ServerConstants;
+import com.ngbilling.core.server.util.validator.ItemPrices;
+import com.ngbilling.core.server.util.validator.ItemTypes;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.util.*;
 
-import org.hibernate.validator.constraints.Range;
-
-import com.ngbilling.core.common.util.Util;
-import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
-import com.ngbilling.core.server.util.ServerConstants;
-import com.ngbilling.core.server.util.validator.ItemPrices;
-import com.ngbilling.core.server.util.validator.ItemTypes;
-
-public class ItemDTOEx  {
+public class ItemDTOEx {
 
     private static final long serialVersionUID = 20130704L;
     private final static int MAXIMUM_MINUTES_ALLOWED = 600000;
@@ -56,9 +48,9 @@ public class ItemDTOEx  {
     // ItemDTO
     private Integer id;
     @NotNull(message = "validation.error.notnull")
-   	@Size(min=1,max=50, message="validation.error.size,1,50")
+    @Size(min = 1, max = 50, message = "validation.error.size,1,50")
     private String number;
-    @Size (min=0,max=50, message="validation.error.size,1,50")
+    @Size(min = 0, max = 50, message = "validation.error.size,1,50")
     private String glCode;
     private Integer[] excludedTypes = null;
     private Integer priceManual;
@@ -66,18 +58,19 @@ public class ItemDTOEx  {
     private Integer deleted;
     private Integer assetManagementEnabled = 0;
     private Integer entityId;
-    
-    @Size(min=1,max=50, message="validation.error.size,1,50")
+
+    @Size(min = 1, max = 50, message = "validation.error.size,1,50")
 
     private String description = null;
     @ItemTypes
     private Integer[] types = null;
     private String promoCode = null;
     private Integer currencyId = null;
-    @Digits(integer=12, fraction=10, message="validation.error.not.a.number")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     private String price = null;
     private Integer orderLineTypeId = null;
-    @ItemPrices @Valid
+    @ItemPrices
+    @Valid
     private List<ItemPriceDTOEx> prices = null;
     @NotEmpty(message = "validation.error.notnull")
     private List<InternationalDescriptionWS> descriptions = null;
@@ -95,10 +88,10 @@ public class ItemDTOEx  {
     private String standardPartnerPercentage;
     @Range(min = 0, max = 100, message = "validation.error.invalid.percentage.value")
     private String masterPartnerPercentage;
-    
+
     private Date activeSince;
     private Date activeUntil;
-    private boolean isPlan=false;
+    private boolean isPlan = false;
 
     @Range(min = MINIMUM_MINUTES_ALLOWED, max = MAXIMUM_MINUTES_ALLOWED, message = "reserve.duration.validation.message,{min},{max}")
     private Integer reservationDuration;
@@ -107,7 +100,7 @@ public class ItemDTOEx  {
     public ItemDTOEx() {
     }
 
-    public ItemDTOEx(Integer id,String number, String glCode, Integer entity, String description, Integer priceManual,
+    public ItemDTOEx(Integer id, String number, String glCode, Integer entity, String description, Integer priceManual,
                      Integer deleted, Integer currencyId, BigDecimal price,
                      Integer orderLineTypeId, Integer hasDecimals, Integer assetManagementEnabled) {
 
@@ -122,7 +115,7 @@ public class ItemDTOEx  {
                      Integer deleted, Integer entityId, Integer assetManagementEnabled) {
         this.id = id;
         this.number = number;
-        this.glCode= glCode;
+        this.glCode = glCode;
         this.priceManual = priceManual;
         this.hasDecimals = hasDecimals;
         this.deleted = deleted;
@@ -204,44 +197,44 @@ public class ItemDTOEx  {
     }
 
 
-    public String getMasterPartnerPercentage () {
+    public String getMasterPartnerPercentage() {
         return this.masterPartnerPercentage;
     }
 
-    public BigDecimal getMasterPartnerPercentageAsDecimal () {
-        return masterPartnerPercentage != null ? new BigDecimal(masterPartnerPercentage) : null;
-    }
-
-    public void setMasterPartnerPercentageAsDecimal (BigDecimal percentage) {
-        setMasterPartnerPercentage(percentage);
-    }
-
-    public void setMasterPartnerPercentage (String percentage) {
+    public void setMasterPartnerPercentage(String percentage) {
         this.masterPartnerPercentage = percentage;
     }
 
-    public void setMasterPartnerPercentage (BigDecimal percentage) {
+    public void setMasterPartnerPercentage(BigDecimal percentage) {
         this.masterPartnerPercentage = (percentage != null ? percentage.toString() : null);
     }
 
-    public String getStandardPartnerPercentage () {
+    public BigDecimal getMasterPartnerPercentageAsDecimal() {
+        return masterPartnerPercentage != null ? new BigDecimal(masterPartnerPercentage) : null;
+    }
+
+    public void setMasterPartnerPercentageAsDecimal(BigDecimal percentage) {
+        setMasterPartnerPercentage(percentage);
+    }
+
+    public String getStandardPartnerPercentage() {
         return this.standardPartnerPercentage;
     }
 
-    public BigDecimal getStandardPartnerPercentageAsDecimal () {
-        return standardPartnerPercentage != null ? new BigDecimal(standardPartnerPercentage) : null;
-    }
-
-    public void setStandardPartnerPercentageAsDecimal (BigDecimal percentage) {
-        setStandardPartnerPercentage(percentage);
-    }
-
-    public void setStandardPartnerPercentage (String percentage) {
+    public void setStandardPartnerPercentage(String percentage) {
         this.standardPartnerPercentage = percentage;
     }
 
-    public void setStandardPartnerPercentage (BigDecimal percentage) {
+    public void setStandardPartnerPercentage(BigDecimal percentage) {
         this.standardPartnerPercentage = (percentage != null ? percentage.toString() : null);
+    }
+
+    public BigDecimal getStandardPartnerPercentageAsDecimal() {
+        return standardPartnerPercentage != null ? new BigDecimal(standardPartnerPercentage) : null;
+    }
+
+    public void setStandardPartnerPercentageAsDecimal(BigDecimal percentage) {
+        setStandardPartnerPercentage(percentage);
     }
 
     public Integer[] getExcludedTypes() {
@@ -269,13 +262,13 @@ public class ItemDTOEx  {
     }
 
     public Integer getPriceManual() {
-	    return this.priceManual;
-	}
-	
-	public void setPriceManual(Integer priceManual) {
-	    this.priceManual = priceManual;
-	}
-    	
+        return this.priceManual;
+    }
+
+    public void setPriceManual(Integer priceManual) {
+        this.priceManual = priceManual;
+    }
+
     public Integer getHasDecimals() {
         return this.hasDecimals;
     }
@@ -302,7 +295,7 @@ public class ItemDTOEx  {
 
     /**
      * Returns an english description.
-     * 
+     *
      * @return String
      */
     public String getDescription() {
@@ -311,17 +304,20 @@ public class ItemDTOEx  {
 
     /**
      * Sets the a description in english.
-     * 
-     * @param newDescription
-     *            The description to set
+     *
+     * @param newDescription The description to set
      */
     public void setDescription(String newDescription) {
         description = newDescription;
-        	setDescriptionForMultiLangBeans(descriptions, newDescription);
+        setDescriptionForMultiLangBeans(descriptions, newDescription);
     }
 
     public Integer[] getTypes() {
         return types;
+    }
+
+    public void setTypes(Integer[] vector) {
+        types = vector;
     }
 
     /*
@@ -329,14 +325,10 @@ public class ItemDTOEx  {
      */
     public Collection<String> getStrTypes() {
         List<String> retValue = new ArrayList<String>();
-        for (Integer i: types) {
+        for (Integer i : types) {
             retValue.add(i.toString());
         }
         return retValue;
-    }
-
-    public void setTypes(Integer[] vector) {
-        types = vector;
     }
 
     public String getPromoCode() {
@@ -362,13 +354,9 @@ public class ItemDTOEx  {
     public void setCurrencyId(Integer currencyId) {
         this.currencyId = currencyId;
     }
-    
+
     public String getPrice() {
         return price;
-    }
-
-    public BigDecimal getPriceAsDecimal() {
-        return Util.string2decimal(price);
     }
 
     public void setPrice(String price) {
@@ -379,19 +367,23 @@ public class ItemDTOEx  {
         setPrice((price != null ? price.toString() : null));
     }
 
-    public List<ItemPriceDTOEx> getPrices() {
-	    return prices;
-	}
-	
-	public void setPrices(List<ItemPriceDTOEx> prices) {
-	    this.prices = prices;
-	}
+    public BigDecimal getPriceAsDecimal() {
+        return Util.string2decimal(price);
+    }
 
-	public Integer getOwningEntityId() {
+    public List<ItemPriceDTOEx> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(List<ItemPriceDTOEx> prices) {
+        this.prices = prices;
+    }
+
+    public Integer getOwningEntityId() {
         return getEntityId();
     }
 
-	public List<InternationalDescriptionWS> getDescriptions() {
+    public List<InternationalDescriptionWS> getDescriptions() {
         return descriptions;
     }
 
@@ -415,9 +407,9 @@ public class ItemDTOEx  {
      */
     public ItemDependencyDTOEx[] getDependenciesOfType(ItemDependencyType type) {
         ArrayList<ItemDependencyDTOEx> result = new ArrayList<ItemDependencyDTOEx>();
-        if(dependencies != null) {
-            for(ItemDependencyDTOEx dependency : dependencies) {
-                if(dependency.getType().equals(type)) {
+        if (dependencies != null) {
+            for (ItemDependencyDTOEx dependency : dependencies) {
+                if (dependency.getType().equals(type)) {
                     result.add(dependency);
                 }
             }
@@ -433,9 +425,9 @@ public class ItemDTOEx  {
      */
     public Integer[] getDependencyIdsOfType(ItemDependencyType type) {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        if(dependencies != null) {
-            for(ItemDependencyDTOEx dependency : dependencies) {
-                if(dependency.getType().equals(type)) {
+        if (dependencies != null) {
+            for (ItemDependencyDTOEx dependency : dependencies) {
+                if (dependency.getType().equals(type)) {
                     result.add(dependency.getDependentId());
                 }
             }
@@ -452,9 +444,9 @@ public class ItemDTOEx  {
      */
     public Integer[] getMandatoryDependencyIdsOfType(ItemDependencyType type) {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        if(dependencies != null) {
-            for(ItemDependencyDTOEx dependency : dependencies) {
-                if(dependency.getType().equals(type) && dependency.getMinimum() > 0) {
+        if (dependencies != null) {
+            for (ItemDependencyDTOEx dependency : dependencies) {
+                if (dependency.getType().equals(type) && dependency.getMinimum() > 0) {
                     result.add(dependency.getDependentId());
                 }
             }
@@ -464,51 +456,52 @@ public class ItemDTOEx  {
 
     /**
      * Unsupported, web-service security enforced using {@link #getOwningEntityId()}
+     *
      * @return null
      */
     public Integer getOwningUserId() {
         return null;
     }
 
-	public Set<Integer> getEntities() {
-		return entities;
-	}
+    public Set<Integer> getEntities() {
+        return entities;
+    }
 
-	public void setEntities(Set<Integer> entities) {
-		this.entities = entities;
-	}
+    public void setEntities(Set<Integer> entities) {
+        this.entities = entities;
+    }
 
-	public Integer getPriceModelCompanyId() {
-		return priceModelCompanyId;
-	}
+    public Integer getPriceModelCompanyId() {
+        return priceModelCompanyId;
+    }
 
-	public void setPriceModelCompanyId(Integer priceModelCompanyId) {
-		this.priceModelCompanyId = priceModelCompanyId;
-	}
+    public void setPriceModelCompanyId(Integer priceModelCompanyId) {
+        this.priceModelCompanyId = priceModelCompanyId;
+    }
 
-	public boolean isGlobal() {
-		return global;
-	}
+    public boolean isGlobal() {
+        return global;
+    }
 
-	public void setGlobal(boolean global) {
-		this.global = global;
-	}
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
 
-	public Date getActiveSince() {
-		return activeSince;
-	}
+    public Date getActiveSince() {
+        return activeSince;
+    }
 
-	public void setActiveSince(Date activeSince) {
-		this.activeSince = activeSince;
-	}
+    public void setActiveSince(Date activeSince) {
+        this.activeSince = activeSince;
+    }
 
-	public Date getActiveUntil() {
-		return activeUntil;
-	}
+    public Date getActiveUntil() {
+        return activeUntil;
+    }
 
-	public void setActiveUntil(Date activeUntil) {
-		this.activeUntil = activeUntil;
-	}
+    public void setActiveUntil(Date activeUntil) {
+        this.activeUntil = activeUntil;
+    }
 
     public Integer getReservationDuration() {
         return reservationDuration;
@@ -541,10 +534,10 @@ public class ItemDTOEx  {
                 lEquals = lEquals && this.glCode.equals(that.glCode);
             }
             if (this.priceManual == null) {
-        	    lEquals = lEquals && (that.priceManual == null);
-        	} else {
-        	    lEquals = lEquals && this.priceManual.equals(that.priceManual);
-        	}
+                lEquals = lEquals && (that.priceManual == null);
+            } else {
+                lEquals = lEquals && this.priceManual.equals(that.priceManual);
+            }
             if (this.hasDecimals == null) {
                 lEquals = lEquals && (that.hasDecimals == null);
             } else {
@@ -587,10 +580,10 @@ public class ItemDTOEx  {
 
         ItemDTOEx that = (ItemDTOEx) other;
         boolean lEquals = true;
-        if( this.id == null ) {
-            lEquals = lEquals && ( that.id == null );
+        if (this.id == null) {
+            lEquals = lEquals && (that.id == null);
         } else {
-            lEquals = lEquals && this.id.equals( that.id );
+            lEquals = lEquals && this.id.equals(that.id);
         }
 
         lEquals = lEquals && isIdentical(that);
@@ -598,15 +591,15 @@ public class ItemDTOEx  {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         int result = 17;
-        result = 37*result + ((this.id != null) ? this.id.hashCode() : 0);
-        result = 37*result + ((this.number != null) ? this.number.hashCode() : 0);
-        result = 37*result + ((this.glCode != null) ? this.glCode.hashCode() : 0);
-        result = 37*result + ((this.priceManual != null) ? this.priceManual.hashCode() : 0);
-        result = 37*result + ((this.hasDecimals != null) ? this.hasDecimals.hashCode() : 0);
-        result = 37*result + ((this.deleted != null) ? this.deleted.hashCode() : 0);
-        result = 37*result + ((this.entityId != null) ? this.entityId.hashCode() : 0);
+        result = 37 * result + ((this.id != null) ? this.id.hashCode() : 0);
+        result = 37 * result + ((this.number != null) ? this.number.hashCode() : 0);
+        result = 37 * result + ((this.glCode != null) ? this.glCode.hashCode() : 0);
+        result = 37 * result + ((this.priceManual != null) ? this.priceManual.hashCode() : 0);
+        result = 37 * result + ((this.hasDecimals != null) ? this.hasDecimals.hashCode() : 0);
+        result = 37 * result + ((this.deleted != null) ? this.deleted.hashCode() : 0);
+        result = 37 * result + ((this.entityId != null) ? this.entityId.hashCode() : 0);
 
         return result;
     }
@@ -651,30 +644,30 @@ public class ItemDTOEx  {
         builder.append(']');
         return builder.toString();
     }
-    
-    public  String getDescriptionForMultiLangBeans(List<InternationalDescriptionWS> descriptions) {
+
+    public String getDescriptionForMultiLangBeans(List<InternationalDescriptionWS> descriptions) {
         for (InternationalDescriptionWS description : descriptions) {
             if (description != null &&
-            		ServerConstants.LANGUAGE_ENGLISH_ID.intValue() == description.getLanguageId()) {
+                    ServerConstants.LANGUAGE_ENGLISH_ID.intValue() == description.getLanguageId()) {
                 return description.getContent();
             }
         }
         return "";
     }
-    
-	public  void setDescriptionForMultiLangBeans(
-			List<InternationalDescriptionWS> beanDescriptions,
-			String newDescription) {
-		for (InternationalDescriptionWS description : beanDescriptions) {
-			if (description != null
-					&& ServerConstants.LANGUAGE_ENGLISH_ID.intValue() == description
-							.getLanguageId()) {
-				description.setContent(newDescription);
-				return;
-			}
-		}
-		beanDescriptions.add(new InternationalDescriptionWS("description",
-				ServerConstants.LANGUAGE_ENGLISH_ID, newDescription));
-	}
+
+    public void setDescriptionForMultiLangBeans(
+            List<InternationalDescriptionWS> beanDescriptions,
+            String newDescription) {
+        for (InternationalDescriptionWS description : beanDescriptions) {
+            if (description != null
+                    && ServerConstants.LANGUAGE_ENGLISH_ID.intValue() == description
+                    .getLanguageId()) {
+                description.setContent(newDescription);
+                return;
+            }
+        }
+        beanDescriptions.add(new InternationalDescriptionWS("description",
+                ServerConstants.LANGUAGE_ENGLISH_ID, newDescription));
+    }
 
 }

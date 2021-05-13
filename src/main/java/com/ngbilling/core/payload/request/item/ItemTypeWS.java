@@ -24,13 +24,12 @@
 package com.ngbilling.core.payload.request.item;
 
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Brian Cowdery
@@ -39,20 +38,20 @@ import javax.validation.constraints.Size;
 public class ItemTypeWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
-    
-    @Size (min=1,max=100, message="validation.error.size,1,100")    
+    private Integer id;
+
+    @Size(min = 1, max = 100, message = "validation.error.size,1,100")
     private String description;
-    
-    @Min(value = 1, message="validation.error.min,1")
+
+    @Min(value = 1, message = "validation.error.min,1")
     private Integer orderLineTypeId;
 
     private Integer parentItemTypeId;
-    
+
     private boolean global;
     private boolean internal;
 
@@ -66,7 +65,7 @@ public class ItemTypeWS implements Serializable {
 
     private boolean onePerCustomer = false;
     private boolean onePerOrder = false;
-    
+
     public ItemTypeWS() {
     }
 
@@ -102,22 +101,22 @@ public class ItemTypeWS implements Serializable {
     }
 
     public boolean isOnePerCustomer() {
-		return onePerCustomer;
-	}
+        return onePerCustomer;
+    }
 
-	public void setOnePerCustomer(boolean onePerCustomer) {
-		this.onePerCustomer = onePerCustomer;
-	}
+    public void setOnePerCustomer(boolean onePerCustomer) {
+        this.onePerCustomer = onePerCustomer;
+    }
 
-	public boolean isOnePerOrder() {
-		return onePerOrder;
-	}
+    public boolean isOnePerOrder() {
+        return onePerOrder;
+    }
 
-	public void setOnePerOrder(boolean onePerOrder) {
-		this.onePerOrder = onePerOrder;
-	}
+    public void setOnePerOrder(boolean onePerOrder) {
+        this.onePerOrder = onePerOrder;
+    }
 
-	public Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -151,12 +150,12 @@ public class ItemTypeWS implements Serializable {
     }
 
     public boolean isGlobal() {
-		return global;
-	}
+        return global;
+    }
 
-	public void setGlobal(boolean global) {
-		this.global = global;
-	}
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
 
     public boolean isInternal() {
         return internal;
@@ -174,13 +173,13 @@ public class ItemTypeWS implements Serializable {
         this.entityId = entityId;
     }
 
-	public Set<Integer> getEntities() {
-		return entities;
-	}
+    public Set<Integer> getEntities() {
+        return entities;
+    }
 
-	public void setEntities(Set<Integer> entities) {
-		this.entities = entities;
-	}
+    public void setEntities(Set<Integer> entities) {
+        this.entities = entities;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -189,13 +188,14 @@ public class ItemTypeWS implements Serializable {
 
         if (o == null || getClass() != o.getClass())
             return false;
-        
+
         ItemTypeWS that = (ItemTypeWS) o;
 
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (!id.equals(that.id)) return false;
         if (!orderLineTypeId.equals(that.orderLineTypeId)) return false;
-        if (parentItemTypeId != null ? !parentItemTypeId.equals(that.parentItemTypeId) : that.parentItemTypeId != null) return false;
+        if (parentItemTypeId != null ? !parentItemTypeId.equals(that.parentItemTypeId) : that.parentItemTypeId != null)
+            return false;
 
         return true;
     }

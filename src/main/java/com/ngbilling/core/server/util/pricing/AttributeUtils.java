@@ -24,16 +24,15 @@
 
 package com.ngbilling.core.server.util.pricing;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.ngbilling.core.server.validator.metafield.ValidationRuleModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.BigDecimalValidator;
 import org.joda.time.LocalTime;
 
-import com.ngbilling.core.server.validator.metafield.ValidationRuleModel;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Simple utilities for parsing price model attributes.
@@ -89,12 +88,12 @@ public class AttributeUtils {
 
         // throw new validation exception with complete error list
         if (!errors.isEmpty()) {
-            throw new Exception(holder + " attributes failed validation."+
+            throw new Exception(holder + " attributes failed validation." +
                     errors.toArray(new String[errors.size()]));
         }
     }
 
-    public static LocalTime getTime(Map<String, String> attributes, String name) throws Exception{
+    public static LocalTime getTime(Map<String, String> attributes, String name) throws Exception {
         return parseTime(attributes.get(name));
     }
 
@@ -105,22 +104,22 @@ public class AttributeUtils {
      * @return parsed LocalTime
      * @throws Exception if value cannot be parsed as LocalTime
      */
-    public static LocalTime parseTime(String value) throws Exception{
+    public static LocalTime parseTime(String value) throws Exception {
         String[] time = value.split(":");
 
         if (time.length != 2)
-            throw new Exception("Cannot parse attribute value '" + value + "' as a time of day."+
+            throw new Exception("Cannot parse attribute value '" + value + "' as a time of day." +
                     new String[]{"validation.error.not.time.of.day"});
 
         try {
             return new LocalTime(Integer.valueOf(time[0]), Integer.valueOf(time[1]));
         } catch (NumberFormatException e) {
-            throw new Exception("Cannot parse attribute value '" + value + "' as a time of day."+
+            throw new Exception("Cannot parse attribute value '" + value + "' as a time of day." +
                     new String[]{"validation.error.not.time.of.day"});
         }
     }
 
-    public static Integer getInteger(Map<String, String> attributes, String name) throws Exception{
+    public static Integer getInteger(Map<String, String> attributes, String name) throws Exception {
         return parseInteger(attributes.get(name));
     }
 
@@ -133,7 +132,7 @@ public class AttributeUtils {
      * @param checkEmpty
      * @return
      */
-    public static Integer getInteger(Map<String, String> attributes, String name, boolean checkEmpty) throws Exception{
+    public static Integer getInteger(Map<String, String> attributes, String name, boolean checkEmpty) throws Exception {
         return parseInteger(attributes.get(name), checkEmpty);
     }
 
@@ -144,12 +143,12 @@ public class AttributeUtils {
      * @return parsed integer
      * @throws Exception if value cannot be parsed as an integer
      */
-    public static Integer parseInteger(String value) throws Exception{
+    public static Integer parseInteger(String value) throws Exception {
         if (value != null) {
             try {
                 return Integer.valueOf(value);
             } catch (NumberFormatException e) {
-                throw new Exception("Cannot parse attribute value '" + value + "' as an integer."+
+                throw new Exception("Cannot parse attribute value '" + value + "' as an integer." +
                         new String[]{"validation.error.not.a.integer"});
             }
         }
@@ -164,20 +163,20 @@ public class AttributeUtils {
      * @param checkEmpty
      * @return
      */
-    public static Integer parseInteger(String value, boolean checkEmpty) throws Exception{
+    public static Integer parseInteger(String value, boolean checkEmpty) throws Exception {
         if (value != null) {
             try {
                 if (checkEmpty && !value.trim().isEmpty())
                     return Integer.valueOf(value);
             } catch (NumberFormatException e) {
-                throw new Exception("Cannot parse attribute value '" + value + "' as an integer."+
+                throw new Exception("Cannot parse attribute value '" + value + "' as an integer." +
                         new String[]{"validation.error.not.a.integer"});
             }
         }
         return null;
     }
 
-    public static BigDecimal getDecimal(Map<String, String> attributes, String name) throws Exception{
+    public static BigDecimal getDecimal(Map<String, String> attributes, String name) throws Exception {
         return parseDecimal(attributes.get(name));
     }
 
@@ -188,7 +187,7 @@ public class AttributeUtils {
      * @return parsed integer
      * @throws Exception if value cannot be parsed as an BigDecimal
      */
-    public static BigDecimal parseDecimal(String value) throws Exception{
+    public static BigDecimal parseDecimal(String value) throws Exception {
         if (value != null) {
             try {
                 if (StringUtils.isEmpty(value)) {
@@ -203,7 +202,7 @@ public class AttributeUtils {
                         Double max = +999999999999.9999999999d; //12 integer, 10 fraction
 
                         if (!validator.isInRange(decimalValue, min, max))
-                            throw new Exception("Cannot parse attribute value '" + decimalValue + "' as a decimal number."+ 
+                            throw new Exception("Cannot parse attribute value '" + decimalValue + "' as a decimal number." +
                                     new String[]{"validation.error.invalid.rate.or.fraction"});
                     }
                     return decimalValue;
@@ -228,9 +227,9 @@ public class AttributeUtils {
             throws Exception {
         String strategyName = strategy.getClass().getSimpleName();
         List<String> errors = new ArrayList<>();
-        List<AttributeDefinition> definitions= strategy.getAttributeDefinitions();
-        for (AttributeDefinition definition: definitions) {
-            String name=definition.getName();
+        List<AttributeDefinition> definitions = strategy.getAttributeDefinitions();
+        for (AttributeDefinition definition : definitions) {
+            String name = definition.getName();
             String value = attributes.get(name);
 
             // validate required attributes
@@ -261,7 +260,7 @@ public class AttributeUtils {
 
         // throw new validation exception with complete error list
         if (!errors.isEmpty()) {
-            throw new Exception(strategyName + " attributes failed validation."+
+            throw new Exception(strategyName + " attributes failed validation." +
                     errors);
         }
     }

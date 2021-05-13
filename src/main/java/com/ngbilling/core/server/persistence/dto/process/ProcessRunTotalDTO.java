@@ -23,46 +23,32 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
+import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
-
 @Entity
 @TableGenerator(
-        name = "process_run_total_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "process_run_total", 
+        name = "process_run_total_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "process_run_total",
         allocationSize = 100)
 @Table(name = "process_run_total")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProcessRunTotalDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private ProcessRunDTO processRun;
     private CurrencyDTO currencyDTO;
     private BigDecimal totalInvoiced;
@@ -71,7 +57,7 @@ public class ProcessRunTotalDTO implements java.io.Serializable {
 
     private Set<ProcessRunTotalPmDTO> totalsPaymentMethod = new HashSet<ProcessRunTotalPmDTO>(0);
     private int versionNum;
-    
+
     public ProcessRunTotalDTO() {
     }
 
@@ -148,17 +134,17 @@ public class ProcessRunTotalDTO implements java.io.Serializable {
         this.totalNotPaid = totalNotPaid;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="processRunTotal")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "processRunTotal")
     public Set<ProcessRunTotalPmDTO> getTotalsPaymentMethod() {
         return totalsPaymentMethod;
     }
-    
+
     public void setTotalsPaymentMethod(Set<ProcessRunTotalPmDTO> totalsPaymentMethod) {
         this.totalsPaymentMethod = totalsPaymentMethod;
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

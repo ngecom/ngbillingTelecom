@@ -23,20 +23,13 @@
  */
 package com.ngbilling.core.server.persistence.dto.invoice;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 
 @Entity
@@ -45,10 +38,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class InvoiceLineTypeDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private String description;
     private int orderPosition;
     private Set<InvoiceLineDTO> invoiceLines = new HashSet<InvoiceLineDTO>(0);
@@ -67,7 +60,7 @@ public class InvoiceLineTypeDTO implements Serializable {
     }
 
     public InvoiceLineTypeDTO(int id, String description, int orderPosition,
-            Set<InvoiceLineDTO> invoiceLines) {
+                              Set<InvoiceLineDTO> invoiceLines) {
         this.id = id;
         this.description = description;
         this.orderPosition = orderPosition;

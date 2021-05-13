@@ -1,61 +1,59 @@
 package com.ngbilling.core.payload.request.configuration;
 
 /**
- * 
  * @author Khurram Cheema
- *
  */
-public class PluggableTaskTypeWS implements java.io.Serializable{
+public class PluggableTaskTypeWS implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private String className;
-	private Integer minParameters;
-	private Integer categoryId;
-	
-	public PluggableTaskTypeWS(){
-		
-	}
-	
-	@Override
-	public String toString(){
-		return "PluggableTaskTypeWS [id: "+this.id+",className: "+this.className
-				+", minParameters: "+this.minParameters
-				+", categoryId: "+this.categoryId+" ]";
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private String className;
+    private Integer minParameters;
+    private Integer categoryId;
 
-	public Integer getId() {
-		return id;
-	}
+    public PluggableTaskTypeWS() {
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    }
 
-	public String getClassName() {
-		return className;
-	}
+    @Override
+    public String toString() {
+        return "PluggableTaskTypeWS [id: " + this.id + ",className: " + this.className
+                + ", minParameters: " + this.minParameters
+                + ", categoryId: " + this.categoryId + " ]";
+    }
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getMinParameters() {
-		return minParameters;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setMinParameters(Integer minParameters) {
-		this.minParameters = minParameters;
-	}
+    public String getClassName() {
+        return className;
+    }
 
-	public Integer getCategoryId() {
-		return categoryId;
-	}
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
-	}
+    public Integer getMinParameters() {
+        return minParameters;
+    }
+
+    public void setMinParameters(Integer minParameters) {
+        this.minParameters = minParameters;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 }

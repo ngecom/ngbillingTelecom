@@ -20,11 +20,11 @@ import java.util.List;
 
 public class Format {
     private List<FormatField> fields = null;
-    
+
     public Format() {
         fields = new ArrayList<FormatField>();
     }
-    
+
     public void addField(FormatField newField) {
         fields.add(newField);
     }
@@ -32,10 +32,10 @@ public class Format {
     public List<FormatField> getFields() {
         return fields;
     }
-    
+
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        for (FormatField field: fields) {
+        for (FormatField field : fields) {
             sb.append("field: ").append(field.toString()).append("\n");
         }
         return sb.toString();

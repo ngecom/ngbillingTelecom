@@ -24,14 +24,9 @@
 
 package com.ngbilling.core.server.util.validator;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import java.lang.annotation.*;
 
 /**
  * DateRange
@@ -39,7 +34,7 @@ import javax.validation.Payload;
  * @author Brian Cowdery
  * @since 26/01/11
  */
-@Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = DateRangeValidator.class)
 @Documented
@@ -50,12 +45,14 @@ public @interface DateRange {
 
     /**
      * Field name of the start date
+     *
      * @return start date field
      */
     String start();
 
     /**
      * Field name of the end date
+     *
      * @return end date field
      */
     String end();

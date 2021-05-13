@@ -25,92 +25,35 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.io.Serializable;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.ngbilling.core.server.persistence.dao.util.InternationalDescriptionDAO;
 import com.ngbilling.core.server.persistence.dao.util.JbillingTableDAO;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+
 @Component
 public abstract class AbstractDescription implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String description = null;
-	@Autowired
-	private JbillingTableDAO jbillingDAO;
-	
-	@Autowired
-	private InternationalDescriptionDAO internationalDescriptionDAO;
-	
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private String description = null;
+
     abstract public int getId();
+
     abstract protected String getTable();
 
-    /**
-     * Returns the InternationalDescriptionDTO for the given language and label for this entity.
-     *
-     * @param languageId language id
-     * @param label psudo column label
-     * @return description DTO
-     */
-    public InternationalDescriptionDTO getDescriptionDTO(Integer languageId, String label) {
-        JbillingTable table = jbillingDAO.findByName(getTable());
-        return internationalDescriptionDAO.findIt(table.getId(), getId(), label, languageId);
-    }
-
-    /**
-     * Returns the InternationalDescriptionDTO for the given language and default "description"
-     * label for this entity.
-     *
-     * @param languageId language id
-     * @return description DTO
-     */
-    public InternationalDescriptionDTO getDescriptionDTO(Integer languageId) {
-        return getDescriptionDTO(languageId, "description");
-    }
-
-    /**
+      /**
      * Returns the default english description for this entity. This method caches the description
      * in a local variable so that it can quickly be retrieved on subsequent calls.
      *
      * @return english description string
      */
     public String getDescription() {
-        if (description == null) {
-        	description = getDescription(ServerConstants.LANGUAGE_ENGLISH_ID);
-        }
         return description;
-        
-    }
 
-    /**
-     * Returns the description string for the given language for this entity.
-     *
-     * @param languageId language id
-     * @return description string
-     */
-    public String getDescription(Integer languageId) {
-        InternationalDescriptionDTO description = getDescriptionDTO(languageId);
-        return description != null ? description.getContent() : ( !ServerConstants.LANGUAGE_ENGLISH_ID.equals(languageId) ? getDescription(ServerConstants.LANGUAGE_ENGLISH_ID) : null) ;
-    }
-
-    /**
-     * Returns the string for the given language and the given label for this entity.
-     *
-     * @param languageId language id
-     * @param label psudo column label
-     * @return description string
-     */
-    public String getDescription(Integer languageId, String label) {
-        InternationalDescriptionDTO description = getDescriptionDTO(languageId, label);
-		if (description == null && !ServerConstants.LANGUAGE_ENGLISH_ID.equals(languageId)) {
-        	description = getDescriptionDTO(ServerConstants.LANGUAGE_ENGLISH_ID, label);
-        }
-        return description != null ? description.getContent() : null;
-        
     }
 
     /**
@@ -122,28 +65,5 @@ public abstract class AbstractDescription implements Serializable {
         description = text;
     }
 
-    /**
-     * Updates and saves the description for the given language id.
-     *
-     * @param content text description
-     * @param languageId language id
-     */
-    public void setDescription(String content, Integer languageId) {
-        setDescription("description", languageId, content);
-    }
-
-    /**
-     * Updates ands aves the description for the given label (psudo column), and language id.
-     *
-     * @param label psudo column label
-     * @param languageId language id
-     * @param content text description
-     */
-    public void setDescription(String label, Integer languageId, String content) {
-        JbillingTable table = jbillingDAO.findByName(getTable());
-        InternationalDescriptionId id = new InternationalDescriptionId(table.getId(), getId(), label, languageId);
-        InternationalDescriptionDTO desc = new InternationalDescriptionDTO(id, content);
-        internationalDescriptionDAO.save(desc);
-    }
 
 }

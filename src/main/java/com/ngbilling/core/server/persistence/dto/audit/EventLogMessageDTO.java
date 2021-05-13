@@ -23,60 +23,53 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.audit;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="event_log_message")
+@Table(name = "event_log_message")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class EventLogMessageDTO extends AbstractDescription {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id 
-    @Column(name="id", unique=true, nullable=false)
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     private int id;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="eventLogMessage")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventLogMessage")
     private Set<EventLogDTO> eventLogs = new HashSet<EventLogDTO>(0);
+
+    protected EventLogMessageDTO() {
+    }
+
+    public EventLogMessageDTO(int id) {
+        this.id = id;
+    }
+
+    public EventLogMessageDTO(int id, Set<EventLogDTO> eventLogs) {
+        this.id = id;
+        this.eventLogs = eventLogs;
+    }
 
     @Override
     protected String getTable() {
         return ServerConstants.TABLE_EVENT_LOG_MESSAGE;
     }
 
-    protected EventLogMessageDTO() {
-    }
-    
-    public EventLogMessageDTO(int id) {
-        this.id = id;
-    }
-    public EventLogMessageDTO(int id, Set<EventLogDTO> eventLogs) {
-       this.id = id;
-       this.eventLogs = eventLogs;
-    }
-   
     public int getId() {
         return this.id;
     }
-    
+
     public Set<EventLogDTO> getEventLogs() {
         return this.eventLogs;
     }

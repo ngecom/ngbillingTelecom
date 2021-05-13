@@ -24,27 +24,14 @@
 
 package com.ngbilling.core.server.persistence.dto.metafield;
 
-import java.io.Serializable;
-
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
 import com.ngbilling.core.common.exception.MetaFieldException;
 import com.ngbilling.core.payload.request.metafield.MetaFieldType;
 import com.ngbilling.core.server.util.metafield.MetaContent;
 import com.ngbilling.core.server.validator.metafield.ValidationReport;
 import com.ngbilling.core.server.validator.metafield.ValidationRuleModel;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * MetaFieldValue contains the user-defined value to store for a meta field name-value pair.
@@ -68,6 +55,7 @@ public abstract class MetaFieldValue<T> implements Serializable {
 
     private Integer id;
     private MetaField field;
+
     protected MetaFieldValue() {
     }
 
@@ -90,8 +78,8 @@ public abstract class MetaFieldValue<T> implements Serializable {
     public MetaField getField() {
         return field;
     }
-    
-      public void setField(MetaField field) {
+
+    public void setField(MetaField field) {
         this.field = field;
     }
 
@@ -103,7 +91,9 @@ public abstract class MetaFieldValue<T> implements Serializable {
 
     @Transient
     abstract public T getValue();
+
     abstract public void setValue(T value);
+
     @Transient
     abstract public boolean isEmpty();
 
@@ -114,7 +104,7 @@ public abstract class MetaFieldValue<T> implements Serializable {
                 && (null == this.getValue() || this.isEmpty())) {
 
             String error = "MetaFieldValue,value,value.cannot.be.null," + field.getName();
-            throw new MetaFieldException("Field value failed validation.", new String[]{ error });
+            throw new MetaFieldException("Field value failed validation.", new String[]{error});
         }
 
         ValidationRule rule = getField().getValidationRule();
@@ -127,14 +117,14 @@ public abstract class MetaFieldValue<T> implements Serializable {
                 source, this.getValue(), getField().getValidationRule(), languageId);
 
         if (validationReport != null && !validationReport.getErrors().isEmpty()) {
-        	throw new MetaFieldException("Field value failed validation.",
+            throw new MetaFieldException("Field value failed validation.",
                     validationReport.getErrors().toArray(new String[validationReport.getErrors().size()]));
         }
     }
 
     @Override
     public String toString() {
-        String metaFieldValue = ( field.getFieldUsage() == MetaFieldType.PAYMENT_CARD_NUMBER ) ? "******" :String.valueOf(getValue());
+        String metaFieldValue = (field.getFieldUsage() == MetaFieldType.PAYMENT_CARD_NUMBER) ? "******" : String.valueOf(getValue());
         return "MetaFieldValue{" +
                 "name=" + field +
                 ", value=" + metaFieldValue +

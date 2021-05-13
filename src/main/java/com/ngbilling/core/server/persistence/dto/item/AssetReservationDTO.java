@@ -15,27 +15,13 @@
  */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Fernando G. Morales on 10/24/14.
@@ -63,10 +49,10 @@ import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 public class AssetReservationDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private UserDTO user;
     private UserDTO creator;
     private AssetDTO asset;
@@ -145,7 +131,7 @@ public class AssetReservationDTO implements Serializable {
     }
 
     @Version
-    @Column(name="optlock")
+    @Column(name = "optlock")
     public int getVersionNum() {
         return versionNum;
     }

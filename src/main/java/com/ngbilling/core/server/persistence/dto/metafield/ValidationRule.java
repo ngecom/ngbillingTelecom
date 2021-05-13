@@ -1,47 +1,26 @@
 package com.ngbilling.core.server.persistence.dto.metafield;
 
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.util.ServerConstants;
+import com.ngbilling.core.server.validator.metafield.ValidationRuleType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.SortNatural;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.MapKey;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortNatural;
-import org.hibernate.annotations.SortType;
-
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.util.ServerConstants;
-import com.ngbilling.core.server.validator.metafield.ValidationRuleType;
-
 /**
- *  Validation rule entity
- *  </p>
- *  Consist of error message and validation rule type
- *  along with rules attributes used in validation
+ * Validation rule entity
+ * </p>
+ * Consist of error message and validation rule type
+ * along with rules attributes used in validation
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 @Entity
 @Table(name = "validation_rule")
@@ -55,13 +34,13 @@ import com.ngbilling.core.server.validator.metafield.ValidationRuleType;
 )
 public class ValidationRule extends AbstractDescription implements Serializable {
 
-    public static final String ERROR_MSG_LABEL= "errorMessage";
+    public static final String ERROR_MSG_LABEL = "errorMessage";
 
     private int id;
 
     private ValidationRuleType ruleType;
 
-	private SortedMap<String, String> ruleAttributes = new TreeMap<String, String>();
+    private SortedMap<String, String> ruleAttributes = new TreeMap<String, String>();
     private boolean enabled = true;
 
     // transient, used for errors international description
@@ -71,13 +50,13 @@ public class ValidationRule extends AbstractDescription implements Serializable 
 
     public ValidationRule() {
     }
-    
+
 
     public ValidationRule(ValidationRuleType ruleType, boolean enabled) {
-		super();
-		this.ruleType = ruleType;
-		this.enabled = enabled;
-	}
+        super();
+        this.ruleType = ruleType;
+        this.enabled = enabled;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "validation_rule_GEN")
@@ -124,22 +103,24 @@ public class ValidationRule extends AbstractDescription implements Serializable 
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
 
     @Transient
     public String getErrorMessage(int langId) {
-        return getDescription(langId, ERROR_MSG_LABEL);
+        //return getDescription(langId, ERROR_MSG_LABEL);
+        return null;
     }
 
     @Transient
     public void setErrorMessage(Integer languageId, String error) {
-        setDescription(ERROR_MSG_LABEL, languageId, error);
+        //setDescription(ERROR_MSG_LABEL, languageId, error);
     }
 
     // temp methods

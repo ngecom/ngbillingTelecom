@@ -30,11 +30,11 @@ import java.time.ZoneId;
 
 public class DateConvertUtils {
 
-    public static LocalDate asLocalDate (java.util.Date date) {
+    public static LocalDate asLocalDate(java.util.Date date) {
         return asLocalDate(date, ZoneId.systemDefault());
     }
 
-    public static LocalDate asLocalDate (java.util.Date date, ZoneId zone) {
+    public static LocalDate asLocalDate(java.util.Date date, ZoneId zone) {
         if (date == null)
             return null;
 
@@ -44,7 +44,7 @@ public class DateConvertUtils {
             return Instant.ofEpochMilli(date.getTime()).atZone(zone).toLocalDate();
     }
 
-    public static java.util.Date asUtilDate (LocalDate date) {
+    public static java.util.Date asUtilDate(LocalDate date) {
         return java.util.Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 

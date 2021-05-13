@@ -24,17 +24,15 @@
 
 package com.ngbilling.core.payload.request.util;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import com.ngbilling.core.common.util.Util;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.ngbilling.core.common.util.Util;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * CurrencyWS
@@ -45,11 +43,11 @@ import com.ngbilling.core.common.util.Util;
 public class CurrencyWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
+    private Integer id;
 
     @NotNull(message = "validation.error.notnull")
     private String description;
@@ -128,12 +126,8 @@ public class CurrencyWS implements Serializable {
         return rate;
     }
 
-    public BigDecimal getRateAsDecimal() {
-        return Util.string2decimal(rate);
-    }
-
     public void setRate(String rate) {
-        if(!StringUtils.isEmpty(rate)) {
+        if (!StringUtils.isEmpty(rate)) {
             this.rate = rate;
         } else {
             this.rate = null;
@@ -144,6 +138,10 @@ public class CurrencyWS implements Serializable {
         this.rate = (rate != null ? rate.toString() : null);
     }
 
+    public BigDecimal getRateAsDecimal() {
+        return Util.string2decimal(rate);
+    }
+
     public void setRateAsDecimal(BigDecimal rate) {
         setRate(rate);
     }
@@ -152,16 +150,16 @@ public class CurrencyWS implements Serializable {
         return sysRate;
     }
 
-    public BigDecimal getSysRateAsDecimal() {
-        return Util.string2decimal(sysRate);
-    }
-
     public void setSysRate(String sysRate) {
         this.sysRate = sysRate;
     }
 
     public void setSysRate(BigDecimal systemRate) {
         this.sysRate = (systemRate != null ? systemRate.toString() : null);
+    }
+
+    public BigDecimal getSysRateAsDecimal() {
+        return Util.string2decimal(sysRate);
     }
 
     public void setSysRateAsDecimal(BigDecimal systemRate) {
@@ -191,15 +189,15 @@ public class CurrencyWS implements Serializable {
     @Override
     public String toString() {
         return "CurrencyWS{"
-               + "id=" + id
-               + ", symbol='" + symbol + '\''
-               + ", code='" + code + '\''
-               + ", countryCode='" + countryCode + '\''
-               + ", inUse=" + inUse
-               + ", rate='" + rate + '\''
-               + ", systemRate='" + sysRate + '\''
-               + ", isDefaultCurrency=" + defaultCurrency
-               + ", fromDate=" + fromDate
-               + '}';
+                + "id=" + id
+                + ", symbol='" + symbol + '\''
+                + ", code='" + code + '\''
+                + ", countryCode='" + countryCode + '\''
+                + ", inUse=" + inUse
+                + ", rate='" + rate + '\''
+                + ", systemRate='" + sysRate + '\''
+                + ", isDefaultCurrency=" + defaultCurrency
+                + ", fromDate=" + fromDate
+                + '}';
     }
 }

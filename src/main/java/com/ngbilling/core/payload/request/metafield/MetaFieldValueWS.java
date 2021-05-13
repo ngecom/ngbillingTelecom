@@ -24,23 +24,18 @@
 
 package com.ngbilling.core.payload.request.metafield;
 
-import static org.springframework.util.ObjectUtils.nullSafeEquals;
-import static org.springframework.util.ObjectUtils.nullSafeHashCode;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import com.ngbilling.core.common.util.Util;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
 
-import com.ngbilling.core.common.util.Util;
+import static org.springframework.util.ObjectUtils.nullSafeEquals;
+import static org.springframework.util.ObjectUtils.nullSafeHashCode;
 
 /**
  * @author Alexander Aksenov
@@ -50,7 +45,7 @@ public class MetaFieldValueWS implements Serializable {
 
     private static final long serialVersionUID = 20130704L;
 
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Size(min = 1, max = 100, message = "validation.error.size,1,100")
     private String fieldName;
     private Integer groupId;
@@ -66,7 +61,7 @@ public class MetaFieldValueWS implements Serializable {
     private String stringValue;
     private Date dateValue;
     private Boolean booleanValue;
-    @Digits(integer = 12, fraction = 10, message="validation.error.not.a.number")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     private String decimalValue;
     private Integer integerValue;
     private String[] listValue;
@@ -75,25 +70,25 @@ public class MetaFieldValueWS implements Serializable {
     }
 
     public MetaFieldValueWS clone() {
-    	MetaFieldValueWS ws = new MetaFieldValueWS();
-    	ws.setFieldName(this.fieldName);
-    	ws.setGroupId(this.groupId);
-    	ws.setDisabled(this.disabled);
-    	ws.setMandatory(this.mandatory);
-    	ws.setDisplayOrder(this.displayOrder);
-    	ws.setDataType(this.dataType);
-    	ws.setDefaultValue(this.defaultValue);
-    	
-    	ws.setStringValue(this.stringValue);
-    	ws.setDateValue(this.dateValue);
-    	ws.setBooleanValue(this.booleanValue);
-    	ws.setDecimalValue(this.decimalValue);
-    	ws.setIntegerValue(this.integerValue);
-    	ws.setListValue(this.listValue);
-    	
-    	return ws;
+        MetaFieldValueWS ws = new MetaFieldValueWS();
+        ws.setFieldName(this.fieldName);
+        ws.setGroupId(this.groupId);
+        ws.setDisabled(this.disabled);
+        ws.setMandatory(this.mandatory);
+        ws.setDisplayOrder(this.displayOrder);
+        ws.setDataType(this.dataType);
+        ws.setDefaultValue(this.defaultValue);
+
+        ws.setStringValue(this.stringValue);
+        ws.setDateValue(this.dateValue);
+        ws.setBooleanValue(this.booleanValue);
+        ws.setDecimalValue(this.decimalValue);
+        ws.setIntegerValue(this.integerValue);
+        ws.setListValue(this.listValue);
+
+        return ws;
     }
-    
+
     public String getFieldName() {
         return fieldName;
     }
@@ -233,13 +228,12 @@ public class MetaFieldValueWS implements Serializable {
         return decimalValue;
     }
 
-    public BigDecimal getDecimalValueAsDecimal() {
-        return Util.string2decimal(decimalValue);
-    }
-
-
     public void setDecimalValue(String decimalValue) {
         this.decimalValue = decimalValue;
+    }
+
+    public BigDecimal getDecimalValueAsDecimal() {
+        return Util.string2decimal(decimalValue);
     }
 
     public void setBigDecimalValue(BigDecimal decimalValue) {
@@ -305,17 +299,17 @@ public class MetaFieldValueWS implements Serializable {
 
         if (disabled != that.disabled) return false;
         if (mandatory != that.mandatory) return false;
-        if (! nullSafeEquals(booleanValue, that.booleanValue)) return false;
+        if (!nullSafeEquals(booleanValue, that.booleanValue)) return false;
         if (dataType != that.dataType) return false;
-        if (! nullSafeEquals(dateValue, that.dateValue)) return false;
-        if (! nullSafeEquals(decimalValue, that.decimalValue)) return false;
-        if (! nullSafeEquals(defaultValue, that.defaultValue)) return false;
-        if (! nullSafeEquals(displayOrder, that.displayOrder)) return false;
+        if (!nullSafeEquals(dateValue, that.dateValue)) return false;
+        if (!nullSafeEquals(decimalValue, that.decimalValue)) return false;
+        if (!nullSafeEquals(defaultValue, that.defaultValue)) return false;
+        if (!nullSafeEquals(displayOrder, that.displayOrder)) return false;
         if (!fieldName.equals(that.fieldName)) return false;
-        if (! nullSafeEquals(groupId, that.groupId)) return false;
-        if (! nullSafeEquals(integerValue, that.integerValue)) return false;
+        if (!nullSafeEquals(groupId, that.groupId)) return false;
+        if (!nullSafeEquals(integerValue, that.integerValue)) return false;
         if (!Arrays.equals(listValue, that.listValue)) return false;
-        if (! nullSafeEquals(stringValue, that.stringValue)) return false;
+        if (!nullSafeEquals(stringValue, that.stringValue)) return false;
 
         return true;
     }

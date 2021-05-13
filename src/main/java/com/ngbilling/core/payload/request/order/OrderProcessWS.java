@@ -37,10 +37,10 @@ import java.util.Date;
 public class OrderProcessWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer billingProcessId;
     private Integer orderId;
     private Integer invoiceId;
@@ -128,14 +128,14 @@ public class OrderProcessWS implements Serializable {
     @Override
     public String toString() {
         return "OrderProcessWS{"
-               + "id=" + id
-               + ", orderId=" + orderId
-               + ", invoiceId=" + invoiceId
-               + ", periodsIncluded=" + periodsIncluded
-               + ", periodStart=" + periodStart
-               + ", periodEnd=" + periodEnd
-               + ", isReview=" + isReview
-               + ", origin=" + origin
-               + '}';
+                + "id=" + id
+                + ", orderId=" + orderId
+                + ", invoiceId=" + invoiceId
+                + ", periodsIncluded=" + periodsIncluded
+                + ", periodStart=" + periodStart
+                + ", periodEnd=" + periodEnd
+                + ", isReview=" + isReview
+                + ", origin=" + origin
+                + '}';
     }
 }

@@ -16,9 +16,9 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
-import java.util.Date;
-
 import com.ngbilling.core.server.persistence.dto.mediation.MediationConfiguration;
+
+import java.util.Date;
 
 /**
  * MediationConfigurationWS
@@ -26,13 +26,13 @@ import com.ngbilling.core.server.persistence.dto.mediation.MediationConfiguratio
  * @author Brian Cowdery
  * @since 21-10-2010
  */
-public class MediationConfigurationWS{
+public class MediationConfigurationWS {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer entityId;
     private Integer pluggableTaskId;
     private String name;
@@ -50,7 +50,7 @@ public class MediationConfigurationWS{
         this.name = dto.getName();
         this.orderValue = dto.getOrderValue();
         this.createDatetime = dto.getCreateDatetime();
-        this.versionNum= dto.getVersionNum();
+        this.versionNum = dto.getVersionNum();
     }
 
     public Integer getId() {
@@ -107,12 +107,13 @@ public class MediationConfigurationWS{
 
     /**
      * Unsupported, web-service security enforced using {@link #getOwningEntityId()}
+     *
      * @return null
      */
     public Integer getOwningUserId() {
         return null;
     }
-    
+
     public Integer getVersionNum() {
         return versionNum;
     }
@@ -124,13 +125,13 @@ public class MediationConfigurationWS{
     @Override
     public String toString() {
         return "MediationConfigurationWS{"
-               + "id=" + id
-               + ", entityId=" + entityId
-               + ", pluggableTaskId=" + pluggableTaskId
-               + ", name='" + name + '\''
-               + ", orderValue=" + orderValue
-               + ", createDatetime=" + createDatetime
-               + ", versionNum=" + versionNum
-               + '}';
+                + "id=" + id
+                + ", entityId=" + entityId
+                + ", pluggableTaskId=" + pluggableTaskId
+                + ", name='" + name + '\''
+                + ", orderValue=" + orderValue
+                + ", createDatetime=" + createDatetime
+                + ", versionNum=" + versionNum
+                + '}';
     }
 }

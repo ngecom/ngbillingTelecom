@@ -1,24 +1,22 @@
 package com.ngbilling.core.payload.request.metafield;
 
+import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.validation.constraints.NotNull;
-
-import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
-
-
 
 /**
  * WS class from ValidationRule
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public class ValidationRuleWS implements Serializable {
-	
-	public static final String ERROR_MSG_LABEL= "errorMessage";
+
+    public static final String ERROR_MSG_LABEL = "errorMessage";
     private int id;
     @NotNull(message = "validation.error.null.rule.type")
     private String ruleType;
@@ -31,7 +29,7 @@ public class ValidationRuleWS implements Serializable {
     public ValidationRuleWS() {
     }
 
-   
+
     public int getId() {
         return id;
     }
@@ -69,7 +67,7 @@ public class ValidationRuleWS implements Serializable {
     }
 
     public void addErrorMessage(int langId, String errorMessage) {
-        InternationalDescriptionWS errorMessageWS=new InternationalDescriptionWS(ERROR_MSG_LABEL, langId, errorMessage);
+        InternationalDescriptionWS errorMessageWS = new InternationalDescriptionWS(ERROR_MSG_LABEL, langId, errorMessage);
         this.errorMessages.add(errorMessageWS);
     }
 

@@ -23,45 +23,32 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserStatusDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @TableGenerator(name = "ageing_entity_step_GEN",
-               table = "jbilling_seqs",
-               pkColumnName = "name",
-               valueColumnName = "next_id",
-               pkColumnValue = "ageing_entity_step",
-               allocationSize = 100)
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "ageing_entity_step",
+        allocationSize = 100)
 @Table(name = "ageing_entity_step")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class AgeingEntityStepDTO extends AbstractDescription implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private CompanyDTO company;
     private UserStatusDTO userStatus;
     private int days;
@@ -80,7 +67,7 @@ public class AgeingEntityStepDTO extends AbstractDescription implements Serializ
     }
 
     public AgeingEntityStepDTO(int id, CompanyDTO entity,
-            UserStatusDTO userStatus, int days) {
+                               UserStatusDTO userStatus, int days) {
         this.id = id;
         this.company = entity;
         this.userStatus = userStatus;
