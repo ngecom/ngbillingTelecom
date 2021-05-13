@@ -1,20 +1,19 @@
 package com.ngbilling.core.server.validator.metafield;
 
-import java.math.BigDecimal;
-
 import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
 import com.ngbilling.core.server.util.metafield.MetaContent;
 import com.ngbilling.core.server.util.pricing.AttributeDefinition;
 import com.ngbilling.core.server.util.pricing.AttributeDefinition.Type;
 import com.ngbilling.core.server.util.pricing.AttributeUtils;
 
+import java.math.BigDecimal;
+
 /**
- *  Range validation model
- *  </p>
- *  Validates that a big decimal value is between a range of values provided as attributes
+ * Range validation model
+ * </p>
+ * Validates that a big decimal value is between a range of values provided as attributes
  *
- *  @author Panche Isajeski
- *
+ * @author Panche Isajeski
  */
 public class RangeValidationRuleModel extends AbstractValidationRuleModel<Object> {
 
@@ -63,21 +62,21 @@ public class RangeValidationRuleModel extends AbstractValidationRuleModel<Object
 
     public BigDecimal getValidationMinRangeField(ValidationRule validationRule) {
         try {
-			return AttributeUtils.getDecimal(validationRule.getRuleAttributes(), VALIDATION_MIN_RANGE_FIELD);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            return AttributeUtils.getDecimal(validationRule.getRuleAttributes(), VALIDATION_MIN_RANGE_FIELD);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return null;
     }
 
-    public BigDecimal getValidationMaxRangeField(ValidationRule validationRule){
+    public BigDecimal getValidationMaxRangeField(ValidationRule validationRule) {
         try {
-			return AttributeUtils.getDecimal(validationRule.getRuleAttributes(), VALIDATION_MAX_RANGE_FIELD);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            return AttributeUtils.getDecimal(validationRule.getRuleAttributes(), VALIDATION_MAX_RANGE_FIELD);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return null;
     }
 

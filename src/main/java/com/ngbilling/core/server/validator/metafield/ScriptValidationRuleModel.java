@@ -1,30 +1,28 @@
 package com.ngbilling.core.server.validator.metafield;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
-import org.hibernate.validator.HibernateValidator;
-import org.hibernate.validator.HibernateValidatorConfiguration;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
 import com.ngbilling.core.server.util.metafield.MetaContent;
 import com.ngbilling.core.server.util.pricing.AttributeDefinition;
 import com.ngbilling.core.server.util.pricing.AttributeDefinition.Type;
+import org.hibernate.validator.HibernateValidator;
+import org.hibernate.validator.HibernateValidatorConfiguration;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
- *  Script validation rule model
- *  </p>
- *  Uses grails script to validate a value of an object
+ * Script validation rule model
+ * </p>
+ * Uses grails script to validate a value of an object
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public class ScriptValidationRuleModel extends AbstractValidationRuleModel {
 
@@ -67,8 +65,8 @@ public class ScriptValidationRuleModel extends AbstractValidationRuleModel {
                     .validate(object);
 
             errors = getErrorMessages(constraintViolations);
-        } catch (Exception e){
-            LOG.debug("Invalid script exception : ",e);
+        } catch (Exception e) {
+            LOG.debug("Invalid script exception : ", e);
             e.printStackTrace();
 
             errors = new ArrayList<String>(Arrays.asList("bean.ScriptValidationRuleModel.invalid.message"));
@@ -83,7 +81,7 @@ public class ScriptValidationRuleModel extends AbstractValidationRuleModel {
     private List<String> getErrorMessages(
             Set<ConstraintViolation<Object>> constraintViolations) {
 
-        List<String> errors=new ArrayList<String>();
+        List<String> errors = new ArrayList<String>();
         for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
             errors.add("MetaFieldValue,value," + constraintViolation.getMessage());
         }

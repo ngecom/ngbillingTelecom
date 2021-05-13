@@ -15,24 +15,11 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
 
 @Entity
 @TableGenerator(
@@ -48,33 +35,26 @@ import javax.persistence.Version;
 public class MediationProcess implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_process_GEN")
-    private Integer id;
-
-    @Column(name = "start_datetime")
-    private Date startDatetime;
-
-    @Column(name = "end_datetime")
-    private Date endDatetime;
-
-    @Column(name = "orders_affected")
-    private Integer ordersAffected;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "configuration_id")
-    private MediationConfiguration configuration;
-
+     *
+     */
+    private static final long serialVersionUID = 1L;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "mediation_process_id")
     public Collection<MediationOrderMap> orderMap = new ArrayList<MediationOrderMap>(0);
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "process")
     public Collection<MediationRecordDTO> records = new ArrayList<MediationRecordDTO>(0);
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_process_GEN")
+    private Integer id;
+    @Column(name = "start_datetime")
+    private Date startDatetime;
+    @Column(name = "end_datetime")
+    private Date endDatetime;
+    @Column(name = "orders_affected")
+    private Integer ordersAffected;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "configuration_id")
+    private MediationConfiguration configuration;
     @Version
     @Column(name = "OPTLOCK")
     private Integer versionNum;
@@ -141,6 +121,6 @@ public class MediationProcess implements Serializable {
 
     public String toString() {
         return "MediationProcess= " +
-               " orders affected = " + getOrdersAffected();
+                " orders affected = " + getOrdersAffected();
     }
 }

@@ -24,17 +24,15 @@
 
 package com.ngbilling.core.server.persistence.dto.metafield;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Transient;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.server.service.metafield.MetaFieldService;
 import com.ngbilling.core.server.util.metafield.MetaContent;
 import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.Transient;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Common class for extending by entities that can contain meta-fields. This class enforces a set
@@ -47,10 +45,10 @@ import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
 public abstract class CustomizedEntity implements MetaContent, java.io.Serializable {
 
     private List<MetaFieldValue> metaFields = new LinkedList<MetaFieldValue>();
-    
+
     @Autowired
     private MetaFieldService metaFieldService;
-    
+
     @Autowired
     private MetaFieldHelper metaFieldHelper;
 
@@ -105,7 +103,7 @@ public abstract class CustomizedEntity implements MetaContent, java.io.Serializa
      */
     @Transient
     public void setMetaField(MetaFieldValue field, Integer groupId) {
-    	metaFieldHelper.setMetaField(this, field, groupId);
+        metaFieldHelper.setMetaField(this, field, groupId);
     }
 
     /**
@@ -119,7 +117,7 @@ public abstract class CustomizedEntity implements MetaContent, java.io.Serializa
      */
     @Transient
     public void setMetaField(Integer entityId, Integer groupId, String name, Object value) throws IllegalArgumentException {
-    	metaFieldHelper.setMetaField(entityId, this, groupId, name, value);
+        metaFieldHelper.setMetaField(entityId, this, groupId, name, value);
     }
 
     /**
@@ -129,7 +127,7 @@ public abstract class CustomizedEntity implements MetaContent, java.io.Serializa
      */
     @Transient
     public void updateMetaFieldsWithValidation(Integer entityId, Integer accountTypeId, MetaContent dto) {
-    	metaFieldHelper.updateMetaFieldsWithValidation(entityId, accountTypeId, this, dto);
+        metaFieldHelper.updateMetaFieldsWithValidation(entityId, accountTypeId, this, dto);
     }
 
     /**
@@ -140,13 +138,13 @@ public abstract class CustomizedEntity implements MetaContent, java.io.Serializa
      */
     public void setMetaField(MetaField metaField, Object value) {
         MetaFieldValue metaFieldValue = getMetaField(metaField.getName());
-        if(metaFieldValue == null) {
+        if (metaFieldValue == null) {
             metaFieldValue = metaField.createValue();
         }
         metaFieldValue.setValue(value);
-        
-        if(null != metaFieldValue.getField() && metaFieldValue.getField().isUnique()) {
-        	metaFieldService.validateUniqueMF(metaFieldValue);
+
+        if (null != metaFieldValue.getField() && metaFieldValue.getField().isUnique()) {
+            metaFieldService.validateUniqueMF(metaFieldValue);
         }
 
         setMetaField(metaFieldValue, null);
@@ -160,6 +158,6 @@ public abstract class CustomizedEntity implements MetaContent, java.io.Serializa
      * @param dto
      */
     public void updateMetaFieldsWithValidation(Set<MetaField> metaFields, CustomizedEntity dto) {
-    	metaFieldHelper.updateMetaFieldsWithValidation(metaFields, this, dto);
+        metaFieldHelper.updateMetaFieldsWithValidation(metaFields, this, dto);
     }
 }

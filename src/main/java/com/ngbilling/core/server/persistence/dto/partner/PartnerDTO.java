@@ -23,37 +23,14 @@
  */
 package com.ngbilling.core.server.persistence.dto.partner;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.OrderBy;
-import org.hibernate.boot.model.relational.Exportable;
-
 import com.ngbilling.core.server.persistence.dto.user.CustomerDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import org.hibernate.annotations.OrderBy;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.*;
 
 @SuppressWarnings("serial")
 @Entity
@@ -66,7 +43,7 @@ import com.ngbilling.core.server.persistence.dto.util.EntityType;
         allocationSize = 10
 )
 @Table(name = "partner")
-public class PartnerDTO implements java.io.Serializable{
+public class PartnerDTO implements java.io.Serializable {
     private int id;
 
     private UserDTO baseUserByUserId;
@@ -198,11 +175,11 @@ public class PartnerDTO implements java.io.Serializable{
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    public PartnerType getType () {
+    public PartnerType getType() {
         return type;
     }
 
-    public void setType (PartnerType type) {
+    public void setType(PartnerType type) {
         this.type = type;
     }
 
@@ -227,56 +204,56 @@ public class PartnerDTO implements java.io.Serializable{
 
     @Transient
     public EntityType[] getCustomizedEntityType() {
-        return new EntityType[] { EntityType.AGENT };
+        return new EntityType[]{EntityType.AGENT};
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="partner", orphanRemoval=true)
-    @OrderBy(clause="id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "partner", orphanRemoval = true)
+    @OrderBy(clause = "id")
     public List<CommissionDTO> getCommissions() {
         return commissions;
     }
 
-    public void setCommissions (List<CommissionDTO> commissions) {
+    public void setCommissions(List<CommissionDTO> commissions) {
         this.commissions = commissions;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="partner", orphanRemoval=true)
-    @OrderBy(clause="id")
-    public List<PartnerCommissionExceptionDTO> getCommissionExceptions () {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "partner", orphanRemoval = true)
+    @OrderBy(clause = "id")
+    public List<PartnerCommissionExceptionDTO> getCommissionExceptions() {
         return commissionExceptions;
     }
 
-    public void setCommissionExceptions (List<PartnerCommissionExceptionDTO> commissionExceptions) {
+    public void setCommissionExceptions(List<PartnerCommissionExceptionDTO> commissionExceptions) {
         this.commissionExceptions = commissionExceptions;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="referral", orphanRemoval=true)
-    @OrderBy(clause="id")
-    public List<PartnerReferralCommissionDTO> getReferralCommissions () {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "referral", orphanRemoval = true)
+    @OrderBy(clause = "id")
+    public List<PartnerReferralCommissionDTO> getReferralCommissions() {
         return referralCommissions;
     }
 
-    public void setReferralCommissions (List<PartnerReferralCommissionDTO> referralCommissions) {
+    public void setReferralCommissions(List<PartnerReferralCommissionDTO> referralCommissions) {
         this.referralCommissions = referralCommissions;
     }
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="referrer", orphanRemoval=true)
-    @OrderBy(clause="id")
-    public List<PartnerReferralCommissionDTO> getReferrerCommissions () {
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "referrer", orphanRemoval = true)
+    @OrderBy(clause = "id")
+    public List<PartnerReferralCommissionDTO> getReferrerCommissions() {
         return referrerCommissions;
     }
 
-    public void setReferrerCommissions (List<PartnerReferralCommissionDTO> referrerCommissions) {
+    public void setReferrerCommissions(List<PartnerReferralCommissionDTO> referrerCommissions) {
         this.referrerCommissions = referrerCommissions;
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "commission_type", nullable = true)
-    public PartnerCommissionType getCommissionType () {
+    public PartnerCommissionType getCommissionType() {
         return commissionType;
     }
 
-    public void setCommissionType (PartnerCommissionType commissionType) {
+    public void setCommissionType(PartnerCommissionType commissionType) {
         this.commissionType = commissionType;
     }
 
@@ -291,7 +268,7 @@ public class PartnerDTO implements java.io.Serializable{
         this.versionNum = versionNum;
     }
 
-    /* 
+    /*
      * Inherited from DTOEx
      */
     @Transient
@@ -307,7 +284,7 @@ public class PartnerDTO implements java.io.Serializable{
 
     @Transient
     public String[] getFieldNames() {
-        String names[] = new String[] {
+        String names[] = new String[]{
                 "id",
                 "userName",
                 "firstName",
@@ -317,17 +294,17 @@ public class PartnerDTO implements java.io.Serializable{
                 "totalPayouts",
                 "type",
                 "parentUserName",
-        };    
+        };
         List<String> list = new ArrayList<>(Arrays.asList(names));
-        
+
         return list.toArray(new String[list.size()]);
-   }
+    }
 
     @Transient
     public Object[][] getFieldValues() {
         List<Object[]> values = new ArrayList<Object[]>();
         values.add(
-                new Object[] {
+                new Object[]{
                         id,
                         (getBaseUser().getUserName() != null ? getBaseUser().getUserName() : null),
                         (getBaseUser().getContact() != null ? getBaseUser().getContact().getFirstName() : null),

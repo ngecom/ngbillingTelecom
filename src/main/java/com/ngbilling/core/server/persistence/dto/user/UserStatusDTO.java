@@ -24,28 +24,15 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.server.persistence.dto.process.AgeingEntityStepDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @TableGenerator(name = "user_status_GEN",
@@ -59,10 +46,10 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class UserStatusDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	protected int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    protected int id;
     private int canLogin;
     private AgeingEntityStepDTO ageingEntityStep;
     private Set<UserDTO> baseUsers = new HashSet<UserDTO>(0);
@@ -91,20 +78,21 @@ public class UserStatusDTO extends AbstractDescription implements java.io.Serial
     public void setId(int id) {
         this.id = id;
     }
-    
+
     @Transient
     protected String getTable() {
         return ServerConstants.TABLE_USER_STATUS;
     }
-    
-    @Column(name="can_login", nullable=false)
+
+    @Column(name = "can_login", nullable = false)
     public int getCanLogin() {
         return this.canLogin;
     }
-    
+
     public void setCanLogin(int canLogin) {
         this.canLogin = canLogin;
     }
+
     @OneToOne(mappedBy = "userStatus", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public AgeingEntityStepDTO getAgeingEntityStep() {
         return this.ageingEntityStep;

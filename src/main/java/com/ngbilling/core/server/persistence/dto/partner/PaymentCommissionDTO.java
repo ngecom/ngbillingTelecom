@@ -23,63 +23,53 @@ along with jbilling.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @TableGenerator(
-        name="payment_commission_GEN",
-        table="jbilling_seqs",
+        name = "payment_commission_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="payment_commission",
-        allocationSize=10
+        pkColumnValue = "payment_commission",
+        allocationSize = 10
 )
-@Table(name="payment_commission")
+@Table(name = "payment_commission")
 public class PaymentCommissionDTO {
     private int id;
     private InvoiceDTO invoice;
     private BigDecimal paymentAmount;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="payment_commission_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "payment_commission_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
-    public InvoiceDTO getInvoice () {
+    public InvoiceDTO getInvoice() {
         return invoice;
     }
 
-    public void setInvoice (InvoiceDTO invoice) {
+    public void setInvoice(InvoiceDTO invoice) {
         this.invoice = invoice;
     }
 
-    @Column(name="payment_amount", nullable=false, precision=17, scale=17)
-    public BigDecimal getPaymentAmount () {
+    @Column(name = "payment_amount", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount (BigDecimal paymentAmount) {
+    public void setPaymentAmount(BigDecimal paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 }

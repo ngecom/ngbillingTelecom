@@ -24,39 +24,6 @@
 package com.ngbilling.core.server.persistence.dto.order;
 
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.OrderBy;
-import org.hibernate.boot.model.relational.Exportable;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.common.util.PeriodUnit;
 import com.ngbilling.core.payload.request.item.PricingField;
@@ -72,38 +39,45 @@ import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionDTO;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.OrderBy;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Entity
 @TableGenerator(
-        name="purchase_order_GEN",
-        table="jbilling_seqs",
+        name = "purchase_order_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="purchase_order",
+        pkColumnValue = "purchase_order",
         allocationSize = 100
 )
-@Table(name="purchase_order")
+@Table(name = "purchase_order")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
-public class OrderDTO  implements Serializable {
+public class OrderDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private static FormatLogger LOG = new FormatLogger(OrderDTO.class);
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static FormatLogger LOG = new FormatLogger(OrderDTO.class);
+    @Autowired
+    InvoiceDAO invoiceDAO;
     @Autowired
     private OrderStatusDAO orderStatusDAO;
     @Autowired
     private OrderPeriodDAO orderPeriodDAO;
-    
     @Autowired
     private JbillingTableDAO jbillingTableDAO;
     @Autowired
-	private InternationalDescriptionDAO internationalDescriptionDAO;
-    
-    @Autowired
-    InvoiceDAO invoiceDAO;
-    
+    private InternationalDescriptionDAO internationalDescriptionDAO;
     private Integer id;
     private UserDTO baseUserByUserId;
     private UserDTO baseUserByCreatedBy;
@@ -166,46 +140,6 @@ public class OrderDTO  implements Serializable {
         init(other);
     }
 
-    public void init(OrderDTO other) {
-        this.id = other.getId();
-        this.baseUserByUserId = other.getBaseUserByUserId();
-        this.baseUserByCreatedBy = other.getBaseUserByCreatedBy();
-        this.currencyDTO = other.getCurrency();
-        this.orderStatusDTO = other.getOrderStatus();
-        this.orderPeriodDTO = other.getOrderPeriod();
-        this.orderBillingTypeDTO = other.getOrderBillingType();
-        this.activeSince = other.getActiveSince();
-        this.activeUntil = other.getActiveUntil();
-        this.createDate = other.getCreateDate();
-        this.nextBillableDay = other.getNextBillableDay();
-        this.deleted = other.getDeleted();
-        this.notify = other.getNotify();
-        this.lastNotified = other.getLastNotified();
-        this.notificationStep = other.getNotificationStep();
-        this.dueDateUnitId = other.getDueDateUnitId();
-        this.dueDateValue = other.getDueDateValue();
-        this.dfFm = other.getDfFm();
-        this.anticipatePeriods = other.getAnticipatePeriods();
-        this.ownInvoice = other.getOwnInvoice();
-        this.notes = other.getNotes();
-        this.notesInInvoice = other.getNotesInInvoice();
-        this.orderProcesses.addAll(other.getOrderProcesses());
-
-        other.getLines().forEach( line -> this.lines.add(new OrderLineDTO(line)));
-
-        this.versionNum = other.getVersionNum();
-        this.pricingFields = other.getPricingFields();
-        this.cancellationFeeType = other.getCancellationFeeType();
-        this.cancellationFee = other.getCancellationFee();
-        this.cancellationFeePercentage = other.getCancellationFeePercentage();
-        this.cancellationMaximumFee = other.getCancellationMaximumFee();
-        this.parentOrder = other.getParentOrder();
-        for (OrderDTO childOrder : other.getChildOrders()) {
-            this.childOrders.add(new OrderDTO(childOrder));
-        }
-        this.prorateFlag = (null != other.getProrateFlag() ? other.getProrateFlag() : false);
-    }
-
     public OrderDTO(int id, UserDTO baseUserByCreatedBy, CurrencyDTO currencyDTO, OrderStatusDTO orderStatusDTO, OrderBillingTypeDTO orderBillingTypeDTO, OrderDTO primaryOrderDTO, Date createDatetime, Integer deleted) {
         this.id = id;
         this.baseUserByCreatedBy = baseUserByCreatedBy;
@@ -216,6 +150,7 @@ public class OrderDTO  implements Serializable {
         this.createDate = createDatetime;
         this.deleted = deleted;
     }
+
     public OrderDTO(int id, UserDTO baseUserByUserId, UserDTO baseUserByCreatedBy, CurrencyDTO currencyDTO,
                     OrderStatusDTO orderStatusDTO, OrderPeriodDTO orderPeriodDTO,
                     OrderBillingTypeDTO orderBillingTypeDTO, OrderDTO primaryOrderDTO, Date activeSince, Date activeUntil, Date createDatetime,
@@ -251,9 +186,49 @@ public class OrderDTO  implements Serializable {
         this.prorateFlag = prorateFlag;
     }
 
+    public void init(OrderDTO other) {
+        this.id = other.getId();
+        this.baseUserByUserId = other.getBaseUserByUserId();
+        this.baseUserByCreatedBy = other.getBaseUserByCreatedBy();
+        this.currencyDTO = other.getCurrency();
+        this.orderStatusDTO = other.getOrderStatus();
+        this.orderPeriodDTO = other.getOrderPeriod();
+        this.orderBillingTypeDTO = other.getOrderBillingType();
+        this.activeSince = other.getActiveSince();
+        this.activeUntil = other.getActiveUntil();
+        this.createDate = other.getCreateDate();
+        this.nextBillableDay = other.getNextBillableDay();
+        this.deleted = other.getDeleted();
+        this.notify = other.getNotify();
+        this.lastNotified = other.getLastNotified();
+        this.notificationStep = other.getNotificationStep();
+        this.dueDateUnitId = other.getDueDateUnitId();
+        this.dueDateValue = other.getDueDateValue();
+        this.dfFm = other.getDfFm();
+        this.anticipatePeriods = other.getAnticipatePeriods();
+        this.ownInvoice = other.getOwnInvoice();
+        this.notes = other.getNotes();
+        this.notesInInvoice = other.getNotesInInvoice();
+        this.orderProcesses.addAll(other.getOrderProcesses());
+
+        other.getLines().forEach(line -> this.lines.add(new OrderLineDTO(line)));
+
+        this.versionNum = other.getVersionNum();
+        this.pricingFields = other.getPricingFields();
+        this.cancellationFeeType = other.getCancellationFeeType();
+        this.cancellationFee = other.getCancellationFee();
+        this.cancellationFeePercentage = other.getCancellationFeePercentage();
+        this.cancellationMaximumFee = other.getCancellationMaximumFee();
+        this.parentOrder = other.getParentOrder();
+        for (OrderDTO childOrder : other.getChildOrders()) {
+            this.childOrders.add(new OrderDTO(childOrder));
+        }
+        this.prorateFlag = (null != other.getProrateFlag() ? other.getProrateFlag() : false);
+    }
+
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="purchase_order_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "purchase_order_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;
     }
@@ -262,17 +237,18 @@ public class OrderDTO  implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     public UserDTO getBaseUserByUserId() {
         return this.baseUserByUserId;
     }
+
     public void setBaseUserByUserId(UserDTO baseUserByUserId) {
         this.baseUserByUserId = baseUserByUserId;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="created_by")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
     public UserDTO getBaseUserByCreatedBy() {
         return this.baseUserByCreatedBy;
     }
@@ -280,8 +256,9 @@ public class OrderDTO  implements Serializable {
     public void setBaseUserByCreatedBy(UserDTO baseUserByCreatedBy) {
         this.baseUserByCreatedBy = baseUserByCreatedBy;
     }
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="currency_id", nullable=false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", nullable = false)
     public CurrencyDTO getCurrency() {
         return this.currencyDTO;
     }
@@ -289,8 +266,9 @@ public class OrderDTO  implements Serializable {
     public void setCurrency(CurrencyDTO currencyDTO) {
         this.currencyDTO = currencyDTO;
     }
-    @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="status_id", nullable=false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
     public OrderStatusDTO getOrderStatus() {
         return this.orderStatusDTO;
     }
@@ -299,11 +277,12 @@ public class OrderDTO  implements Serializable {
         this.orderStatusDTO = orderStatusDTO;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="period_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "period_id")
     public OrderPeriodDTO getOrderPeriod() {
         return this.orderPeriodDTO;
     }
+
     public void setOrderPeriod(OrderPeriodDTO orderPeriodDTO) {
         this.orderPeriodDTO = orderPeriodDTO;
     }
@@ -316,8 +295,8 @@ public class OrderDTO  implements Serializable {
         }
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="billing_type_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "billing_type_id", nullable = false)
     public OrderBillingTypeDTO getOrderBillingType() {
         return this.orderBillingTypeDTO;
     }
@@ -325,12 +304,12 @@ public class OrderDTO  implements Serializable {
     public void setOrderBillingType(OrderBillingTypeDTO orderBillingTypeDTO) {
         this.orderBillingTypeDTO = orderBillingTypeDTO;
     }
-    
+
     public boolean hasPrimaryOrder() {
-    	return this.parentOrder != null;
+        return this.parentOrder != null;
     }
-    
-    @Column(name="active_since", length=13)
+
+    @Column(name = "active_since", length = 13)
     public Date getActiveSince() {
         return this.activeSince;
     }
@@ -339,7 +318,7 @@ public class OrderDTO  implements Serializable {
         this.activeSince = activeSince;
     }
 
-    @Column(name="active_until", length=13)
+    @Column(name = "active_until", length = 13)
     public Date getActiveUntil() {
         return this.activeUntil;
     }
@@ -348,7 +327,7 @@ public class OrderDTO  implements Serializable {
         this.activeUntil = activeUntil;
     }
 
-    @Column(name="deleted_date", length=13)
+    @Column(name = "deleted_date", length = 13)
     public Date getDeletedDate() {
         return this.deletedDate;
     }
@@ -357,7 +336,7 @@ public class OrderDTO  implements Serializable {
         this.deletedDate = deletedDate;
     }
 
-    @Column(name="create_datetime", nullable=false, length=29)
+    @Column(name = "create_datetime", nullable = false, length = 29)
     public Date getCreateDate() {
         return this.createDate;
     }
@@ -365,7 +344,8 @@ public class OrderDTO  implements Serializable {
     public void setCreateDate(Date createDatetime) {
         this.createDate = createDatetime;
     }
-    @Column(name="next_billable_day", length=29)
+
+    @Column(name = "next_billable_day", length = 29)
     public Date getNextBillableDay() {
         return this.nextBillableDay;
     }
@@ -374,7 +354,7 @@ public class OrderDTO  implements Serializable {
         this.nextBillableDay = nextBillableDay;
     }
 
-    @Column(name="deleted", nullable=false)
+    @Column(name = "deleted", nullable = false)
     public int getDeleted() {
         return this.deleted;
     }
@@ -383,7 +363,7 @@ public class OrderDTO  implements Serializable {
         this.deleted = deleted;
     }
 
-    @Column(name="notify")
+    @Column(name = "notify")
     public Integer getNotify() {
         return this.notify;
     }
@@ -391,7 +371,8 @@ public class OrderDTO  implements Serializable {
     public void setNotify(Integer notify) {
         this.notify = notify;
     }
-    @Column(name="last_notified", length=29)
+
+    @Column(name = "last_notified", length = 29)
     public Date getLastNotified() {
         return this.lastNotified;
     }
@@ -400,7 +381,7 @@ public class OrderDTO  implements Serializable {
         this.lastNotified = lastNotified;
     }
 
-    @Column(name="notification_step")
+    @Column(name = "notification_step")
     public Integer getNotificationStep() {
         return this.notificationStep;
     }
@@ -409,7 +390,7 @@ public class OrderDTO  implements Serializable {
         this.notificationStep = notificationStep;
     }
 
-    @Column(name="due_date_unit_id")
+    @Column(name = "due_date_unit_id")
     public Integer getDueDateUnitId() {
         return this.dueDateUnitId;
     }
@@ -418,7 +399,7 @@ public class OrderDTO  implements Serializable {
         this.dueDateUnitId = dueDateUnitId;
     }
 
-    @Column(name="due_date_value")
+    @Column(name = "due_date_value")
     public Integer getDueDateValue() {
         return this.dueDateValue;
     }
@@ -427,7 +408,7 @@ public class OrderDTO  implements Serializable {
         this.dueDateValue = dueDateValue;
     }
 
-    @Column(name="df_fm")
+    @Column(name = "df_fm")
     public Integer getDfFm() {
         return this.dfFm;
     }
@@ -436,7 +417,7 @@ public class OrderDTO  implements Serializable {
         this.dfFm = dfFm;
     }
 
-    @Column(name="anticipate_periods")
+    @Column(name = "anticipate_periods")
     public Integer getAnticipatePeriods() {
         return this.anticipatePeriods;
     }
@@ -445,7 +426,7 @@ public class OrderDTO  implements Serializable {
         this.anticipatePeriods = anticipatePeriods;
     }
 
-    @Column(name="own_invoice")
+    @Column(name = "own_invoice")
     public Integer getOwnInvoice() {
         return this.ownInvoice;
     }
@@ -454,7 +435,7 @@ public class OrderDTO  implements Serializable {
         this.ownInvoice = ownInvoice;
     }
 
-    @Column(name="notes", length=200)
+    @Column(name = "notes", length = 200)
     public String getNotes() {
         return this.notes;
     }
@@ -469,7 +450,7 @@ public class OrderDTO  implements Serializable {
         }
     }
 
-    @Column(name="notes_in_invoice")
+    @Column(name = "notes_in_invoice")
     public Integer getNotesInInvoice() {
         return this.notesInInvoice;
     }
@@ -482,8 +463,8 @@ public class OrderDTO  implements Serializable {
      * There might potentially hundreds of process records, but they are not read by the app.
      * They are only taken for display, and then all are needed
      */
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="purchaseOrder")
-    @OrderBy (
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "purchaseOrder")
+    @OrderBy(
             clause = "id desc"
     )
     public Set<OrderProcessDTO> getOrderProcesses() {
@@ -494,8 +475,8 @@ public class OrderDTO  implements Serializable {
         this.orderProcesses = orderProcesses;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="purchaseOrder")
-    @OrderBy(clause="id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "purchaseOrder")
+    @OrderBy(clause = "id")
     public List<OrderLineDTO> getLines() {
         return this.lines;
     }
@@ -503,21 +484,22 @@ public class OrderDTO  implements Serializable {
     public void setLines(List<OrderLineDTO> orderLineDTOs) {
         this.lines = orderLineDTOs;
     }
-    
-    @Column(name="reseller_order", updatable = false)
-    public Integer getResellerOrder() {
-		return resellerOrder;
-	}
 
-	public void setResellerOrder(Integer resellerOrder) {
-		this.resellerOrder = resellerOrder;
-	}
+    @Column(name = "reseller_order", updatable = false)
+    public Integer getResellerOrder() {
+        return resellerOrder;
+    }
+
+    public void setResellerOrder(Integer resellerOrder) {
+        this.resellerOrder = resellerOrder;
+    }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
@@ -541,20 +523,20 @@ public class OrderDTO  implements Serializable {
         this.childOrders = childOrders;
     }
 
-   
-    @Column(name = "prorate_flag", nullable = false)
-	public Boolean getProrateFlag() {
-		return prorateFlag;
-	}
 
-	public void setProrateFlag(Boolean prorateFlag) {
-		this.prorateFlag = prorateFlag;
-	}
-	
-	@Transient
-	public boolean getProrateFlagValue() {
-		return null != prorateFlag && prorateFlag.booleanValue();
-	}
+    @Column(name = "prorate_flag", nullable = false)
+    public Boolean getProrateFlag() {
+        return prorateFlag;
+    }
+
+    public void setProrateFlag(Boolean prorateFlag) {
+        this.prorateFlag = prorateFlag;
+    }
+
+    @Transient
+    public boolean getProrateFlagValue() {
+        return null != prorateFlag && prorateFlag.booleanValue();
+    }
 
 
     /*
@@ -575,11 +557,12 @@ public class OrderDTO  implements Serializable {
         }
     }
     */
-    
+
     @Transient
     public Integer getStatusId() {
         return getOrderStatus() == null ? null : getOrderStatus().getId();
     }
+
     public void setStatusId(Integer statusId) {
         if (statusId == null) {
             setOrderStatus(null);
@@ -594,6 +577,7 @@ public class OrderDTO  implements Serializable {
     public Integer getCurrencyId() {
         return getCurrency().getId();
     }
+
     public void setCurrencyId(Integer currencyId) {
         if (currencyId == null) {
             setCurrency(null);
@@ -633,6 +617,7 @@ public class OrderDTO  implements Serializable {
     public String getPeriodStr() {
         return periodStr;
     }
+
     public void setPeriodStr(String str) {
         periodStr = str;
     }
@@ -641,6 +626,7 @@ public class OrderDTO  implements Serializable {
     public String getBillingTypeStr() {
         return billingTypeStr;
     }
+
     public void setBillingTypeStr(String str) {
         this.billingTypeStr = str;
     }
@@ -670,21 +656,21 @@ public class OrderDTO  implements Serializable {
         billingProcesses = new ArrayList<BillingProcessDTO>();
         nonReviewPeriods = new ArrayList<OrderProcessDTO>();
 
-        for (OrderProcessDTO process: getOrderProcesses()) {
+        for (OrderProcessDTO process : getOrderProcesses()) {
             if (process.getIsReview() == 1) continue;
             nonReviewPeriods.add(process);
             invoices.add(invoiceDAO.findById(process.getInvoice().getId()).get());
             billingProcesses.add(process.getBillingProcess());
         }
-
-        periodStr = getOrderPeriod().getDescription(languageId);
-        billingTypeStr = getOrderBillingType().getDescription(languageId);
-        statusStr = getOrderStatus().getDescription(languageId);
-        InternationalDescriptionDTO inter = internationalDescriptionDAO.findIt(jbillingTableDAO.findByName(ServerConstants.TABLE_PERIOD_UNIT).getId(), getDueDateUnitId(),"description", languageId);
+//ToDo
+        //periodStr = getOrderPeriod().getDescription(languageId);
+        //billingTypeStr = getOrderBillingType().getDescription(languageId);
+        //statusStr = getOrderStatus().getDescription(languageId);
+        InternationalDescriptionDTO inter = internationalDescriptionDAO.findIt(jbillingTableDAO.findByName(ServerConstants.TABLE_PERIOD_UNIT).getId(), getDueDateUnitId(), "description", languageId);
         timeUnitStr = inter.getContent();
 
         currencySymbol = getCurrency().getSymbol();
-        currencyName = getCurrency().getDescription(languageId);
+        //currencyName = getCurrency().getDescription(languageId);
 
     }
 
@@ -749,7 +735,7 @@ public class OrderDTO  implements Serializable {
     @Transient
     public int getNumberOfLines() {
         int count = 0;
-        for (OrderLineDTO line: getLines()) {
+        for (OrderLineDTO line : getLines()) {
             if (line.getDeleted() == 0) {
                 count++;
             }
@@ -795,17 +781,17 @@ public class OrderDTO  implements Serializable {
             getBaseUserByUserId().getCreateDatetime();
         if (getBaseUserByCreatedBy() != null)
             getBaseUserByCreatedBy().getCreateDatetime();
-        for (OrderLineDTO line: getLines()) {
+        for (OrderLineDTO line : getLines()) {
             line.touch();
         }
-       
-        for (InvoiceDTO invoice: getInvoices()) {
+
+        for (InvoiceDTO invoice : getInvoices()) {
             invoice.getCreateDatetime();
         }
-        for (OrderProcessDTO process: getOrderProcesses()) {
+        for (OrderProcessDTO process : getOrderProcesses()) {
             process.getPeriodStart();
         }
-       
+
         if (getOrderBillingType() != null)
             getOrderBillingType().getId();
         if (getOrderPeriod() != null)
@@ -827,7 +813,7 @@ public class OrderDTO  implements Serializable {
         StringBuffer str = new StringBuffer("Order = " +
                 "id=" + id + "," +
                 "baseUserByUserId=" + ((baseUserByUserId == null) ? null : baseUserByUserId.getId()) + "," +
-                "baseUserByCreatedBy=" + ((baseUserByCreatedBy== null) ? null : baseUserByCreatedBy.getId()) + "," +
+                "baseUserByCreatedBy=" + ((baseUserByCreatedBy == null) ? null : baseUserByCreatedBy.getId()) + "," +
                 "currencyDTO=" + currencyDTO + "," +
                 "orderStatusDTO=" + ((orderStatusDTO == null) ? null : orderStatusDTO) + "," +
                 "orderPeriodDTO=" + ((orderPeriodDTO == null) ? null : orderPeriodDTO) + "," +
@@ -850,10 +836,10 @@ public class OrderDTO  implements Serializable {
                 "notesInInvoice=" + notesInInvoice + "," +
                 "orderProcesses=" + orderProcesses + "," +
                 "versionNum=" + versionNum +
-                " freeUsageQuantity=" +  freeUsageQuantity +
+                " freeUsageQuantity=" + freeUsageQuantity +
                 " lines:[");
 
-        for (OrderLineDTO line: getLines()) {
+        for (OrderLineDTO line : getLines()) {
             str.append(line.toString()).append("-");
         }
         str.append(']');/*
@@ -869,14 +855,14 @@ public class OrderDTO  implements Serializable {
             str.append(discountLine.toString() + "-");
         }
         str.append(']');*/
-        
+
         return str.toString();
 
     }
 
     @Transient
     public String[] getFieldNames() {
-        String headers[]= new String[] {
+        String headers[] = new String[]{
                 "id",
                 "userId",
                 "userName",
@@ -901,9 +887,9 @@ public class OrderDTO  implements Serializable {
                 "lineAmount",
                 "lineDescription"
         };
-        
+
         List<String> list = new ArrayList<>(Arrays.asList(headers));
-        
+
         return list.toArray(new String[list.size()]);
     }
 
@@ -913,7 +899,7 @@ public class OrderDTO  implements Serializable {
 
         // main invoice row
         values.add(
-                new Object[] {
+                new Object[]{
                         id,
                         (baseUserByUserId != null ? baseUserByUserId.getId() : null),
                         (baseUserByUserId != null ? baseUserByUserId.getUserName() : null),
@@ -935,7 +921,7 @@ public class OrderDTO  implements Serializable {
         for (OrderLineDTO line : lines) {
             if (line.getDeleted() == 0) {
                 values.add(
-                        new Object[] {
+                        new Object[]{
                                 // padding for the main invoice columns
                                 null,
                                 null,
@@ -964,7 +950,7 @@ public class OrderDTO  implements Serializable {
                 );
             }
         }
-        
+
         return values.toArray(new Object[values.size()][]);
     }
 
@@ -978,18 +964,18 @@ public class OrderDTO  implements Serializable {
     }
 
     @Column(name = "cancellation_fee_type")
-	public String getCancellationFeeType() {
-		return cancellationFeeType;
-	}
+    public String getCancellationFeeType() {
+        return cancellationFeeType;
+    }
 
-	public void setCancellationFeeType(String cancellationFeeType) {
-		this.cancellationFeeType = cancellationFeeType;
-	}
+    public void setCancellationFeeType(String cancellationFeeType) {
+        this.cancellationFeeType = cancellationFeeType;
+    }
 
-	@Column(name = "cancellation_fee")
-	public Integer getCancellationFee() {
-		return cancellationFee;
-	}
+    @Column(name = "cancellation_fee")
+    public Integer getCancellationFee() {
+        return cancellationFee;
+    }
 
     public void setCancellationFee(Integer cancellationFee) {
         this.cancellationFee = cancellationFee;
@@ -1003,13 +989,13 @@ public class OrderDTO  implements Serializable {
     public void setCancellationFeePercentage(Integer cancellationFeePercentage) {
         this.cancellationFeePercentage = cancellationFeePercentage;
     }
-	
+
     @Column(name = "cancellation_maximum_fee")
-    public Integer getCancellationMaximumFee(){
+    public Integer getCancellationMaximumFee() {
         return cancellationMaximumFee;
     }
-	
-    public void setCancellationMaximumFee(Integer cancellationMaximumFee){
+
+    public void setCancellationMaximumFee(Integer cancellationMaximumFee) {
         this.cancellationMaximumFee = cancellationMaximumFee;
     }
 
@@ -1023,7 +1009,7 @@ public class OrderDTO  implements Serializable {
     }
 
     @Transient
-    public Date calcNextBillableDayFromChanges () {
+    public Date calcNextBillableDayFromChanges() {
         Date nextBillableDate = this.getNextBillableDay();
         for (OrderLineDTO line : this.getLines()) {
             for (OrderChangeDTO change : line.getOrderChanges()) {
@@ -1036,7 +1022,7 @@ public class OrderDTO  implements Serializable {
     }
 
     @Transient
-    public PeriodUnit valueOfPeriodUnit () {
+    public PeriodUnit valueOfPeriodUnit() {
 
         int periodUnitId = this.getOrderPeriod().getPeriodUnit().getId();
         int dayOfMonth = this.getUser().getCustomer().getMainSubscription().getNextInvoiceDayOfPeriod();

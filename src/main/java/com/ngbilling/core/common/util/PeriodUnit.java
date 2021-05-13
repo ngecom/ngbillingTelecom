@@ -24,48 +24,47 @@ along with jbilling.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.ngbilling.core.common.util;
 
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
-
 import com.ngbilling.core.server.persistence.dto.util.PersistentEnum;
 import com.ngbilling.core.server.util.ServerConstants;
+
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 
 /**
  * Utility class for working with period units. Can be persisted by Hibernate.
  *
  * @author Igor Poteryaev <igor.poteryaev@jbilling.com>
  * @since 2015-04-10
- *
  */
 public enum PeriodUnit implements PersistentEnum {
 
     MONTHLY(1) {
         @Override
-        protected LocalDate _addTo (LocalDate temporal, long amount) {
+        protected LocalDate _addTo(LocalDate temporal, long amount) {
             return temporal.plusMonths(amount);
         }
     },
     WEEKLY(2) {
         @Override
-        protected LocalDate _addTo (LocalDate temporal, long amount) {
+        protected LocalDate _addTo(LocalDate temporal, long amount) {
             return temporal.plusWeeks(amount);
         }
     },
     DAYLY(3) {
         @Override
-        protected LocalDate _addTo (LocalDate temporal, long amount) {
+        protected LocalDate _addTo(LocalDate temporal, long amount) {
             return temporal.plusDays(amount);
         }
     },
     ANNUAL(4) {
         @Override
-        protected LocalDate _addTo (LocalDate temporal, long amount) {
+        protected LocalDate _addTo(LocalDate temporal, long amount) {
             return temporal.plusYears(amount);
         }
     },
     SEMI_MONTHLY(5) {
         @Override
-        protected LocalDate _addTo (LocalDate temporal, long amount) {
+        protected LocalDate _addTo(LocalDate temporal, long amount) {
 
             int initialDay = temporal.getDayOfMonth();
             boolean inLastHalfOfMonth = initialDay > 15;
@@ -84,7 +83,7 @@ public enum PeriodUnit implements PersistentEnum {
         }
 
         @Override
-        public void validate (LocalDate temporal) {
+        public void validate(LocalDate temporal) {
             int dayOfMonth = temporal.getDayOfMonth();
             if (dayOfMonth == 31 || dayOfMonth == 30) {
                 throw new IllegalArgumentException("Day of month in [" + temporal + "] can't exceed 29");
@@ -95,9 +94,8 @@ public enum PeriodUnit implements PersistentEnum {
         }
     },
     SEMI_MONTHLY_EOM(6) {
-
         @Override
-        protected LocalDate _addTo (LocalDate temporal, long amount) {
+        protected LocalDate _addTo(LocalDate temporal, long amount) {
 
             boolean endOfMonth = isTheLastDayOfMonth(temporal);
             LocalDate result = temporal.plusMonths(amount / 2);
@@ -117,12 +115,12 @@ public enum PeriodUnit implements PersistentEnum {
             return result;
         }
 
-        private boolean isTheLastDayOfMonth (LocalDate temporal) {
+        private boolean isTheLastDayOfMonth(LocalDate temporal) {
             return temporal.equals(temporal.with(TemporalAdjusters.lastDayOfMonth()));
         }
 
         @Override
-        public void validate (LocalDate temporal) {
+        public void validate(LocalDate temporal) {
             if ((temporal.getDayOfMonth() == 15) || isTheLastDayOfMonth(temporal)) {
                 return;
             }
@@ -132,33 +130,18 @@ public enum PeriodUnit implements PersistentEnum {
 
     private final int id;
 
-    PeriodUnit (int id) {
+    PeriodUnit(int id) {
         this.id = id;
-    }
-
-    @Override
-    public int getId () {
-        return id;
-    }
-
-    public LocalDate addTo (LocalDate temporal, long amount) {
-        validate(temporal);
-        return _addTo(temporal, amount);
-    }
-
-    protected abstract LocalDate _addTo (LocalDate temporal, long amount);
-
-    public void validate (LocalDate temporal) throws IllegalArgumentException {
     }
 
     /**
      * Finds the type of PeriodUnit from its start day of month and period unit identifier
-     * 
-     * @param dayOfMonth     period start day of month
-     * @param periodUnitId   period unit identifier
-     * @return 
+     *
+     * @param dayOfMonth   period start day of month
+     * @param periodUnitId period unit identifier
+     * @return
      */
-    public static PeriodUnit valueOfPeriodUnit (int dayOfMonth, int periodUnitId) {
+    public static PeriodUnit valueOfPeriodUnit(int dayOfMonth, int periodUnitId) {
 
         if (periodUnitId == ServerConstants.PERIOD_UNIT_MONTH) {
             return PeriodUnit.MONTHLY;
@@ -173,5 +156,20 @@ public enum PeriodUnit implements PersistentEnum {
         }
 
         throw new IllegalArgumentException("Unsupported PeriodUnitDTO id[" + periodUnitId + "]");
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    public LocalDate addTo(LocalDate temporal, long amount) {
+        validate(temporal);
+        return _addTo(temporal, amount);
+    }
+
+    protected abstract LocalDate _addTo(LocalDate temporal, long amount);
+
+    public void validate(LocalDate temporal) throws IllegalArgumentException {
     }
 }

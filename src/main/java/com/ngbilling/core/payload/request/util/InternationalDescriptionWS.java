@@ -25,9 +25,9 @@
 package com.ngbilling.core.payload.request.util;
 
 
-import java.io.Serializable;
-
 import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionDTO;
+
+import java.io.Serializable;
 
 /**
  * InternationalDescriptionWS
@@ -35,7 +35,7 @@ import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionDT
  * @author Brian Cowdery
  * @since 27/01/11
  */
-public class InternationalDescriptionWS implements Serializable{
+public class InternationalDescriptionWS implements Serializable {
 
     private static final long serialVersionUID = 20130704L;
 
@@ -59,16 +59,17 @@ public class InternationalDescriptionWS implements Serializable{
         this.content = content;
     }
 
-	public InternationalDescriptionWS(InternationalDescriptionDTO description) {
-		if (description.getId() != null) {
-			this.psudoColumn = description.getId().getPsudoColumn();
-			this.languageId = description.getId().getLanguageId();
-		}
-		this.content = description.getContent();
-	}
-    
+    public InternationalDescriptionWS(InternationalDescriptionDTO description) {
+        if (description.getId() != null) {
+            this.psudoColumn = description.getId().getPsudoColumn();
+            this.languageId = description.getId().getLanguageId();
+        }
+        this.content = description.getContent();
+    }
+
     /**
      * Alias for {@link #getPsudoColumn()}
+     *
      * @return psudo-column label
      */
     public String getLabel() {
@@ -77,6 +78,7 @@ public class InternationalDescriptionWS implements Serializable{
 
     /**
      * Alias for {@link #setPsudoColumn(String)}
+     *
      * @param label psudo-column label string
      */
     public void setLabel(String label) {
@@ -118,9 +120,9 @@ public class InternationalDescriptionWS implements Serializable{
     @Override
     public String toString() {
         return "InternationalDescriptionWS{"
-               + ", psudoColumn='" + psudoColumn + '\''
-               + ", languageId=" + languageId
-               + ", content='" + content + '\''
-               + '}';
+                + ", psudoColumn='" + psudoColumn + '\''
+                + ", languageId=" + languageId
+                + ", content='" + content + '\''
+                + '}';
     }
 }

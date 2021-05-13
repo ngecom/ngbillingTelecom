@@ -23,40 +23,6 @@
  */
 package com.ngbilling.core.server.persistence.dto.invoice;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.boot.model.relational.Exportable;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.server.persistence.dao.invoice.InvoiceStatusDAO;
 import com.ngbilling.core.server.persistence.dto.order.OrderProcessDTO;
@@ -67,29 +33,38 @@ import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @TableGenerator(
-        name = "invoice_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "invoice", 
+        name = "invoice_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "invoice",
         allocationSize = 100)
 @Table(name = "invoice")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class InvoiceDTO  implements Serializable{
+public class InvoiceDTO implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private static final FormatLogger LOG = new FormatLogger(InvoiceDTO.class);
-
-    private static final int PROCESS = 1;
     public static final int DO_NOT_PROCESS = 0;
-    
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static final FormatLogger LOG = new FormatLogger(InvoiceDTO.class);
+    private static final int PROCESS = 1;
     @Autowired
     public InvoiceStatusDAO invoiceStatusDAO;
 
@@ -119,7 +94,7 @@ public class InvoiceDTO  implements Serializable{
     private Set<OrderProcessDTO> orderProcesses = new HashSet<OrderProcessDTO>(0);
     private Collection<PaymentInvoiceMapDTO> paymentMap = new HashSet<PaymentInvoiceMapDTO>(0);
     private int versionNum;
-    
+
     // for transition to JPA
     private String currencyName;
     private String currencySymbol;
@@ -150,7 +125,7 @@ public class InvoiceDTO  implements Serializable{
         this.setPaperInvoiceBatch(invoice.getPaperInvoiceBatch());
         this.setPaymentAttempts(invoice.getPaymentAttempts());
         this.setPaymentMap(invoice.getPaymentMap());
-        this.setPublicNumber(invoice.getPublicNumber());        
+        this.setPublicNumber(invoice.getPublicNumber());
         this.setInvoiceStatus(invoice.getInvoiceStatus());
         this.setTotal(invoice.getTotal());
         setInvoiceLines(new ArrayList<InvoiceLineDTO>(invoice.getInvoiceLines()));
@@ -160,9 +135,9 @@ public class InvoiceDTO  implements Serializable{
     }
 
     public InvoiceDTO(int id, CurrencyDTO currencyDTO, Date createDatetime,
-            Date dueDate, BigDecimal total, int paymentAttempts, InvoiceStatusDTO invoiceStatus,
-            BigDecimal carriedBalance, int inProcessPayment, int isReview,
-            Integer deleted, Date createTimestamp) {
+                      Date dueDate, BigDecimal total, int paymentAttempts, InvoiceStatusDTO invoiceStatus,
+                      BigDecimal carriedBalance, int inProcessPayment, int isReview,
+                      Integer deleted, Date createTimestamp) {
         this.id = id;
         this.currencyDTO = currencyDTO;
         this.createDatetime = createDatetime;
@@ -260,7 +235,7 @@ public class InvoiceDTO  implements Serializable{
      * Sum total of the invoice lines for the current period. This amount will not change
      * when the invoice is paid, and will always show the dollar value of this invoice for
      * historical purposes.
-     *
+     * <p>
      * Since a carried invoice balance is added as an invoice line, this total automatically
      * includes the total for the current month plus the carried balances of old un-paid invoices.
      *
@@ -302,7 +277,7 @@ public class InvoiceDTO  implements Serializable{
      * @return returns 1 if this invoice is to be processed, 0 if not
      */
     @Transient
-    public Integer getToProcess() {        
+    public Integer getToProcess() {
         if (getInvoiceStatus() != null) {
             if (ServerConstants.INVOICE_STATUS_PAID.equals(getInvoiceStatus().getId()))
                 return DO_NOT_PROCESS;
@@ -322,11 +297,11 @@ public class InvoiceDTO  implements Serializable{
             setInvoiceStatus(null);
         } else {
             Integer status;
-            if(toProcess == DO_NOT_PROCESS){
+            if (toProcess == DO_NOT_PROCESS) {
                 status = ServerConstants.INVOICE_STATUS_PAID;
             } else {
-                if(getInvoiceStatus()!=null
-                        && ServerConstants.INVOICE_STATUS_UNPAID_AND_CARRIED==getInvoiceStatus().getId()){
+                if (getInvoiceStatus() != null
+                        && ServerConstants.INVOICE_STATUS_UNPAID_AND_CARRIED == getInvoiceStatus().getId()) {
                     // set the original status as it is only in case of carried
                     // because we don't want to change carried status to paid/unpaid (#5958)
                     status = getInvoiceStatus().getId();
@@ -345,7 +320,7 @@ public class InvoiceDTO  implements Serializable{
      * paid. The initial balance is calculated as the invoice total {@link #getTotal()} - carried
      * balance {@link #getCarriedBalance()}. The initial balance of the invoice <strong>represents the
      * current periods charges only</strong>, not including any carried balances.
-     *
+     * <p>
      * As payments are applied, this balance will be reduced until it reaches zero and the invoice
      * is marked as paid.
      *
@@ -412,8 +387,8 @@ public class InvoiceDTO  implements Serializable{
         this.customerNotes = customerNotes;
     }
 
-    public void appendCustomerNote (String note) {
-        if (! StringUtils.isBlank(note)) {
+    public void appendCustomerNote(String note) {
+        if (!StringUtils.isBlank(note)) {
             StringBuilder newNote = new StringBuilder();
             if (this.customerNotes != null) {
                 newNote.append(this.customerNotes).append(" ");
@@ -486,13 +461,13 @@ public class InvoiceDTO  implements Serializable{
         this.orderProcesses = orderProcesses;
     }
 
-    public void setPaymentMap(Collection<PaymentInvoiceMapDTO> paymentMap) {
-        this.paymentMap = paymentMap;
-    }
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoiceEntity")
     public Collection<PaymentInvoiceMapDTO> getPaymentMap() {
         return paymentMap;
+    }
+
+    public void setPaymentMap(Collection<PaymentInvoiceMapDTO> paymentMap) {
+        this.paymentMap = paymentMap;
     }
 
     @Version
@@ -507,14 +482,14 @@ public class InvoiceDTO  implements Serializable{
 
     @Transient
     public EntityType[] getCustomizedEntityType() {
-        return new EntityType[] { EntityType.INVOICE };
+        return new EntityType[]{EntityType.INVOICE};
     }
-    
+
     // Helpers, for JPA migration
     @Transient
     public Integer getDelegatedInvoiceId() {
         if (getInvoice() != null) return getInvoice().getId();
-        
+
         return null;
     }
 
@@ -535,15 +510,15 @@ public class InvoiceDTO  implements Serializable{
     public void setCurrencySymbol(String currencySymbol) {
         this.currencySymbol = currencySymbol;
     }
-    
+
     @Transient
     public Integer getUserId() {
         return getBaseUser().getId();
     }
-    
+
     @Transient
     public boolean hasSubAccounts() {
-        for(InvoiceLineDTO line: getInvoiceLines()) {
+        for (InvoiceLineDTO line : getInvoiceLines()) {
             if (line.getInvoiceLineType().getId() == ServerConstants.INVOICE_LINE_TYPE_SUB_ACCOUNT) return true;
         }
         return false;
@@ -556,7 +531,7 @@ public class InvoiceDTO  implements Serializable{
 
     @Transient
     public boolean isReviewInvoice() {
-        return ( isReview != null && isReview.intValue() == 1 );
+        return (isReview != null && isReview.intValue() == 1);
     }
 
 
@@ -581,7 +556,7 @@ public class InvoiceDTO  implements Serializable{
 
     @Transient
     public String[] getFieldNames() {
-        String headers[] = new String[] {
+        String headers[] = new String[]{
                 "id",
                 "publicNumber",
                 "userId",
@@ -607,9 +582,9 @@ public class InvoiceDTO  implements Serializable{
                 "lineAmount",
                 "lineDescription"
         };
-        
+
         List<String> list = new ArrayList<>(Arrays.asList(headers));
-              
+
         return list.toArray(new String[list.size()]);
     }
 
@@ -617,69 +592,69 @@ public class InvoiceDTO  implements Serializable{
     public Object[][] getFieldValues() {
         StringBuffer delegatedInvoiceIds = new StringBuffer(
                 invoices.stream().map(it -> String.valueOf(it.getId()))
-                .collect(Collectors.joining(", "))
+                        .collect(Collectors.joining(", "))
         );
 
         StringBuffer paymentIds = new StringBuffer(
                 paymentMap.stream().map(it -> String.valueOf(it.getPayment().getId()))
-                .collect(Collectors.joining(", "))
+                        .collect(Collectors.joining(", "))
         );
 
         List<Object[]> values = new ArrayList<Object[]>();
 
         // main invoice row
         values.add(
-            new Object[] {
-                id,
-                publicNumber,
-                (baseUser != null ? baseUser.getId() : null),
-                (baseUser != null ? baseUser.getUserName() : null),
-                (invoiceStatus != null ? invoiceStatus.getDescription() : null),
-                (currencyDTO != null ? currencyDTO.getDescription() : null),
-                delegatedInvoiceIds.toString(),
-                carriedBalance,
-                total,
-                balance,
-                createDatetime,
-                dueDate,
-                paymentAttempts,
-                paymentIds.toString(),
-                isReview,
-                customerNotes
-            }
+                new Object[]{
+                        id,
+                        publicNumber,
+                        (baseUser != null ? baseUser.getId() : null),
+                        (baseUser != null ? baseUser.getUserName() : null),
+                        (invoiceStatus != null ? invoiceStatus.getDescription() : null),
+                        (currencyDTO != null ? currencyDTO.getDescription() : null),
+                        delegatedInvoiceIds.toString(),
+                        carriedBalance,
+                        total,
+                        balance,
+                        createDatetime,
+                        dueDate,
+                        paymentAttempts,
+                        paymentIds.toString(),
+                        isReview,
+                        customerNotes
+                }
         );
 
         // indented row for each invoice line
         for (InvoiceLineDTO line : invoiceLines) {
             if (line.getDeleted().equals(0)) {
                 values.add(
-                    new Object[] {
-                        // padding for the main invoice columns
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
+                        new Object[]{
+                                // padding for the main invoice columns
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
 
-                        // invoice line
-                        (line.getItem() != null ? line.getItem().getId() : null),
-                        (line.getItem() != null ? line.getItem().getInternalNumber() : null),
-                        line.getQuantity(),
-                        line.getPrice(),
-                        line.getAmount(),
-                        line.getDescription()
-                    }
+                                // invoice line
+                                (line.getItem() != null ? line.getItem().getId() : null),
+                                (line.getItem() != null ? line.getItem().getInternalNumber() : null),
+                                line.getQuantity(),
+                                line.getPrice(),
+                                line.getAmount(),
+                                line.getDescription()
+                        }
                 );
             }
         }

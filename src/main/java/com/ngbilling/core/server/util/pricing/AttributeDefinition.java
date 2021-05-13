@@ -36,6 +36,7 @@ public class AttributeDefinition {
     private String name;
     private Type type = Type.STRING;
     private boolean required = false;
+
     public AttributeDefinition() {
     }
 

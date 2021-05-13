@@ -15,12 +15,12 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import java.io.Serializable;
+
 /*
  * Only needed because Order is not JPA, but an entity. Once that table is
  * migrated to JPA, this class will not be necessary (but the table stays)
@@ -32,13 +32,13 @@ import javax.persistence.Table;
 public class MediationOrderMap implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id
+    @Id
     private Integer mediationProcessId;
-    
+
     @Id
     private Integer orderId;
 

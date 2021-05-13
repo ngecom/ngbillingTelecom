@@ -16,18 +16,17 @@
 
 package com.ngbilling.core.server.persistence.dto.mediation;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
 public class MapPK implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Column(name = "mediation_process_id")
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Column(name = "mediation_process_id")
     private Integer mediationProcessId;
     @Column(name = "order_id")
     private Integer orderId;
@@ -35,12 +34,15 @@ public class MapPK implements Serializable {
     public Integer getMediationProcessId() {
         return mediationProcessId;
     }
+
     public void setMediationProcessId(Integer mediationProcessId) {
         this.mediationProcessId = mediationProcessId;
     }
+
     public Integer getOrderId() {
         return orderId;
     }
+
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }

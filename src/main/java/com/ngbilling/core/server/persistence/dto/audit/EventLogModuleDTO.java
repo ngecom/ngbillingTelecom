@@ -23,50 +23,43 @@
  */
 package com.ngbilling.core.server.persistence.dto.audit;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name="event_log_module")
+@Table(name = "event_log_module")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class EventLogModuleDTO  implements java.io.Serializable {
+public class EventLogModuleDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Id 
-    @Column(name="id", unique=true, nullable=false)
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     private int id;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="eventLogModule")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventLogModule")
     private Set<EventLogDTO> eventLogs = new HashSet<EventLogDTO>(0);
 
     protected EventLogModuleDTO() {
     }
 
-    
+
     public EventLogModuleDTO(int id, Set<EventLogDTO> eventLogs) {
-       this.id = id;
-       this.eventLogs = eventLogs;
+        this.id = id;
+        this.eventLogs = eventLogs;
     }
-    
+
     public int getId() {
         return id;
     }
-    
+
     public Set<EventLogDTO> getEventLogs() {
         return this.eventLogs;
     }

@@ -24,44 +24,31 @@
 package com.ngbilling.core.server.persistence.dto.process;
 
 
+import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
-
 @Entity
-@TableGenerator(name = "paper_invoice_batch_GEN", 
-                table = "jbilling_seqs", 
-                pkColumnName = "name", 
-                valueColumnName = "next_id", 
-                pkColumnValue = "paper_invoice_batch", 
-                allocationSize = 100)
-@Table(name="paper_invoice_batch")
+@TableGenerator(name = "paper_invoice_batch_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "paper_invoice_batch",
+        allocationSize = 100)
+@Table(name = "paper_invoice_batch")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PaperInvoiceBatchDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private int totalInvoices;
     private Date deliveryDate;
     private int isSelfManaged;
@@ -124,16 +111,16 @@ public class PaperInvoiceBatchDTO implements java.io.Serializable {
     public void setIsSelfManaged(int isSelfManaged) {
         this.isSelfManaged = isSelfManaged;
     }
-    
-    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="paperInvoiceBatch")
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "paperInvoiceBatch")
     public BillingProcessDTO getProcess() {
         return this.billingProcesses;
     }
-    
+
     public void setProcess(BillingProcessDTO billingProcesses) {
         this.billingProcesses = billingProcesses;
     }
-    
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "paperInvoiceBatch")
     public Set<InvoiceDTO> getInvoices() {
         return this.invoices;
@@ -142,7 +129,7 @@ public class PaperInvoiceBatchDTO implements java.io.Serializable {
     public void setInvoices(Set<InvoiceDTO> invoices) {
         this.invoices = invoices;
     }
-    
+
     @Version
     @Column(name = "OPTLOCK")
     public int getVersionNum() {

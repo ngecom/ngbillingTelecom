@@ -5,11 +5,11 @@ import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
 import com.ngbilling.core.server.util.metafield.MetaContent;
 
 /**
- *  Example validation using source dependency
- *  </p>
- *  The validation of the current object value depends on some of the source meta-fields
+ * Example validation using source dependency
+ * </p>
+ * The validation of the current object value depends on some of the source meta-fields
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public class SourceDependantValidationRuleModel extends AbstractValidationRuleModel {
 

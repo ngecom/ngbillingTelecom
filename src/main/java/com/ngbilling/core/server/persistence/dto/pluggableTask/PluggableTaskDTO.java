@@ -24,35 +24,20 @@
 
 package com.ngbilling.core.server.persistence.dto.pluggableTask;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
+import com.ngbilling.core.common.util.FormatLogger;
+import com.ngbilling.core.payload.request.configuration.PluggableTaskWS;
+import com.ngbilling.core.server.persistence.dao.pluggableTask.PluggableTaskDAO;
+import com.ngbilling.core.server.persistence.dao.pluggableTask.PluggableTaskTypeDAO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ngbilling.core.common.util.FormatLogger;
-import com.ngbilling.core.payload.request.configuration.PluggableTaskWS;
-import com.ngbilling.core.server.persistence.dao.pluggableTask.PluggableTaskDAO;
-import com.ngbilling.core.server.persistence.dao.pluggableTask.PluggableTaskTypeDAO;
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -68,16 +53,13 @@ import com.ngbilling.core.server.persistence.dao.pluggableTask.PluggableTaskType
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PluggableTaskDTO implements java.io.Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private static final FormatLogger LOG = new FormatLogger(PluggableTaskDTO.class);
-
     //  this is in synch with the DB (pluggable task type)
     public static final Integer TYPE_EMAIL = 9;
-
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static final FormatLogger LOG = new FormatLogger(PluggableTaskDTO.class);
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "pluggable_task_GEN")
     private Integer id;
@@ -103,11 +85,11 @@ public class PluggableTaskDTO implements java.io.Serializable {
     @Version
     @Column(name = "OPTLOCK")
     private Integer versionNum;
-    
+
     @Transient
     @Autowired
     private PluggableTaskTypeDAO pluggableTaskTypeDAO;
-    
+
     @Transient
     @Autowired
     private PluggableTaskDAO pluggableTaskDAO;
@@ -115,11 +97,11 @@ public class PluggableTaskDTO implements java.io.Serializable {
     public PluggableTaskDTO() {
         type = new PluggableTaskTypeDTO();
     }
-    
+
     public PluggableTaskDTO(Integer entityId, Integer processingOrder, PluggableTaskTypeDTO type) {
-        this.entityId=entityId;
-        this.processingOrder=processingOrder;
-        this.type=type;
+        this.entityId = entityId;
+        this.processingOrder = processingOrder;
+        this.type = type;
     }
 
     public PluggableTaskDTO(Integer entityId, PluggableTaskWS ws) {
@@ -208,13 +190,12 @@ public class PluggableTaskDTO implements java.io.Serializable {
         }
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-
     public String getNotes() {
         return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override

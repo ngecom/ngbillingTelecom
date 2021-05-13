@@ -24,33 +24,6 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
 import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
@@ -63,39 +36,42 @@ import com.ngbilling.core.server.persistence.dto.process.BillingProcessFailedUse
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.*;
+
 @Entity
 @TableGenerator(
-        name="base_user_GEN",
-        table="jbilling_seqs",
+        name = "base_user_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="base_user",
+        pkColumnValue = "base_user",
         allocationSize = 10
-        )
+)
 // No cache, mutable and critical
 @Table(name = "base_user")
 public class UserDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
-    private String userName;
-    private String password;
-    private int deleted;
+     *
+     */
+    private static final long serialVersionUID = 1L;
     boolean enabled = true;
     boolean accountExpired = false;
     boolean accountLocked = false;
     boolean passwordExpired = false;
-
+    private int id;
+    private String userName;
+    private String password;
+    private int deleted;
     private Date createDatetime;
     private Date lastStatusChange;
     private Date lastLoginDate;
     private Date accountDisabledDate;
     private int failedLoginAttempts;
     private Date changePasswordDate;
-    
+
     private Set<RoleDTO> roles = new HashSet<RoleDTO>(0);
     private CurrencyDTO currencyDTO;
     private CompanyDTO company;
@@ -116,10 +92,10 @@ public class UserDTO implements Serializable {
     private Set<InvoiceDTO> invoices = new HashSet<InvoiceDTO>(0);
 
     private Set<BillingProcessFailedUserDTO> processes = new HashSet<BillingProcessFailedUserDTO>(0);
-    
+
     // payment instruments
- 	private List<PaymentInformationDTO> paymentInstruments = new ArrayList<PaymentInformationDTO>(0);
- 	
+    private List<PaymentInformationDTO> paymentInstruments = new ArrayList<PaymentInformationDTO>(0);
+
 
     private Date accountLockedTime;
 
@@ -138,12 +114,12 @@ public class UserDTO implements Serializable {
     }
 
     public UserDTO(int id, CurrencyDTO currencyDTO, CompanyDTO entity, SubscriberStatusDTO subscriberStatus,
-            UserStatusDTO userStatus, LanguageDTO language, String password, short deleted, Date createDatetime,
-            Date lastStatusChange, Date lastLoginDate, String userName, int failedLoginAttempts, Set<PaymentDTO> payments,
-            CustomerDTO customer, PartnerDTO partnersForUserId,
-            Set<OrderDTO> purchaseOrdersForCreatedBy, Set<OrderDTO> purchaseOrdersForUserId,
-            Set<NotificationMessageArchDTO> notificationMessageArchs, Set<RoleDTO> roles,
-            Set<EventLogDTO> eventLogs, Set<InvoiceDTO> invoices) {
+                   UserStatusDTO userStatus, LanguageDTO language, String password, short deleted, Date createDatetime,
+                   Date lastStatusChange, Date lastLoginDate, String userName, int failedLoginAttempts, Set<PaymentDTO> payments,
+                   CustomerDTO customer, PartnerDTO partnersForUserId,
+                   Set<OrderDTO> purchaseOrdersForCreatedBy, Set<OrderDTO> purchaseOrdersForUserId,
+                   Set<NotificationMessageArchDTO> notificationMessageArchs, Set<RoleDTO> roles,
+                   Set<EventLogDTO> eventLogs, Set<InvoiceDTO> invoices) {
         this.id = id;
         this.currencyDTO = currencyDTO;
         this.company = entity;
@@ -231,16 +207,18 @@ public class UserDTO implements Serializable {
 
     /**
      * Returns 1 if this user is deleted, 0 if they are active.
+     *
      * @return is user deleted
      */
-    @Column(name="change_password_date")	
+    @Column(name = "change_password_date")
     public Date getChangePasswordDate() {
-    	return this.changePasswordDate;
+        return this.changePasswordDate;
     }
-    
+
     public void setChangePasswordDate(Date changePasswordDate) {
-    	this.changePasswordDate=changePasswordDate;
+        this.changePasswordDate = changePasswordDate;
     }
+
     @Column(name = "deleted", nullable = false)
     public int getDeleted() {
         return this.deleted;
@@ -252,7 +230,7 @@ public class UserDTO implements Serializable {
 
     /**
      * Returns true if this user is enabled and not deleted.
-     *
+     * <p>
      * todo: enabled flag is transient, field currently only exists for Spring Security integration
      *
      * @return true if user enabled
@@ -268,7 +246,7 @@ public class UserDTO implements Serializable {
 
     /**
      * Returns true if this user's account is expired.
-     *
+     * <p>
      * todo: expired flag is transient, field currently only exists for Spring Security integration
      *
      * @return true if user expired
@@ -285,7 +263,7 @@ public class UserDTO implements Serializable {
     /**
      * Returns true if this user's account has been locked, either by a system administrator
      * or by too many failed log-in attempts.
-     *
+     * <p>
      * todo: locked flag is transient, field currently only exists for Spring Security integration
      *
      * @return true if user is locked
@@ -301,7 +279,7 @@ public class UserDTO implements Serializable {
 
     /**
      * Returns true if the users password has expired.
-     *
+     * <p>
      * todo: expired flag is transient, field currently only exists for Spring Security integration
      *
      * @return true if password has expired
@@ -359,20 +337,20 @@ public class UserDTO implements Serializable {
     public void setFailedLoginAttempts(int failedAttempts) {
         this.failedLoginAttempts = failedAttempts;
     }
-    
-    @Column(name = "encryption_scheme", nullable=false)
-    public Integer getEncryptionScheme(){
-    	return this.encryptionScheme;
+
+    @Column(name = "encryption_scheme", nullable = false)
+    public Integer getEncryptionScheme() {
+        return this.encryptionScheme;
     }
-    
-    public void setEncryptionScheme(Integer scheme){
-    	this.encryptionScheme = scheme;
+
+    public void setEncryptionScheme(Integer scheme) {
+        this.encryptionScheme = scheme;
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_map",
-               joinColumns = {@JoinColumn(name = "user_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "role_id", updatable = false)})
+            joinColumns = {@JoinColumn(name = "user_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", updatable = false)})
     public Set<RoleDTO> getRoles() {
         return this.roles;
     }
@@ -563,18 +541,18 @@ public class UserDTO implements Serializable {
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
-    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("processingOrder")
     public List<PaymentInformationDTO> getPaymentInstruments() {
-		return paymentInstruments;
-	}
+        return paymentInstruments;
+    }
 
-	public void setPaymentInstruments(List<PaymentInformationDTO> paymentInstruments) {
-		this.paymentInstruments = paymentInstruments;
-	}
+    public void setPaymentInstruments(List<PaymentInformationDTO> paymentInstruments) {
+        this.paymentInstruments = paymentInstruments;
+    }
 
-    @Column(name="account_locked_time", length = 29)
+    @Column(name = "account_locked_time", length = 29)
     public Date getAccountLockedTime() {
         return accountLockedTime;
     }
@@ -588,11 +566,11 @@ public class UserDTO implements Serializable {
         /*  Avoid lazy loaded fields to prevent a LazyInitializationException
             when printing users outside of the initial transaction. */
         return "UserDTO{"
-               + "id=" + id
-               + ", userName='" + userName + '\''
-               + ", accountExpired=" + accountExpired
-               + ", accountDisabledDate=" + accountDisabledDate
-               + '}';
+                + "id=" + id
+                + ", userName='" + userName + '\''
+                + ", accountExpired=" + accountExpired
+                + ", accountDisabledDate=" + accountDisabledDate
+                + '}';
     }
 
     public void touch() {
@@ -611,12 +589,12 @@ public class UserDTO implements Serializable {
 
     @Transient
     public boolean isInvoiceAsChild() {
-        return ( this.getCustomer() != null && this.getCustomer().invoiceAsChild());
+        return (this.getCustomer() != null && this.getCustomer().invoiceAsChild());
     }
 
     @Transient
     public String[] getFieldNames() {
-        String[] fields= new String[] {
+        String[] fields = new String[]{
                 "id",
                 "userName",
                 "password",
@@ -663,19 +641,19 @@ public class UserDTO implements Serializable {
         };
 
         List<String> list = new ArrayList<>(Arrays.asList(fields));
-        
+
         return list.toArray(new String[list.size()]);
 
     }
 
     @Transient
     public Object[][] getFieldValues() {
-       // ContactBL contactBL = new ContactBL();
-       // contactBL.set(id);
+        // ContactBL contactBL = new ContactBL();
+        // contactBL.set(id);
 
         //ContactDTO contact = contactBL.getEntity();
 
-        Object[][]values= new Object[][]{
+        Object[][] values = new Object[][]{
                 {
                         id,
                         userName,

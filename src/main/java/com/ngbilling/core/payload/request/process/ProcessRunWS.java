@@ -39,10 +39,10 @@ import java.util.List;
 public class ProcessRunWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer billingProcessId;
     private Date runDate;
     private Date started;
@@ -139,16 +139,16 @@ public class ProcessRunWS implements Serializable {
     @Override
     public String toString() {
         return "ProcessRunWS{"
-               + "id=" + id
-               + ", billingProcessId=" + billingProcessId
-               + ", runDate=" + runDate
-               + ", started=" + started
-               + ", finished=" + finished
-               + ", invoicesGenerated=" + invoicesGenerated
-               + ", paymentFinished=" + paymentFinished
-               + ", processRunTotals=" + (processRunTotals != null ? processRunTotals.size() : null)
-               + ", statusId=" + statusId
-               + ", statusStr='" + statusStr + '\''
-               + '}';
+                + "id=" + id
+                + ", billingProcessId=" + billingProcessId
+                + ", runDate=" + runDate
+                + ", started=" + started
+                + ", finished=" + finished
+                + ", invoicesGenerated=" + invoicesGenerated
+                + ", paymentFinished=" + paymentFinished
+                + ", processRunTotals=" + (processRunTotals != null ? processRunTotals.size() : null)
+                + ", statusId=" + statusId
+                + ", statusStr='" + statusStr + '\''
+                + '}';
     }
 }

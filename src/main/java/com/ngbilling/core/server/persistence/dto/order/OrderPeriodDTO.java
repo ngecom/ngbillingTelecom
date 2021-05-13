@@ -24,33 +24,18 @@
 package com.ngbilling.core.server.persistence.dto.order;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.server.persistence.dao.user.CompanyDAO;
 import com.ngbilling.core.server.persistence.dto.process.PeriodUnitDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @TableGenerator(
@@ -66,10 +51,10 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class OrderPeriodDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private CompanyDTO company;
     private PeriodUnitDTO periodUnitDTO;
     private Integer value;
@@ -84,33 +69,34 @@ public class OrderPeriodDTO extends AbstractDescription implements java.io.Seria
     public OrderPeriodDTO(int id) {
         this.id = id;
     }
-    
+
     public OrderPeriodDTO(Integer unitId, Integer value, Integer entityId) {
-    	setUnitId(unitId);
-    	setValue(value);
-    	this.company = companyDAO.findById(entityId).get();
+        setUnitId(unitId);
+        setValue(value);
+        this.company = companyDAO.findById(entityId).get();
     }
 
     public OrderPeriodDTO(CompanyDTO entity, PeriodUnitDTO periodUnitDTO, Integer value) {
         this.company = entity;
         this.periodUnitDTO = periodUnitDTO;
         this.value = value;
-     }
-    
-    public OrderPeriodDTO(int id, CompanyDTO entity, PeriodUnitDTO periodUnitDTO, Integer value, Set<OrderDTO> orderDTOs) {
-       this.id = id;
-       this.company = entity;
-       this.periodUnitDTO = periodUnitDTO;
-       this.value = value;
-       this.orderDTOs = orderDTOs;
     }
-    
+
+    public OrderPeriodDTO(int id, CompanyDTO entity, PeriodUnitDTO periodUnitDTO, Integer value, Set<OrderDTO> orderDTOs) {
+        this.id = id;
+        this.company = entity;
+        this.periodUnitDTO = periodUnitDTO;
+        this.value = value;
+        this.orderDTOs = orderDTOs;
+    }
+
     @Transient
     protected String getTable() {
         return ServerConstants.TABLE_ORDER_PERIOD;
     }
-   
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_period_GEN")
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_period_GEN")
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -171,11 +157,11 @@ public class OrderPeriodDTO extends AbstractDescription implements java.io.Seria
     @Override
     public String toString() {
         return "OrderPeriodDTO:[" +
-               " id=" + id +
-               " company=" + company +
-               " periodUnitDTO=" + periodUnitDTO +
-               " value=" + value +
-               " versionNum=" + versionNum + "]";
+                " id=" + id +
+                " company=" + company +
+                " periodUnitDTO=" + periodUnitDTO +
+                " value=" + value +
+                " versionNum=" + versionNum + "]";
     }
 
     // convenient methods for migration from entity beans
@@ -187,19 +173,19 @@ public class OrderPeriodDTO extends AbstractDescription implements java.io.Seria
         return null;
     }
 
+    public void setUnitId(int id) {
+        PeriodUnitDTO period = new PeriodUnitDTO(id);
+        setPeriodUnit(period);
+    }
+
     @Transient
     public boolean isOneTime() {
-        return ( id == ServerConstants.ORDER_PERIOD_ONCE.intValue());
+        return (id == ServerConstants.ORDER_PERIOD_ONCE.intValue());
     }
 
     @Transient
     public boolean isRecurring() {
-        return ( id != ServerConstants.ORDER_PERIOD_ONCE.intValue());
-    }
-
-    public void setUnitId(int id) {
-        PeriodUnitDTO period = new PeriodUnitDTO(id);
-        setPeriodUnit(period);
+        return (id != ServerConstants.ORDER_PERIOD_ONCE.intValue());
     }
 
     public void touch() {

@@ -24,15 +24,14 @@
 
 package com.ngbilling.core.common.util;
 
+import com.ngbilling.core.server.util.ServerConstants;
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.ngbilling.core.server.util.ServerConstants;
 
 /**
  * Client miscellaneous utility functions
@@ -40,10 +39,9 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class Util {
 
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-    private static final FormatLogger LOG = new FormatLogger(Util.class);
     public final static int SECONDS_IN_MINUTE = 60;
     public final static int MILISECONDS_IN_SECOND = 1000;
+    private static final FormatLogger LOG = new FormatLogger(Util.class);
 
     /**
      * Creates a date object with the given parameters only if they belong to a valid day, so February 30th would be
@@ -499,7 +497,6 @@ public class Util {
         }
     }
 
-   
 
     public static final String formatRateForDisplay(BigDecimal rate) {
 

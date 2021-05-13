@@ -16,29 +16,28 @@
 package com.ngbilling.core.payload.request.item;
 
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 
 /**
  * @author Gerhard
- * @since 15/04/13
  * @see com.sapienter.jbilling.server.item.db.AssetDTO
+ * @since 15/04/13
  */
 public class AssetWS {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     @NotNull(message = "validation.error.null.asset.identifier")
-    @Size(min=1,max=200, message="validation.error.size,1,200")
+    @Size(min = 1, max = 200, message = "validation.error.size,1,200")
     private String identifier;
     private Date createDatetime;
     private String status;
@@ -48,18 +47,19 @@ public class AssetWS {
     private Integer itemId;
     private Integer orderLineId;
     private int deleted;
-    @Size(min=0,max=1000, message="validation.error.length.max,1000")
+    @Size(min = 0, max = 1000, message = "validation.error.length.max,1000")
     private String notes;
     private Integer entityId;
     private Integer[] containedAssetIds;
     private Integer groupId;
     private boolean global = false;
-    
+
     private Set<Integer> entities = new HashSet<>(0);
 
-	private AssetAssignmentWS[] assignments;
+    private AssetAssignmentWS[] assignments;
 
-    public AssetWS() {}
+    public AssetWS() {
+    }
 
     public Integer getId() {
         return id;
@@ -149,7 +149,7 @@ public class AssetWS {
         this.notes = notes;
     }
 
-    
+
     public Integer getEntityId() {
         return entityId;
     }
@@ -159,28 +159,28 @@ public class AssetWS {
     }
 
     public boolean isGlobal() {
-		return global;
-	}
+        return global;
+    }
 
-	public void setGlobal(boolean global) {
-		this.global = global;
-	}
-	
-	public Set<Integer> getEntities() {
-		return entities;
-	}
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
 
-	public void setEntities(Set<Integer> entities) {
-		this.entities = entities;
-	}
+    public Set<Integer> getEntities() {
+        return entities;
+    }
 
-	public AssetAssignmentWS[] getAssignments() {
-		return assignments;
-	}
+    public void setEntities(Set<Integer> entities) {
+        this.entities = entities;
+    }
 
-	public void setAssignments(AssetAssignmentWS[] assignments) {
-		this.assignments = assignments;
-	}
+    public AssetAssignmentWS[] getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(AssetAssignmentWS[] assignments) {
+        this.assignments = assignments;
+    }
 
     @Override
     public boolean equals(Object o) {

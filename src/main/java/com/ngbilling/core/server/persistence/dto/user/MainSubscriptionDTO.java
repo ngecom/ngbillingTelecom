@@ -23,81 +23,73 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.user;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
 import com.ngbilling.core.server.persistence.dto.order.OrderPeriodDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
- * 
  * @author Panche.Isajeski
- * 
- * 	Embedable class for customer main subscription parameters
- *
+ * <p>
+ * Embedable class for customer main subscription parameters
  */
 @Embeddable
 public class MainSubscriptionDTO implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Autowired
-	private OrderPeriodDAO orderPeriodDAO;
-	private OrderPeriodDTO subscriptionPeriod;
-	private Integer nextInvoiceDayOfPeriod;
 
-	public MainSubscriptionDTO() {
-		super();
-	}
-	
-	public MainSubscriptionDTO(OrderPeriodDTO subscriptionPeriod, Integer nextInvoiceDayOfPeriod) {
-		super();
-		this.subscriptionPeriod = subscriptionPeriod;
-		this.nextInvoiceDayOfPeriod = nextInvoiceDayOfPeriod;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Autowired
+    private OrderPeriodDAO orderPeriodDAO;
+    private OrderPeriodDTO subscriptionPeriod;
+    private Integer nextInvoiceDayOfPeriod;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "main_subscript_order_period_id")
-	public OrderPeriodDTO getSubscriptionPeriod() {
-		return subscriptionPeriod;
-	}
+    public MainSubscriptionDTO() {
+        super();
+    }
 
-	public void setSubscriptionPeriod(OrderPeriodDTO subscriptionPeriod) {
-		this.subscriptionPeriod = subscriptionPeriod;
-	}
-	
-	public void setSubsriptionPeriodFromPeriodId(Integer periodId) {
-		setSubscriptionPeriod(orderPeriodDAO.findById(periodId).get());
-	}
+    public MainSubscriptionDTO(OrderPeriodDTO subscriptionPeriod, Integer nextInvoiceDayOfPeriod) {
+        super();
+        this.subscriptionPeriod = subscriptionPeriod;
+        this.nextInvoiceDayOfPeriod = nextInvoiceDayOfPeriod;
+    }
 
-	@Column(name = "next_invoice_day_of_period")
-	public Integer getNextInvoiceDayOfPeriod() {
-		return nextInvoiceDayOfPeriod;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "main_subscript_order_period_id")
+    public OrderPeriodDTO getSubscriptionPeriod() {
+        return subscriptionPeriod;
+    }
 
-	public void setNextInvoiceDayOfPeriod(Integer nextInvoiceDayOfMonth) {
-		this.nextInvoiceDayOfPeriod = nextInvoiceDayOfMonth;
-	}
-	
-	public  MainSubscriptionDTO createDefaultMainSubscription(Integer entityId) {
-		return new MainSubscriptionDTO(orderPeriodDAO.findOrderPeriod(
-				entityId, 1, 1), 1);
-	}
+    public void setSubscriptionPeriod(OrderPeriodDTO subscriptionPeriod) {
+        this.subscriptionPeriod = subscriptionPeriod;
+    }
 
-	@Override
-	public String toString() {
-		return "MainSubscriptionDTO [subscriptionPeriod="
-				+ subscriptionPeriod + ", nextInvoiceDayOfPeriod="
-				+ nextInvoiceDayOfPeriod + "]";
-	}
+    public void setSubsriptionPeriodFromPeriodId(Integer periodId) {
+        setSubscriptionPeriod(orderPeriodDAO.findById(periodId).get());
+    }
+
+    @Column(name = "next_invoice_day_of_period")
+    public Integer getNextInvoiceDayOfPeriod() {
+        return nextInvoiceDayOfPeriod;
+    }
+
+    public void setNextInvoiceDayOfPeriod(Integer nextInvoiceDayOfMonth) {
+        this.nextInvoiceDayOfPeriod = nextInvoiceDayOfMonth;
+    }
+
+    public MainSubscriptionDTO createDefaultMainSubscription(Integer entityId) {
+        return new MainSubscriptionDTO(orderPeriodDAO.findOrderPeriod(
+                entityId, 1, 1), 1);
+    }
+
+    @Override
+    public String toString() {
+        return "MainSubscriptionDTO [subscriptionPeriod="
+                + subscriptionPeriod + ", nextInvoiceDayOfPeriod="
+                + nextInvoiceDayOfPeriod + "]";
+    }
 
 }

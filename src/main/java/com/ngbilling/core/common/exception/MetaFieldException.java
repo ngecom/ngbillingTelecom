@@ -26,7 +26,6 @@ package com.ngbilling.core.common.exception;
 
 /**
  * @author emilc
- *
  */
 public class MetaFieldException extends SessionInternalError {
 
@@ -43,30 +42,31 @@ public class MetaFieldException extends SessionInternalError {
 
     /**
      * Constructor for TaskException.
+     *
      * @param message
      */
     public MetaFieldException(String message) {
         super(message);
     }
-    
+
     public MetaFieldException(String s, Class<?> className, Exception e) {
-    	super(s,className,e);
+        super(s, className, e);
     }
-    
+
     public MetaFieldException(String message, Throwable e) {
-        super(message,e);
+        super(message, e);
     }
 
     public MetaFieldException(String message, Throwable e, String[] errors) {
-        super(message,e,errors);
+        super(message, e, errors);
     }
 
     public MetaFieldException(String message, String[] errors) {
-        super(message,errors);
+        super(message, errors);
     }
-    
+
     public MetaFieldException(String message, String[] errors, String[] params) {
-        super(message,errors,params);
+        super(message, errors, params);
     }
 
 }

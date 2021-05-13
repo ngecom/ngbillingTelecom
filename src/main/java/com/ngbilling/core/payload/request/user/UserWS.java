@@ -28,38 +28,29 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.payload.request.user;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import com.ngbilling.core.common.util.CommonConstants;
 import com.ngbilling.core.common.util.Util;
 import com.ngbilling.core.payload.request.payment.PaymentInformationWS;
 
-/** @author Emil */
-public class UserWS  {
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
+import java.util.*;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	@Min(value = 1, message = "validation.error.min,1")
+/**
+ * @author Emil
+ */
+public class UserWS {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    @Min(value = 1, message = "validation.error.min,1")
     @Max(value = 0, message = "validation.error.max,0")
     private int id;
     private String currencyCode;
-    @Pattern(regexp= CommonConstants.PASSWORD_PATTERN_4_UNIQUE_CLASSES, message="validation.error.password.size,8,128")
+    @Pattern(regexp = CommonConstants.PASSWORD_PATTERN_4_UNIQUE_CLASSES, message = "validation.error.password.size,8,128")
     private String password;
     private boolean createCredentials = false;
     private int deleted;
@@ -68,9 +59,9 @@ public class UserWS  {
     private Date lastLoginDate;
     private boolean accountExpired;
     private Date accountDisabledDate;
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Size(min = 5, max = 50, message = "validation.error.size,5,50")
-    @Pattern(regexp= CommonConstants.USERNAME_PATTERN, message="validation.error.invalid.username")
+    @Pattern(regexp = CommonConstants.USERNAME_PATTERN, message = "validation.error.invalid.username")
     private String userName;
     private int failedAttempts;
     private String languageCode;
@@ -85,7 +76,7 @@ public class UserWS  {
     private Integer statusId = null;
     private Integer subscriberStatusId = null;
     private Integer customerId = null;
-    @Digits(integer = 12, fraction = 0, message= "validation.error.invalid.agentid")
+    @Digits(integer = 12, fraction = 0, message = "validation.error.invalid.agentid")
     private Integer partnerId = null;
     private Integer parentId = null;
     private Boolean isParent = null;
@@ -97,13 +88,13 @@ public class UserWS  {
     private Integer[] childIds = null;
     private String owingBalance = null;
     private String dynamicBalance = null;
-    @Digits(integer = 12, fraction = 10, message="validation.error.not.a.number")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     private String autoRecharge = null;
-    @Digits(integer = 12, fraction = 10, message="validation.error.not.a.number")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     @Min(value = 0, message = "validation.error.not.a.positive.number")
     private String creditLimit = null;
-	private String creditLimitNotification1 = null;
-	private String creditLimitNotification2 = null;
+    private String creditLimitNotification1 = null;
+    private String creditLimitNotification2 = null;
     private String notes;
     private Integer automaticPaymentType;
     private String companyName;
@@ -115,9 +106,9 @@ public class UserWS  {
     private Date nextInvoiceDate;
     private Integer voiceItemId;
 
-    @Digits(integer = 12, fraction = 10, message="validation.error.not.a.number")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     private String rechargeThreshold = "-1";
-    @Digits(integer = 12, fraction = 10, message="validation.error.not.a.number")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     private String monthlyLimit;
     private Integer entityId;
 
@@ -132,12 +123,12 @@ public class UserWS  {
     private Map<Integer, ArrayList<Date>> timelineDatesMap = new HashMap<Integer, ArrayList<Date>>(0);
     private Map<Integer, Date> effectiveDateMap = new HashMap<Integer, Date>(0);
     private Map<Integer, ArrayList<Date>> removedDatesMap = new HashMap<Integer, ArrayList<Date>>(0);
-    
+
     //user codes of other users linked to this customer
     private String userCodeLink;
     // payment instruments
     private List<PaymentInformationWS> paymentInstruments = new ArrayList<PaymentInformationWS>();
-    
+
     public UserWS() {
     }
 
@@ -149,8 +140,8 @@ public class UserWS  {
     public void setId(int id) {
         this.id = id;
     }
-    
-	public Integer getPartnerId() {
+
+    public Integer getPartnerId() {
         return partnerId;
     }
 
@@ -258,12 +249,12 @@ public class UserWS  {
         return useParentPricing;
     }
 
-    public Boolean useParentPricing() {
-        return useParentPricing;
-    }
-
     public void setUseParentPricing(Boolean useParentPricing) {
         this.useParentPricing = useParentPricing;
+    }
+
+    public Boolean useParentPricing() {
+        return useParentPricing;
     }
 
     public Boolean getExcludeAgeing() {
@@ -282,7 +273,6 @@ public class UserWS  {
         this.createDatetime = createDatetime;
     }
 
-    
 
     public int getDeleted() {
         return deleted;
@@ -316,20 +306,20 @@ public class UserWS  {
         this.lastLoginDate = lastLoginDate;
     }
 
-    public boolean isAccountExpired() { 
-        return accountExpired; 
+    public boolean isAccountExpired() {
+        return accountExpired;
     }
 
-    public void setAccountExpired(boolean accountExpired) { 
-        this.accountExpired = accountExpired; 
+    public void setAccountExpired(boolean accountExpired) {
+        this.accountExpired = accountExpired;
     }
 
-    public Date getAccountDisabledDate() { 
-        return accountDisabledDate; 
+    public Date getAccountDisabledDate() {
+        return accountDisabledDate;
     }
 
-    public void setAccountDisabledDate(Date accountDisabledDate) { 
-        this.accountDisabledDate = accountDisabledDate; 
+    public void setAccountDisabledDate(Date accountDisabledDate) {
+        this.accountDisabledDate = accountDisabledDate;
     }
 
     public Date getLastStatusChange() {
@@ -385,10 +375,6 @@ public class UserWS  {
         return owingBalance;
     }
 
-    public BigDecimal getOwingBalanceAsDecimal() {
-        return Util.string2decimal(owingBalance);
-    }
-
     public void setOwingBalance(String owingBalance) {
         this.owingBalance = owingBalance;
     }
@@ -397,16 +383,12 @@ public class UserWS  {
         this.owingBalance = (owingBalance != null ? owingBalance.toString() : null);
     }
 
+    public BigDecimal getOwingBalanceAsDecimal() {
+        return Util.string2decimal(owingBalance);
+    }
+
     public String getCreditLimit() {
         return creditLimit;
-    }
-
-    public BigDecimal getCreditLimitAsDecimal() {
-        return Util.string2decimal(creditLimit);
-    }
-
-    public void setCreditLimitAsDecimal(BigDecimal creditLimit) {
-        setCreditLimit(creditLimit);
     }
 
     public void setCreditLimit(String creditLimit) {
@@ -417,44 +399,48 @@ public class UserWS  {
         this.creditLimit = (creditLimit != null ? creditLimit.toString() : null);
     }
 
-	public String getCreditLimitNotification1() {
-		return creditLimitNotification1;
-	}
-
-	public void setCreditLimitNotification1(String creditLimitNotification1) {
-		this.creditLimitNotification1 = creditLimitNotification1;
-	}
-
-	public BigDecimal getCreditLimitNotification1AsDecimal() {
-		return Util.string2decimal(creditLimitNotification1);
-	}
-
-	public void setCreditLimitNotification1(BigDecimal creditLimitNotification1) {
-		this.creditLimitNotification1 = (null != creditLimitNotification1 ? creditLimitNotification1.toString() : null);
-	}
-
-	public String getCreditLimitNotification2() {
-		return creditLimitNotification2;
-	}
-
-	public void setCreditLimitNotification2(String creditLimitNotification2) {
-		this.creditLimitNotification2 = creditLimitNotification2;
-	}
-
-	public BigDecimal getCreditLimitNotification2AsDecimal() {
-		return Util.string2decimal(creditLimitNotification2);
-	}
-
-	public void setCreditLimitNotification2(BigDecimal creditLimitNotification2) {
-		this.creditLimitNotification2 = (null != creditLimitNotification2 ? creditLimitNotification2.toString() : null);
-	}
-
-	public String getDynamicBalance() {
-        return dynamicBalance;
+    public BigDecimal getCreditLimitAsDecimal() {
+        return Util.string2decimal(creditLimit);
     }
 
-    public BigDecimal getDynamicBalanceAsDecimal() {
-        return Util.string2decimal(dynamicBalance);
+    public void setCreditLimitAsDecimal(BigDecimal creditLimit) {
+        setCreditLimit(creditLimit);
+    }
+
+    public String getCreditLimitNotification1() {
+        return creditLimitNotification1;
+    }
+
+    public void setCreditLimitNotification1(String creditLimitNotification1) {
+        this.creditLimitNotification1 = creditLimitNotification1;
+    }
+
+    public void setCreditLimitNotification1(BigDecimal creditLimitNotification1) {
+        this.creditLimitNotification1 = (null != creditLimitNotification1 ? creditLimitNotification1.toString() : null);
+    }
+
+    public BigDecimal getCreditLimitNotification1AsDecimal() {
+        return Util.string2decimal(creditLimitNotification1);
+    }
+
+    public String getCreditLimitNotification2() {
+        return creditLimitNotification2;
+    }
+
+    public void setCreditLimitNotification2(String creditLimitNotification2) {
+        this.creditLimitNotification2 = creditLimitNotification2;
+    }
+
+    public void setCreditLimitNotification2(BigDecimal creditLimitNotification2) {
+        this.creditLimitNotification2 = (null != creditLimitNotification2 ? creditLimitNotification2.toString() : null);
+    }
+
+    public BigDecimal getCreditLimitNotification2AsDecimal() {
+        return Util.string2decimal(creditLimitNotification2);
+    }
+
+    public String getDynamicBalance() {
+        return dynamicBalance;
     }
 
     public void setDynamicBalance(String dynamicBalance) {
@@ -465,16 +451,12 @@ public class UserWS  {
         this.dynamicBalance = (dynamicBalance != null ? dynamicBalance.toString() : null);
     }
 
+    public BigDecimal getDynamicBalanceAsDecimal() {
+        return Util.string2decimal(dynamicBalance);
+    }
+
     public String getAutoRecharge() {
         return autoRecharge;
-    }
-
-    public BigDecimal getAutoRechargeAsDecimal() {
-        return Util.string2decimal(autoRecharge);
-    }
-
-    public void setAutoRechargeAsDecimal(BigDecimal autoRecharge) {
-        setAutoRecharge(autoRecharge);
     }
 
     public void setAutoRecharge(String autoRecharge) {
@@ -483,6 +465,14 @@ public class UserWS  {
 
     public void setAutoRecharge(BigDecimal autoRecharge) {
         this.autoRecharge = (autoRecharge != null ? autoRecharge.toString() : null);
+    }
+
+    public BigDecimal getAutoRechargeAsDecimal() {
+        return Util.string2decimal(autoRecharge);
+    }
+
+    public void setAutoRechargeAsDecimal(BigDecimal autoRecharge) {
+        setAutoRecharge(autoRecharge);
     }
 
     public String getNotes() {
@@ -542,12 +532,12 @@ public class UserWS  {
     }
 
     public MainSubscriptionWS getMainSubscription() {
-		return mainSubscription;
-	}
+        return mainSubscription;
+    }
 
-	public void setMainSubscription(MainSubscriptionWS mainSubscription) {
-		this.mainSubscription = mainSubscription;
-	}
+    public void setMainSubscription(MainSubscriptionWS mainSubscription) {
+        this.mainSubscription = mainSubscription;
+    }
 
     public CustomerNoteWS[] getCustomerNotes() {
         return customerNotes;
@@ -573,31 +563,31 @@ public class UserWS  {
         this.invoiceDesign = invoiceDesign;
     }
 
-	public Map<Integer, ArrayList<Date>> getTimelineDatesMap() {
-		return timelineDatesMap;
-	}
+    public Map<Integer, ArrayList<Date>> getTimelineDatesMap() {
+        return timelineDatesMap;
+    }
 
-	public void setTimelineDatesMap(Map<Integer, ArrayList<Date>> timelineDatesMap) {
-		this.timelineDatesMap = timelineDatesMap;
-	}
+    public void setTimelineDatesMap(Map<Integer, ArrayList<Date>> timelineDatesMap) {
+        this.timelineDatesMap = timelineDatesMap;
+    }
 
-	public Map<Integer, Date> getEffectiveDateMap() {
-		return effectiveDateMap;
-	}
+    public Map<Integer, Date> getEffectiveDateMap() {
+        return effectiveDateMap;
+    }
 
-	public void setEffectiveDateMap(Map<Integer, Date> effectiveDateMap) {
-		this.effectiveDateMap = effectiveDateMap;
-	}
+    public void setEffectiveDateMap(Map<Integer, Date> effectiveDateMap) {
+        this.effectiveDateMap = effectiveDateMap;
+    }
 
-	public Map<Integer, ArrayList<Date>> getRemovedDatesMap() {
-		return removedDatesMap;
-	}
+    public Map<Integer, ArrayList<Date>> getRemovedDatesMap() {
+        return removedDatesMap;
+    }
 
-	public void setRemovedDatesMap(Map<Integer, ArrayList<Date>> removedDatesMap) {
-		this.removedDatesMap = removedDatesMap;
-	}
+    public void setRemovedDatesMap(Map<Integer, ArrayList<Date>> removedDatesMap) {
+        this.removedDatesMap = removedDatesMap;
+    }
 
-	
+
     public Boolean isAccountLocked() {
         return isAccountLocked;
     }
@@ -610,10 +600,6 @@ public class UserWS  {
         return rechargeThreshold;
     }
 
-    public BigDecimal getRechargeThresholdAsDecimal() {
-        return rechargeThreshold != null ? new BigDecimal(rechargeThreshold) : null;
-    }
-
     public void setRechargeThreshold(String rechargeThreshold) {
         this.rechargeThreshold = rechargeThreshold;
     }
@@ -622,20 +608,24 @@ public class UserWS  {
         this.rechargeThreshold = (rechargeThreshold != null ? rechargeThreshold.toString() : null);
     }
 
-    public String getMonthlyLimit () {
+    public BigDecimal getRechargeThresholdAsDecimal() {
+        return rechargeThreshold != null ? new BigDecimal(rechargeThreshold) : null;
+    }
+
+    public String getMonthlyLimit() {
         return monthlyLimit;
     }
 
-    public BigDecimal getMonthlyLimitAsDecimal () {
-        return monthlyLimit != null ? new BigDecimal(monthlyLimit) : null;
-    }
-
-    public void setMonthlyLimit (String monthlyLimit) {
+    public void setMonthlyLimit(String monthlyLimit) {
         this.monthlyLimit = monthlyLimit;
     }
 
-    public void setMonthlyLimit (BigDecimal monthlyLimit) {
+    public void setMonthlyLimit(BigDecimal monthlyLimit) {
         this.monthlyLimit = (monthlyLimit != null ? monthlyLimit.toString() : null);
+    }
+
+    public BigDecimal getMonthlyLimitAsDecimal() {
+        return monthlyLimit != null ? new BigDecimal(monthlyLimit) : null;
     }
 
     /**
@@ -652,20 +642,20 @@ public class UserWS  {
     }
 
     public Integer getEntityId() {
-		return entityId;
-	}
+        return entityId;
+    }
 
-	public void setEntityId(Integer entityId) {
-		this.entityId = entityId;
-	}
+    public void setEntityId(Integer entityId) {
+        this.entityId = entityId;
+    }
 
-	public List<PaymentInformationWS> getPaymentInstruments() {
-		return paymentInstruments;
-	}
+    public List<PaymentInformationWS> getPaymentInstruments() {
+        return paymentInstruments;
+    }
 
-	public void setPaymentInstruments(List<PaymentInformationWS> paymentInstruments) {
-		this.paymentInstruments = paymentInstruments;
-	}
+    public void setPaymentInstruments(List<PaymentInformationWS> paymentInstruments) {
+        this.paymentInstruments = paymentInstruments;
+    }
 
     public boolean isCreateCredentials() {
         return createCredentials;
@@ -690,30 +680,29 @@ public class UserWS  {
     public void setMainSubscriptionId(Integer mainSubscriptionId) {
         this.mainSubscriptionId = mainSubscriptionId;
     }
-    
-    
+
 
     public String getCurrencyCode() {
-		return currencyCode;
-	}
+        return currencyCode;
+    }
 
 
-	public void setCurrencyCode(String currencyCode) {
-		this.currencyCode = currencyCode;
-	}
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
 
 
-	public String getLanguageCode() {
-		return languageCode;
-	}
+    public String getLanguageCode() {
+        return languageCode;
+    }
 
 
-	public void setLanguageCode(String languageCode) {
-		this.languageCode = languageCode;
-	}
+    public void setLanguageCode(String languageCode) {
+        this.languageCode = languageCode;
+    }
 
 
-	@Override
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(", autoRecharge=");

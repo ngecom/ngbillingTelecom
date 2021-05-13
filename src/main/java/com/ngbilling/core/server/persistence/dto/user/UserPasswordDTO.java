@@ -23,25 +23,12 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.user;
 
+import com.ngbilling.core.common.util.CommonConstants;
+
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
-
-import org.hibernate.boot.model.relational.Exportable;
-
-import com.ngbilling.core.common.util.CommonConstants;
 
 @Entity
 // No cache, mutable and critical
@@ -55,10 +42,10 @@ import com.ngbilling.core.common.util.CommonConstants;
 @Table(name = "user_password_map")
 public class UserPasswordDTO implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private UserDTO user;
     private Date dateCreated;
     private String password;
@@ -66,13 +53,13 @@ public class UserPasswordDTO implements Serializable {
 
     public UserPasswordDTO() {
     }
-    
+
     public UserPasswordDTO(UserDTO user, String encryptedPassword) {
-    	this.user = user;
-    	this.dateCreated = new Date();
-    	this.encryptedPassword = encryptedPassword;
+        this.user = user;
+        this.dateCreated = new Date();
+        this.encryptedPassword = encryptedPassword;
     }
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "reset_password_code_GEN")
     @Column(name = "id", unique = true, nullable = false)
@@ -86,36 +73,36 @@ public class UserPasswordDTO implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "base_user_id")
-    public UserDTO getUser () {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser (UserDTO user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
     @Column(name = "date_created")
-    public Date getDateCreated () {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated (Date dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    @Pattern(regexp= CommonConstants.PASSWORD_PATTERN_4_UNIQUE_CLASSES, message="validation.error.password.size,8,40")
+    @Pattern(regexp = CommonConstants.PASSWORD_PATTERN_4_UNIQUE_CLASSES, message = "validation.error.password.size,8,40")
     @Transient
-    public String getPassword () {
+    public String getPassword() {
         return password;
-    }
-
-    public void setPassword (String password,Integer userMainRoleId) {
-        this.password = password;
-
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setPassword(String password, Integer userMainRoleId) {
+        this.password = password;
+
     }
 
     @Column(name = "new_password", length = 40)
@@ -128,7 +115,7 @@ public class UserPasswordDTO implements Serializable {
     }
 
     @Transient
-    public String[] getFieldNames () {
+    public String[] getFieldNames() {
         return new String[]{
                 "user",
                 "dateCreated",
@@ -137,7 +124,7 @@ public class UserPasswordDTO implements Serializable {
     }
 
     @Transient
-    public Object[][] getFieldValues () {
+    public Object[][] getFieldValues() {
         return new Object[][]{
                 {
                         (user != null ? user.getUserName() : null),

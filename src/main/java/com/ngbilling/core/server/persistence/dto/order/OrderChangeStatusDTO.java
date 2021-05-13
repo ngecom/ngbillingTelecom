@@ -16,22 +16,13 @@
 
 package com.ngbilling.core.server.persistence.dto.order;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.payload.request.order.ApplyToOrder;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 
 /**
  * @author Alexander Aksenov
@@ -41,13 +32,13 @@ import com.ngbilling.core.server.util.ServerConstants;
 @DiscriminatorValue("order_change_status")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class OrderChangeStatusDTO extends AbstractGenericStatus implements java.io.Serializable {
-    
+
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ApplyToOrder applyToOrder;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private ApplyToOrder applyToOrder;
     private CompanyDTO company;
     private int deleted;
 
@@ -90,7 +81,7 @@ public class OrderChangeStatusDTO extends AbstractGenericStatus implements java.
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return "OrderChangeStatusDTO [applyToOrder=" + applyToOrder + ", company=" + company + ", deleted=" + deleted
                 + "]";
     }

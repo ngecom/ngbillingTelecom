@@ -24,29 +24,6 @@
 
 package com.ngbilling.core.server.persistence.dto.metafield;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.payload.request.metafield.DataType;
 import com.ngbilling.core.payload.request.metafield.MetaFieldType;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
@@ -54,6 +31,11 @@ import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.service.metafield.MetaFieldService;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * A meta-field name that is associated with a particular entity type. The field names define
@@ -72,7 +54,7 @@ import com.ngbilling.core.server.util.ServerConstants;
         pkColumnValue = "meta_field_name",
         allocationSize = 10
 )
-public class MetaField  extends AbstractDescription  implements Serializable {
+public class MetaField extends AbstractDescription implements Serializable {
 
     private static final long serialVersionUID = 8802138744319569281L;
     private int id;
@@ -88,10 +70,10 @@ public class MetaField  extends AbstractDescription  implements Serializable {
     private MetaFieldValue defaultValue = null;
 
     private ValidationRule validationRule;
-    
+
     @Autowired
     private MetaFieldService metaFieldService;
-    
+
     //indicate whether the metafield is a primary field and can be used for creation of metafield groups and for providing
     //    a meta-fields to be populated for the entity type they belong to
     //Metafields created from the Configuration - MetaField menu will be considered as primary metafields by default. 
@@ -104,26 +86,26 @@ public class MetaField  extends AbstractDescription  implements Serializable {
 
     private Integer versionNum;
 
-	private String filename;
+    private String filename;
     // indicate that metafield is unique or not for a EntityType
     private boolean unique = false;
-    
+
     public MetaField() {
     }
-    
+
     public MetaField(CompanyDTO entity, String name, EntityType entityType, DataType dataType, boolean disabled,
-			boolean mandatory, Integer displayOrder, Boolean primary, MetaFieldType fieldUsage) {
-		super();
-		this.entity = entity;
-		this.name = name;
-		this.entityType = entityType;
-		this.dataType = dataType;
-		this.disabled = disabled;
-		this.mandatory = mandatory;
-		this.displayOrder = displayOrder;
-		this.primary = primary;
-		this.fieldUsage = fieldUsage;
-	}
+                     boolean mandatory, Integer displayOrder, Boolean primary, MetaFieldType fieldUsage) {
+        super();
+        this.entity = entity;
+        this.name = name;
+        this.entityType = entityType;
+        this.dataType = dataType;
+        this.disabled = disabled;
+        this.mandatory = mandatory;
+        this.displayOrder = displayOrder;
+        this.primary = primary;
+        this.fieldUsage = fieldUsage;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "meta_field_GEN")
@@ -133,6 +115,10 @@ public class MetaField  extends AbstractDescription  implements Serializable {
     }
 
     public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -217,14 +203,15 @@ public class MetaField  extends AbstractDescription  implements Serializable {
 
     public MetaFieldValue createValue() {
 
-        return metaFieldService.createValueFromDataType(this, null,getDataType());
+        return metaFieldService.createValueFromDataType(this, null, getDataType());
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }
@@ -253,12 +240,8 @@ public class MetaField  extends AbstractDescription  implements Serializable {
         this.primary = primary;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Enumerated(EnumType.STRING)
-    @Column (name="field_usage",nullable=true)
+    @Column(name = "field_usage", nullable = true)
     public MetaFieldType getFieldUsage() {
         return fieldUsage;
 
@@ -268,7 +251,7 @@ public class MetaField  extends AbstractDescription  implements Serializable {
         this.fieldUsage = fieldUsage;
     }
 
-    @ManyToMany( fetch = FetchType.LAZY, mappedBy = "metaFields",
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "metaFields",
             targetEntity = MetaFieldGroup.class)
     public Set<MetaFieldGroup> getMetaFieldGroups() {
         return metaFieldGroups;
@@ -277,6 +260,7 @@ public class MetaField  extends AbstractDescription  implements Serializable {
     public void setMetaFieldGroups(Set<MetaFieldGroup> metaFieldGroups) {
         this.metaFieldGroups = metaFieldGroups;
     }
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "validation_rule_id", nullable = true)
     public ValidationRule getValidationRule() {
@@ -291,7 +275,11 @@ public class MetaField  extends AbstractDescription  implements Serializable {
     public String getFilename() {
         return filename;
     }
-    
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     @Column(name = "is_unique")
     public boolean isUnique() {
         return unique;
@@ -301,13 +289,9 @@ public class MetaField  extends AbstractDescription  implements Serializable {
         this.unique = unique;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
-    
     @Override
     public boolean equals(Object obj) {
-    	return this.name.equals(((MetaField)obj).getName());
+        return this.name.equals(((MetaField) obj).getName());
     }
 
 }

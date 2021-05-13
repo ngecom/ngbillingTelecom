@@ -1,65 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
- <configuration name="PRODUCTION" status="OFF">
+<configuration name="PRODUCTION" status="OFF">
 
-    <appenders>    	
-    	<!-- CONSOLE APPENDER -->
-    	    
-   		 	<Console name="Console" target="SYSTEM_OUT">
-            	<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
-        	</Console>         
+    <appenders>
+        <!-- CONSOLE APPENDER -->
 
-    	<!-- FILE APPENDER -->
-    	       
-			<Routing name="PROCESS_BASED_LOG">
-		 	 <Routes pattern="${ctx:PROCESS}">
-		    
-		    <!-- The value dynamically determines the name of the log file. -->
-		    <Route>
-			      <RollingFile name="Rolling-${ctx:PROCESS}" fileName="../logfiles/ngbilling/ngbilling_${ctx:PROCESS}.log"
-							   filePattern="../logfiles/ngbilling/bak_${date:yyyy-MM}/eop_${ctx:PROCESS}-%d{yyyy-MM-dd}-%i.log.gz">
-						<PatternLayout>
-							<pattern>%d %p %C{1.} [%t] %m%n</pattern>
-						</PatternLayout>				  
-						<Policies>
-						  	<TimeBasedTriggeringPolicy interval="1" modulate="true" />
-						  	<SizeBasedTriggeringPolicy size="20 MB" />
-						</Policies>
-				</RollingFile>
-		    </Route>		    
-		    
-		    <!-- This route is chosen if ThreadContext has no value for key ROUTINGKEY. -->
-		    <Route key="$${ctx:PROCESS}">
-				<RollingFile name="Rolling-default" fileName="../logfiles/ngbilling/ngbilling.log"
-								filePattern="../logfiles/ngbilling/bak_${date:YYYY-MM}/eop-%d{yyyy-MM-dd}-%i.log.gz">
-				        <PatternLayout>
-					  		<pattern>%d %p %C{1.} [%t] %m%n</pattern>
-				        </PatternLayout>
-				        <Policies>
-				          <TimeBasedTriggeringPolicy interval="1" modulate="true" />
-				          <SizeBasedTriggeringPolicy size="20 MB" />
-				        </Policies>
-		      </RollingFile>
-		    </Route>
-		  </Routes>
-		</Routing>		    
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- FILE APPENDER -->
+
+        <Routing name="PROCESS_BASED_LOG">
+            <Routes pattern="${ctx:PROCESS}">
+
+                <!-- The value dynamically determines the name of the log file. -->
+                <Route>
+                    <RollingFile name="Rolling-${ctx:PROCESS}"
+                                 fileName="../logfiles/ngbilling/ngbilling_${ctx:PROCESS}.log"
+                                 filePattern="../logfiles/ngbilling/bak_${date:yyyy-MM}/eop_${ctx:PROCESS}-%d{yyyy-MM-dd}-%i.log.gz">
+                        <PatternLayout>
+                            <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+                        </PatternLayout>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                            <SizeBasedTriggeringPolicy size="20 MB"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
+
+                <!-- This route is chosen if ThreadContext has no value for key ROUTINGKEY. -->
+                <Route key="$${ctx:PROCESS}">
+                    <RollingFile name="Rolling-default" fileName="../logfiles/ngbilling/ngbilling.log"
+                                 filePattern="../logfiles/ngbilling/bak_${date:YYYY-MM}/eop-%d{yyyy-MM-dd}-%i.log.gz">
+                        <PatternLayout>
+                            <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+                        </PatternLayout>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                            <SizeBasedTriggeringPolicy size="20 MB"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
+            </Routes>
+        </Routing>
     </appenders>
-	
+
     <loggers>
         <root level="INFO">
-        	
-            <appender-ref ref="Console"/>              
+
+            <appender-ref ref="Console"/>
             <appender-ref ref="PROCESS_BASED_LOG"/>
         </root>
-<logger name=" org.springframework">
-  <level value="OFF"/> 
-</logger>
+        <logger name=" org.springframework">
+            <level value="OFF"/>
+        </logger>
 
 
-<logger name="org.hibernate">
-  <level value="OFF"/> 
-</logger>
+        <logger name="org.hibernate">
+            <level value="OFF"/>
+        </logger>
 
     </loggers>
- 	
- </configuration>
+
+</configuration>

@@ -24,99 +24,92 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
+import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
+import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
-import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="jbilling_table"
-    , uniqueConstraints = @UniqueConstraint(columnNames="name") 
+@Table(name = "jbilling_table"
+        , uniqueConstraints = @UniqueConstraint(columnNames = "name")
 )
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-public class JbillingTable  implements java.io.Serializable {
+public class JbillingTable implements java.io.Serializable {
 
 
-     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
-     private String name;
-     private Set<ContactMapDTO> contactMaps = new HashSet<ContactMapDTO>(0);
-     private Set<PreferenceDTO> preferences = new HashSet<PreferenceDTO>(0);
-     private Set<EventLogDTO> eventLogs = new HashSet<EventLogDTO>(0);
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
+    private String name;
+    private Set<ContactMapDTO> contactMaps = new HashSet<ContactMapDTO>(0);
+    private Set<PreferenceDTO> preferences = new HashSet<PreferenceDTO>(0);
+    private Set<EventLogDTO> eventLogs = new HashSet<EventLogDTO>(0);
 
     public JbillingTable() {
     }
 
-    
+
     public JbillingTable(int id, String name, int nextId) {
         this.id = id;
         this.name = name;
     }
+
     public JbillingTable(int id, String name, int nextId, Set<ContactMapDTO> contactMaps, Set<PreferenceDTO> preferences, Set<EventLogDTO> eventLogs) {
-       this.id = id;
-       this.name = name;
-       this.contactMaps = contactMaps;
-       this.preferences = preferences;
-       this.eventLogs = eventLogs;
+        this.id = id;
+        this.name = name;
+        this.contactMaps = contactMaps;
+        this.preferences = preferences;
+        this.eventLogs = eventLogs;
     }
-   
-    @Id 
-    @Column(name="id", unique=true, nullable=false)
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
-    @Column(name="name", unique=true, nullable=false, length=50)
+
+    @Column(name = "name", unique = true, nullable = false, length = 50)
     public String getName() {
         return this.name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="jbillingTable")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jbillingTable")
     public Set<ContactMapDTO> getContactMaps() {
         return this.contactMaps;
     }
-    
+
     public void setContactMaps(Set<ContactMapDTO> contactMaps) {
         this.contactMaps = contactMaps;
     }
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="jbillingTable")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jbillingTable")
     public Set<PreferenceDTO> getPreferences() {
         return this.preferences;
     }
-    
+
     public void setPreferences(Set<PreferenceDTO> preferences) {
         this.preferences = preferences;
     }
-    
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="jbillingTable")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "jbillingTable")
     public Set<EventLogDTO> getEventLogs() {
         return this.eventLogs;
     }
+
     public void setEventLogs(Set<EventLogDTO> eventLogs) {
         this.eventLogs = eventLogs;
     }

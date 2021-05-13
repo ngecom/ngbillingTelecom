@@ -1,40 +1,28 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.util.Date;
+
 @Entity
 @TableGenerator(
-        name="customer_notes_GEN",
-        table="jbilling_seqs",
+        name = "customer_notes_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="customer_notes",
+        pkColumnValue = "customer_notes",
         allocationSize = 100
 )
 @Table(name = "customer_notes")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CustomerNoteDTO implements java.io.Serializable
-{
+public class CustomerNoteDTO implements java.io.Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int noteId;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int noteId;
     private String noteTitle;
     private String noteContent;
     private Date creationTime;
@@ -52,6 +40,7 @@ public class CustomerNoteDTO implements java.io.Serializable
     public void setNoteId(int noteId) {
         this.noteId = noteId;
     }
+
     @Column(name = "note_title", length = 50)
     public String getNoteTitle() {
         return noteTitle;
@@ -60,6 +49,7 @@ public class CustomerNoteDTO implements java.io.Serializable
     public void setNoteTitle(String noteTitle) {
         this.noteTitle = noteTitle;
     }
+
     @Column(name = "note_content", length = 1000)
     public String getNoteContent() {
         return noteContent;
@@ -68,6 +58,7 @@ public class CustomerNoteDTO implements java.io.Serializable
     public void setNoteContent(String noteContent) {
         this.noteContent = noteContent;
     }
+
     @Column(name = "creation_time", nullable = false, length = 29)
     public Date getCreationTime() {
         return creationTime;
@@ -76,6 +67,7 @@ public class CustomerNoteDTO implements java.io.Serializable
     public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
     }
+
     @PrePersist
     protected void onCreate() {
         creationTime = new Date();

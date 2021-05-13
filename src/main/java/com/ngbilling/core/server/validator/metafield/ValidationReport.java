@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Reports an error during the validation
+ * Reports an error during the validation
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public class ValidationReport {
 

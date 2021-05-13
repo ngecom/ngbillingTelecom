@@ -24,41 +24,30 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.math.BigDecimal;
+
 @Entity
 @TableGenerator(
-        name="preference_GEN",
-        table="jbilling_seqs",
+        name = "preference_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="preference",
+        pkColumnValue = "preference",
         allocationSize = 10
 )
-@Table(name="preference")
+@Table(name = "preference")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PreferenceDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private JbillingTable jbillingTable;
     private PreferenceTypeDTO preferenceType;
     private int foreignId;
@@ -80,7 +69,7 @@ public class PreferenceDTO implements java.io.Serializable {
         this.foreignId = foreignId;
         this.value = value;
     }
-    
+
     public PreferenceDTO(JbillingTable jbillingTable, PreferenceTypeDTO preferenceType, int foreignId, String value) {
         this.jbillingTable = jbillingTable;
         this.preferenceType = preferenceType;
@@ -89,8 +78,8 @@ public class PreferenceDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE, generator="preference_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "preference_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -99,8 +88,8 @@ public class PreferenceDTO implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="table_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_id", nullable = false)
     public JbillingTable getJbillingTable() {
         return this.jbillingTable;
     }
@@ -109,8 +98,8 @@ public class PreferenceDTO implements java.io.Serializable {
         this.jbillingTable = jbillingTable;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="type_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
     public PreferenceTypeDTO getPreferenceType() {
         return this.preferenceType;
     }
@@ -119,7 +108,7 @@ public class PreferenceDTO implements java.io.Serializable {
         this.preferenceType = preferenceType;
     }
 
-    @Column(name="foreign_id", nullable=false)
+    @Column(name = "foreign_id", nullable = false)
     public int getForeignId() {
         return this.foreignId;
     }
@@ -128,7 +117,7 @@ public class PreferenceDTO implements java.io.Serializable {
         this.foreignId = foreignId;
     }
 
-    @Column(name="value", length=200)
+    @Column(name = "value", length = 200)
     public String getValue() {
         return value;
     }

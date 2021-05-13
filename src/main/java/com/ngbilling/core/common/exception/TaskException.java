@@ -26,7 +26,6 @@ package com.ngbilling.core.common.exception;
 
 /**
  * @author emilc
- *
  */
 public class TaskException extends RuntimeException {
 
@@ -43,6 +42,7 @@ public class TaskException extends RuntimeException {
 
     /**
      * Constructor for TaskException.
+     *
      * @param message
      */
     public TaskException(String message) {

@@ -24,22 +24,22 @@ public enum MetaFieldType {
     FAX_NUMBER,
 
     EMAIL,
-    
+
     BANK_NAME,
     BANK_ACCOUNT_NUMBER,
     BANK_ROUTING_NUMBER,
     BANK_ACCOUNT_TYPE,
-    
+
     DATE,
     CHEQUE_NUMBER,
-    
+
     PAYMENT_CARD_NUMBER,
     GATEWAY_KEY,
     CC_TYPE,
-    
+
     ABAR_NUMBER,
     CREDIT_MEMO_REMARKS,
-    
+
     CC_CARDHOLDER_NAME,
     CC_CREDIT_CARD_NUMBER,
     CC_EXPIRY_DATE,

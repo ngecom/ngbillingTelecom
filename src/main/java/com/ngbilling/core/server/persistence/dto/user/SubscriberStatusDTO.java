@@ -24,60 +24,52 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.user;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("subscriber_status")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class SubscriberStatusDTO extends AbstractGenericStatus implements java.io.Serializable {
 
-     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Set<UserDTO> baseUsers = new HashSet<UserDTO>(0);
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Set<UserDTO> baseUsers = new HashSet<UserDTO>(0);
 
     public SubscriberStatusDTO() {
     }
 
-    
+
     public SubscriberStatusDTO(int statusValue) {
         this.statusValue = statusValue;
     }
+
     public SubscriberStatusDTO(int statusValue, Set<UserDTO> baseUsers) {
-       this.statusValue = statusValue;
-       this.baseUsers = baseUsers;
+        this.statusValue = statusValue;
+        this.baseUsers = baseUsers;
     }
 
     @Transient
     protected String getTable() {
         return ServerConstants.TABLE_USER_SUBSCRIBER_STATUS;
     }
-   
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="subscriberStatus")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "subscriberStatus")
     public Set<UserDTO> getBaseUsers() {
         return this.baseUsers;
     }
-    
+
     public void setBaseUsers(Set<UserDTO> baseUsers) {
         this.baseUsers = baseUsers;
     }
-
-
 
 
 }

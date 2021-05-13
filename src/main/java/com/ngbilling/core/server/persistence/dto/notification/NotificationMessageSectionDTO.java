@@ -23,46 +23,33 @@
  */
 package com.ngbilling.core.server.persistence.dto.notification;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @TableGenerator(
-        name = "notification_message_section_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "notification_message_section", 
+        name = "notification_message_section_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "notification_message_section",
         allocationSize = 100)
 @Table(name = "notification_message_section")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class NotificationMessageSectionDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private NotificationMessageDTO notificationMessage;
     private Integer section;
     private Set<NotificationMessageLineDTO> notificationMessageLines = new HashSet<NotificationMessageLineDTO>(
@@ -77,8 +64,8 @@ public class NotificationMessageSectionDTO implements Serializable {
     }
 
     public NotificationMessageSectionDTO(int id,
-            NotificationMessageDTO notificationMessage, Integer section,
-            Set<NotificationMessageLineDTO> notificationMessageLines) {
+                                         NotificationMessageDTO notificationMessage, Integer section,
+                                         Set<NotificationMessageLineDTO> notificationMessageLines) {
         this.id = id;
         this.notificationMessage = notificationMessage;
         this.section = section;
@@ -117,7 +104,7 @@ public class NotificationMessageSectionDTO implements Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "notificationMessageSection")
-    @Fetch( FetchMode.JOIN  )
+    @Fetch(FetchMode.JOIN)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     public Set<NotificationMessageLineDTO> getNotificationMessageLines() {
         return this.notificationMessageLines;
@@ -127,9 +114,9 @@ public class NotificationMessageSectionDTO implements Serializable {
             Set<NotificationMessageLineDTO> notificationMessageLines) {
         this.notificationMessageLines = notificationMessageLines;
     }
-    
+
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

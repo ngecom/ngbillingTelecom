@@ -24,44 +24,32 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.notification.NotificationMessageTypeDTO;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.notification.NotificationMessageTypeDTO;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @TableGenerator(
-    name = "notification_category_GEN",
-            table = "jbilling_seqs",
-            pkColumnName = "name",
-            valueColumnName = "next_id",
-            pkColumnValue = "notification_category",
-            allocationSize = 10)
-@Table(name="notification_category")
+        name = "notification_category_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "notification_category",
+        allocationSize = 10)
+@Table(name = "notification_category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class NotificationCategoryDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private Set<NotificationMessageTypeDTO> messageTypes = new HashSet<NotificationMessageTypeDTO>(0);
 
     public NotificationCategoryDTO() {
@@ -71,10 +59,10 @@ public class NotificationCategoryDTO extends AbstractDescription implements java
     public NotificationCategoryDTO(Integer id) {
         this.id = id;
     }
-    
+
     public NotificationCategoryDTO(Integer id, Set<NotificationMessageTypeDTO> messageTypes) {
         this.id = id;
-        this.messageTypes= messageTypes;
+        this.messageTypes = messageTypes;
     }
 
     @Transient
@@ -84,7 +72,7 @@ public class NotificationCategoryDTO extends AbstractDescription implements java
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "notification_category_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -94,13 +82,13 @@ public class NotificationCategoryDTO extends AbstractDescription implements java
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
-	public Set<NotificationMessageTypeDTO> getMessageTypes() {
-		return messageTypes;
-	}
+    public Set<NotificationMessageTypeDTO> getMessageTypes() {
+        return messageTypes;
+    }
 
-	public void setMessageTypes(Set<NotificationMessageTypeDTO> messageTypes) {
-		this.messageTypes = messageTypes;
-	}
+    public void setMessageTypes(Set<NotificationMessageTypeDTO> messageTypes) {
+        this.messageTypes = messageTypes;
+    }
 
 }
 

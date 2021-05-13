@@ -23,44 +23,31 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.process;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 @Entity
 @TableGenerator(
-        name = "process_run_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "batch_process_info", 
+        name = "process_run_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "batch_process_info",
         allocationSize = 100)
 @Table(name = "batch_process_info")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BatchProcessInfoDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private BillingProcessDTO billingProcessDTO;
     // TODO: if we include batch tables in jbilling schema, this value will be replaced by entity
     private Integer jobExecutionId;
@@ -73,7 +60,7 @@ public class BatchProcessInfoDTO implements java.io.Serializable {
     }
 
     public BatchProcessInfoDTO(BillingProcessDTO billingProcessDTO, Integer jobExecutionId,
-            Integer totalFailedUsers, Integer totalSuccessfulUsers) {
+                               Integer totalFailedUsers, Integer totalSuccessfulUsers) {
         this.billingProcessDTO = billingProcessDTO;
         this.setJobExecutionId(jobExecutionId);
         this.totalFailedUsers = totalFailedUsers;
@@ -103,32 +90,32 @@ public class BatchProcessInfoDTO implements java.io.Serializable {
 
     @Column(name = "job_execution_id")
     public Integer getJobExecutionId() {
-		return jobExecutionId;
-	}
+        return jobExecutionId;
+    }
 
-	public void setJobExecutionId(Integer jobExecutionId) {
-		this.jobExecutionId = jobExecutionId;
-	}
+    public void setJobExecutionId(Integer jobExecutionId) {
+        this.jobExecutionId = jobExecutionId;
+    }
 
-	@Column(name = "total_failed_users", nullable = false)
-	public Integer getTotalFailedUsers() {
-		return totalFailedUsers;
-	}
+    @Column(name = "total_failed_users", nullable = false)
+    public Integer getTotalFailedUsers() {
+        return totalFailedUsers;
+    }
 
-	public void setTotalFailedUsers(Integer totalFailedUsers) {
-		this.totalFailedUsers = totalFailedUsers;
-	}
+    public void setTotalFailedUsers(Integer totalFailedUsers) {
+        this.totalFailedUsers = totalFailedUsers;
+    }
 
-	@Column(name = "total_successful_users", nullable = false)
-	public Integer getTotalSuccessfulUsers() {
-		return totalSuccessfulUsers;
-	}
+    @Column(name = "total_successful_users", nullable = false)
+    public Integer getTotalSuccessfulUsers() {
+        return totalSuccessfulUsers;
+    }
 
-	public void setTotalSuccessfulUsers(Integer totalSuccessfulUsers) {
-		this.totalSuccessfulUsers = totalSuccessfulUsers;
-	}
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "batchProcess")
+    public void setTotalSuccessfulUsers(Integer totalSuccessfulUsers) {
+        this.totalSuccessfulUsers = totalSuccessfulUsers;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "batchProcess")
     public Set<BillingProcessFailedUserDTO> getProcesses() {
         return this.processes;
     }
@@ -146,18 +133,18 @@ public class BatchProcessInfoDTO implements java.io.Serializable {
     public void setVersionNum(int versionNum) {
         this.versionNum = versionNum;
     }
-    
+
     public String listToString(List<Integer> list) {
-    	if(list.size()>0) {
-    		String ret = list.remove(0).toString();
-    		for(Integer item : list) {
-    			ret.concat(",");
-    			ret.concat(item.toString());
-    		}
-    	
-    		return ret;
-    	}
-    	return null;
+        if (list.size() > 0) {
+            String ret = list.remove(0).toString();
+            for (Integer item : list) {
+                ret.concat(",");
+                ret.concat(item.toString());
+            }
+
+            return ret;
+        }
+        return null;
     }
 
     public String toString() {

@@ -1,26 +1,25 @@
 package com.ngbilling.core.server.validator.metafield;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
 import com.ngbilling.core.server.util.metafield.MetaContent;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Email validation rule model
  * </p>
  * Validates that a value is an email address
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public class EmailValidationRuleModel extends AbstractValidationRuleModel {
-
-    private Pattern pattern;
-    private Matcher matcher;
 
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private Pattern pattern;
+    private Matcher matcher;
 
     public EmailValidationRuleModel() {
         pattern = Pattern.compile(EMAIL_PATTERN);

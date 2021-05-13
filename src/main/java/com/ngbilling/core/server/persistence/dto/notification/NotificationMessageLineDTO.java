@@ -23,40 +23,29 @@
  */
 package com.ngbilling.core.server.persistence.dto.notification;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Entity
 @TableGenerator(
-        name = "notification_message_line_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "notification_message_line", 
+        name = "notification_message_line_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "notification_message_line",
         allocationSize = 100)
 @Table(name = "notification_message_line")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class NotificationMessageLineDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private NotificationMessageSectionDTO notificationMessageSection;
     private String content;
     private int versionNum;
@@ -70,8 +59,8 @@ public class NotificationMessageLineDTO implements Serializable {
     }
 
     public NotificationMessageLineDTO(int id,
-            NotificationMessageSectionDTO notificationMessageSection,
-            String content) {
+                                      NotificationMessageSectionDTO notificationMessageSection,
+                                      String content) {
         this.id = id;
         this.notificationMessageSection = notificationMessageSection;
         this.content = content;
@@ -107,9 +96,9 @@ public class NotificationMessageLineDTO implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-    
+
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

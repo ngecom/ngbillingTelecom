@@ -23,21 +23,14 @@
  */
 package com.ngbilling.core.server.persistence.dto.pluggableTask;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "pluggable_task_type")
@@ -45,11 +38,11 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class PluggableTaskTypeDTO extends AbstractDescription implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private static final FormatLogger LOG = new FormatLogger(PluggableTaskTypeDTO.class);
+    private static final FormatLogger LOG = new FormatLogger(PluggableTaskTypeDTO.class);
 
     @Id
     @Column(name = "id")
@@ -118,12 +111,12 @@ public class PluggableTaskTypeDTO extends AbstractDescription implements Seriali
         this.minParameters = minParameters;
     }
 
-    public void setCategory(PluggableTaskTypeCategoryDTO category) {
-        this.category = category;
-    }
-
     public PluggableTaskTypeCategoryDTO getCategory() {
         return category;
+    }
+
+    public void setCategory(PluggableTaskTypeCategoryDTO category) {
+        this.category = category;
     }
 
     public String toString() {
@@ -136,8 +129,8 @@ public class PluggableTaskTypeDTO extends AbstractDescription implements Seriali
 
     }
 
-    public void touch(){
-        if(null != getCategory()){
+    public void touch() {
+        if (null != getCategory()) {
             getCategory().getId();
         }
     }

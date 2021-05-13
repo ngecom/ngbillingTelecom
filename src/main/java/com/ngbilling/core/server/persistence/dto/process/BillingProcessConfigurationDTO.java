@@ -23,46 +23,31 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.ngbilling.core.payload.request.process.BillingProcessConfigurationWS;
 import com.ngbilling.core.server.persistence.dao.process.PeriodUnitDAO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @TableGenerator(
-        name = "billing_process_configuration_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "billing_process_configuration", 
+        name = "billing_process_configuration_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "billing_process_configuration",
         allocationSize = 100)
 @Table(name = "billing_process_configuration")
 public class BillingProcessConfigurationDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private PeriodUnitDTO periodUnitDTO;
     private CompanyDTO entity;
     private Date nextRunDate;
@@ -81,7 +66,7 @@ public class BillingProcessConfigurationDTO implements Serializable {
     private int versionNum;
     private Boolean lastDayOfMonth = false;
     private ProratingType proratingType;
-    
+
     @Autowired
     private PeriodUnitDAO periodUnitDAO;
 
@@ -89,10 +74,10 @@ public class BillingProcessConfigurationDTO implements Serializable {
     }
 
     public BillingProcessConfigurationDTO(int id, PeriodUnitDTO periodUnitDTO,
-            Date nextRunDate, Integer generateReport, int reviewStatus,
-            int dueDateUnitId, int dueDateValue,
-            Integer onlyRecurring, Integer invoiceDateProcess,
-            int maximumPeriods, int autoPaymentApplication, boolean lastDayOfMonth, ProratingType proratingType) {
+                                          Date nextRunDate, Integer generateReport, int reviewStatus,
+                                          int dueDateUnitId, int dueDateValue,
+                                          Integer onlyRecurring, Integer invoiceDateProcess,
+                                          int maximumPeriods, int autoPaymentApplication, boolean lastDayOfMonth, ProratingType proratingType) {
         this.id = id;
         this.periodUnitDTO = periodUnitDTO;
         this.nextRunDate = nextRunDate;
@@ -109,12 +94,12 @@ public class BillingProcessConfigurationDTO implements Serializable {
     }
 
     public BillingProcessConfigurationDTO(int id, PeriodUnitDTO periodUnitDTO,
-            CompanyDTO entity, Date nextRunDate, Integer generateReport,
-            Integer retries, Integer daysForRetry, Integer daysForReport,
-            int reviewStatus, int dueDateUnitId,
-            int dueDateValue, Integer dfFm, Integer onlyRecurring,
-            Integer invoiceDateProcess, int maximumPeriods,
-            int autoPaymentApplication, boolean lastDayOfMonth, ProratingType proratingType) {
+                                          CompanyDTO entity, Date nextRunDate, Integer generateReport,
+                                          Integer retries, Integer daysForRetry, Integer daysForReport,
+                                          int reviewStatus, int dueDateUnitId,
+                                          int dueDateValue, Integer dfFm, Integer onlyRecurring,
+                                          Integer invoiceDateProcess, int maximumPeriods,
+                                          int autoPaymentApplication, boolean lastDayOfMonth, ProratingType proratingType) {
         this.id = id;
         this.periodUnitDTO = periodUnitDTO;
         this.entity = entity;
@@ -151,7 +136,7 @@ public class BillingProcessConfigurationDTO implements Serializable {
         this.onlyRecurring = ws.getOnlyRecurring();
         this.invoiceDateProcess = ws.getInvoiceDateProcess();
         this.maximumPeriods = ws.getMaximumPeriods();
-        this.autoPaymentApplication = ws.getAutoPaymentApplication();  
+        this.autoPaymentApplication = ws.getAutoPaymentApplication();
         this.lastDayOfMonth = ws.isLastDayOfMonth();
         this.proratingType = ProratingType.getProratingTypeByOptionText(ws.getProratingType());
     }
@@ -166,7 +151,7 @@ public class BillingProcessConfigurationDTO implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "period_unit_id", nullable = false)
     public PeriodUnitDTO getPeriodUnit() {
@@ -285,7 +270,7 @@ public class BillingProcessConfigurationDTO implements Serializable {
     public void setInvoiceDateProcess(Integer invoiceDateProcess) {
         this.invoiceDateProcess = invoiceDateProcess;
     }
-    
+
     @Column(name = "maximum_periods", nullable = false)
     public int getMaximumPeriods() {
         return this.maximumPeriods;
@@ -305,7 +290,7 @@ public class BillingProcessConfigurationDTO implements Serializable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }
@@ -316,26 +301,26 @@ public class BillingProcessConfigurationDTO implements Serializable {
 
     @Column(name = "last_day_of_month", nullable = false)
     public Boolean getLastDayOfMonth() {
-		return lastDayOfMonth;
-	}
+        return lastDayOfMonth;
+    }
 
-	public void setLastDayOfMonth(Boolean lastDayOfMonth) {
-		this.lastDayOfMonth = lastDayOfMonth;
-	}
+    public void setLastDayOfMonth(Boolean lastDayOfMonth) {
+        this.lastDayOfMonth = lastDayOfMonth;
+    }
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "prorating_type", length = 50)
-	public ProratingType getProratingType() {
-		return proratingType;
-	}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "prorating_type", length = 50)
+    public ProratingType getProratingType() {
+        return proratingType;
+    }
 
-	public void setProratingType(ProratingType proratingType) {
-		this.proratingType = proratingType;
-	}
+    public void setProratingType(ProratingType proratingType) {
+        this.proratingType = proratingType;
+    }
 
-	@Transient
+    @Transient
     public void setPeriodUnitId(Integer id) {
-    	setPeriodUnit(periodUnitDAO.findById(id).get());
-     }
+        setPeriodUnit(periodUnitDAO.findById(id).get());
+    }
 
 }

@@ -23,42 +23,30 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @TableGenerator(
-        name = "process_run_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "billing_process_failed_user", 
+        name = "process_run_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "billing_process_failed_user",
         allocationSize = 100)
 @Table(name = "billing_process_failed_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BillingProcessFailedUserDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private BatchProcessInfoDTO batchProcessDTO;
     private UserDTO userDTO;
     private int versionNum;
@@ -90,12 +78,12 @@ public class BillingProcessFailedUserDTO implements java.io.Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public UserDTO getUser() {
-		return userDTO;
-	}
+        return userDTO;
+    }
 
-	public void setUser(UserDTO user) {
-		this.userDTO = user;
-	}
+    public void setUser(UserDTO user) {
+        this.userDTO = user;
+    }
 
     @Version
     @Column(name = "OPTLOCK")
@@ -106,18 +94,18 @@ public class BillingProcessFailedUserDTO implements java.io.Serializable {
     public void setVersionNum(int versionNum) {
         this.versionNum = versionNum;
     }
-    
+
     public String listToString(List<Integer> list) {
-    	if(list.size()>0) {
-    		String ret = list.remove(0).toString();
-    		for(Integer item : list) {
-    			ret.concat(",");
-    			ret.concat(item.toString());
-    		}
-    	
-    		return ret;
-    	}
-    	return null;
+        if (list.size() > 0) {
+            String ret = list.remove(0).toString();
+            for (Integer item : list) {
+                ret.concat(",");
+                ret.concat(item.toString());
+            }
+
+            return ret;
+        }
+        return null;
     }
 
     public String toString() {

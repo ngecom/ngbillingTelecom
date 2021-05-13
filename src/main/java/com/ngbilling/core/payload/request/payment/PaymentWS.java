@@ -24,17 +24,16 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.payload.request.payment;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.ngbilling.core.common.util.Util;
+import com.ngbilling.core.server.persistence.dto.payment.PaymentAuthorizationDTO;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.ngbilling.core.common.util.Util;
-import com.ngbilling.core.server.persistence.dto.payment.PaymentAuthorizationDTO;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -43,11 +42,11 @@ import com.ngbilling.core.server.persistence.dto.payment.PaymentAuthorizationDTO
 public class PaymentWS {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     private Integer userId = null;
 
     private String method = null;
@@ -58,16 +57,16 @@ public class PaymentWS {
     private PaymentAuthorizationDTO authorization = null;
 
     //missing properties from PaymentDTO
-    @NotNull(message="validation.error.notnull")
-    @Digits(integer=12, fraction=10, message="validation.error.not.a.number")
+    @NotNull(message = "validation.error.notnull")
+    @Digits(integer = 12, fraction = 10, message = "validation.error.not.a.number")
     private String amount;
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     private Integer isRefund;
     //@NotNull(message="validation.error.apply.without.method")
     private Integer paymentMethodId;
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     private Date paymentDate;
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     private Integer currencyId;
     private int id;
     private Integer isPreauth;
@@ -82,20 +81,20 @@ public class PaymentWS {
     private Integer paymentPeriod;
 
     private List<PaymentInformationWS> paymentInstruments = new ArrayList<PaymentInformationWS>(0);
-    
+
     // those instruments that are not linked to any payment and user user uses them to make payments
     private List<PaymentInformationWS> userPaymentInstruments = new ArrayList<PaymentInformationWS>(0);
-    
+
+    public PaymentWS() {
+        super();
+    }
+
     public Integer getResultId() {
         return resultId;
     }
 
     public void setResultId(Integer resultId) {
         this.resultId = resultId;
-    }
-    
-    public PaymentWS() {
-        super();
     }
 
     public Integer getUserId() {
@@ -134,25 +133,17 @@ public class PaymentWS {
         return authorization;
     }
 
-    public void setAuthorization(PaymentAuthorizationDTO authorization) {
-        this.authorization = authorization;
-    }
-
     // required by CXF
     public void setAuthorizationId(PaymentAuthorizationDTO authorization) {
         this.authorization = authorization;
     }
 
+    public void setAuthorization(PaymentAuthorizationDTO authorization) {
+        this.authorization = authorization;
+    }
+
     public String getAmount() {
         return amount;
-    }
-
-    public BigDecimal getAmountAsDecimal() {
-        return Util.string2decimal(amount);
-    }
-
-    public void setAmountAsDecimal(BigDecimal amount) {
-        setAmount(amount);
     }
 
     public void setAmount(String amount) {
@@ -161,6 +152,14 @@ public class PaymentWS {
 
     public void setAmount(BigDecimal amount) {
         this.amount = (amount != null ? amount.toString() : null);
+    }
+
+    public BigDecimal getAmountAsDecimal() {
+        return Util.string2decimal(amount);
+    }
+
+    public void setAmountAsDecimal(BigDecimal amount) {
+        setAmount(amount);
     }
 
     public Integer getIsRefund() {
@@ -223,20 +222,20 @@ public class PaymentWS {
         return balance;
     }
 
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = (balance != null ? balance.toString() : null);
+    }
+
     public BigDecimal getBalanceAsDecimal() {
         return Util.string2decimal(balance);
     }
 
     public void setBalanceAsDecimal(BigDecimal balance) {
         setBalance(balance);
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = (balance != null ? balance.toString() : null);        
     }
 
     public Date getCreateDatetime() {
@@ -263,40 +262,41 @@ public class PaymentWS {
         this.deleted = deleted;
     }
 
-    public void setPaymentNotes(String paymentNotes){
-        this.paymentNotes = paymentNotes;
-    }
-    
-    public String getPaymentNotes(){
+    public String getPaymentNotes() {
         return paymentNotes;
     }
-    
-    public void setPaymentPeriod(Integer paymentPeriod){
-        this.paymentPeriod = paymentPeriod;
+
+    public void setPaymentNotes(String paymentNotes) {
+        this.paymentNotes = paymentNotes;
     }
-    
-    public Integer getPaymentPeriod(){
+
+    public Integer getPaymentPeriod() {
         return paymentPeriod;
     }
 
+    public void setPaymentPeriod(Integer paymentPeriod) {
+        this.paymentPeriod = paymentPeriod;
+    }
+
     public List<PaymentInformationWS> getPaymentInstruments() {
-		return paymentInstruments;
-	}
+        return paymentInstruments;
+    }
 
-	public void setPaymentInstruments(List<PaymentInformationWS> paymentInstruments) {
-		this.paymentInstruments = paymentInstruments;
-	}
-	
-	public List<PaymentInformationWS> getUserPaymentInstruments() {
-		return userPaymentInstruments;
-	}
+    public void setPaymentInstruments(List<PaymentInformationWS> paymentInstruments) {
+        this.paymentInstruments = paymentInstruments;
+    }
 
-	public void setUserPaymentInstruments(List<PaymentInformationWS> paymentInstruments) {
-		this.userPaymentInstruments = paymentInstruments;
-	}
+    public List<PaymentInformationWS> getUserPaymentInstruments() {
+        return userPaymentInstruments;
+    }
 
-	/**
+    public void setUserPaymentInstruments(List<PaymentInformationWS> paymentInstruments) {
+        this.userPaymentInstruments = paymentInstruments;
+    }
+
+    /**
      * Unsupported, web-service security enforced using {@link #getOwningUserId()}
+     *
      * @return null
      */
     public Integer getOwningEntityId() {
@@ -310,18 +310,18 @@ public class PaymentWS {
     @Override
     public String toString() {
         return "PaymentWS{"
-               + "id=" + id
-               + ", userId=" + userId
-               + ", paymentMethodId=" + paymentMethodId
-               + ", method='" + method + '\''
-               + ", amount='" + amount + '\''
-               + ", balance='" + balance + '\''
-               + ", isRefund=" + isRefund
-               + ", isPreauth=" + isPreauth
-               + ", paymentDate=" + paymentDate
-               + ", deleted=" + deleted
-               + ", paymentId=" + paymentId
-               + ", currencyId=" + currencyId
-               + '}';
+                + "id=" + id
+                + ", userId=" + userId
+                + ", paymentMethodId=" + paymentMethodId
+                + ", method='" + method + '\''
+                + ", amount='" + amount + '\''
+                + ", balance='" + balance + '\''
+                + ", isRefund=" + isRefund
+                + ", isPreauth=" + isPreauth
+                + ", paymentDate=" + paymentDate
+                + ", deleted=" + deleted
+                + ", paymentId=" + paymentId
+                + ", currencyId=" + currencyId
+                + '}';
     }
 }

@@ -23,25 +23,24 @@
  */
 package com.ngbilling.core.payload.request.util;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 
 public class PreferenceWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private PreferenceTypeWS preferenceType;
     private Integer tableId;
     private Integer foreignId;
-    @Size(min=0, max=200, message="validation.error.max,200")
+    @Size(min = 0, max = 200, message = "validation.error.max,200")
     private String value;
-    @Digits(integer=12, fraction=0, message="validation.error.not.a.number.12.integer")
+    @Digits(integer = 12, fraction = 0, message = "validation.error.not.a.number.12.integer")
     private String intValue;
 
     public PreferenceWS() {
@@ -75,7 +74,7 @@ public class PreferenceWS implements Serializable {
     public void setTableId(Integer tableId) {
         this.tableId = tableId;
     }
-    
+
     public Integer getForeignId() {
         return this.foreignId;
     }
@@ -95,11 +94,11 @@ public class PreferenceWS implements Serializable {
     @Override
     public String toString() {
         return "PreferenceWS{"
-               + "id=" + id
-               + ", preferenceType=" + preferenceType
-               + ", tableId=" + tableId
-               + ", foreignId=" + foreignId
-               + ", value='" + value + '\''
-               + '}';
+                + "id=" + id
+                + ", preferenceType=" + preferenceType
+                + ", tableId=" + tableId
+                + ", foreignId=" + foreignId
+                + ", value='" + value + '\''
+                + '}';
     }
 }

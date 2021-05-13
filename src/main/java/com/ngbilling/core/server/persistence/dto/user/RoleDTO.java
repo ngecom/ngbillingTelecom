@@ -24,48 +24,33 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
 import com.ngbilling.core.security.InitializingGrantedAuthority;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "role")
 @TableGenerator(
-        name="role_GEN",
-        table="jbilling_seqs",
+        name = "role_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="role",
+        pkColumnValue = "role",
         allocationSize = 10
-        )
-public class RoleDTO extends AbstractDescription implements Serializable,InitializingGrantedAuthority {
+)
+public class RoleDTO extends AbstractDescription implements Serializable, InitializingGrantedAuthority {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public static final String ROLE_AUTHORITY_PREFIX = "ROLE_";
+    public static final String ROLE_AUTHORITY_PREFIX = "ROLE_";
     public static final Integer AUTHORITY_LANGUAGE_ID = 1; // authority values in english
-
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private int id;
     private CompanyDTO company;
     private Integer roleTypeId;
@@ -98,39 +83,39 @@ public class RoleDTO extends AbstractDescription implements Serializable,Initial
     public void setId(int id) {
         this.id = id;
     }
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id")
     public CompanyDTO getCompany() {
-		return company;
-	}
+        return company;
+    }
 
-	public void setCompany(CompanyDTO company) {
-		this.company = company;
-	}
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
+    }
 
-	@Column(name = "role_type_id", length = 10)
-	public Integer getRoleTypeId() {
-		return roleTypeId;
-	}
-	
-	public void setRoleTypeId(Integer roleTypeId) {
-		this.roleTypeId = roleTypeId;
-	}
-	
-	@Column(name = "role")
-	public String getRole() {
-		return role;
-	}
+    @Column(name = "role_type_id", length = 10)
+    public Integer getRoleTypeId() {
+        return roleTypeId;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setRoleTypeId(Integer roleTypeId) {
+        this.roleTypeId = roleTypeId;
+    }
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name = "role")
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role_map",
-               joinColumns = {@JoinColumn(name = "role_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "user_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "role_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", updatable = false)}
     )
     public Set<UserDTO> getBaseUsers() {
         return this.baseUsers;
@@ -147,7 +132,8 @@ public class RoleDTO extends AbstractDescription implements Serializable,Initial
 
     @Transient
     public String getTitle(Integer languageId) {
-        return getDescription(languageId, "title");
+      //  return getDescription(languageId, "title");
+        return null;
     }
 
     /**
@@ -162,11 +148,11 @@ public class RoleDTO extends AbstractDescription implements Serializable,Initial
     /**
      * Returns an authority string representing the granted role of a user. This
      * string is constructed of the role "title" in the format "ROLE_TITLE".
-     *
+     * <p>
      * Authority strings are in uppercase with all spaces replaced with underscores.
-     *
+     * <p>
      * e.g., "ROLE_ADMIN", "ROLE_CLERK", "ROLE_USER"
-     * 
+     *
      * @return authority string
      */
     @Transient

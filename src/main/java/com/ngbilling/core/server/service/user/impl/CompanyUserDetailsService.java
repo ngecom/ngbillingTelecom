@@ -24,12 +24,11 @@
 
 package com.ngbilling.core.server.service.user.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.ngbilling.core.payload.request.user.CompanyUserDetails;
+import com.ngbilling.core.server.persistence.dao.user.UserDAO;
+import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import com.ngbilling.core.server.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.AuthenticationException;
@@ -39,18 +38,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ngbilling.core.payload.request.user.CompanyUserDetails;
-import com.ngbilling.core.server.persistence.dao.user.UserDAO;
-import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-import com.ngbilling.core.server.service.user.UserService;
+import java.util.*;
 
 
 /**
  * An implementation of the GrailsUserDetailsService for use with the default DaoAuthenticationProvider. This
  * class fetches a user from the database and builds a list of granted authorities from the users assigned
  * permissions and roles.
- *
+ * <p>
  * This must be used with the {@link CompanyUserAuthenticationFilter} to provide the company ID as part
  * of the username to load.
  *
@@ -60,12 +55,12 @@ import com.ngbilling.core.server.service.user.UserService;
 @Service
 public class CompanyUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	UserDAO userDAO;
-	
-	@Autowired
-	UserService userService;
-	
+    @Autowired
+    UserDAO userDAO;
+
+    @Autowired
+    UserService userService;
+
     public UserDetails loadUserByUsername(String s, boolean loadRoles)
             throws UsernameNotFoundException, DataAccessException {
         return loadUserByUsername(s);
@@ -83,29 +78,29 @@ public class CompanyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
 
-    	UserDTO user = userDAO.findByUserName(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        UserDTO user = userDAO.findByUserName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         List<Integer> roleIds = new LinkedList<Integer>();
         for (RoleDTO role : user.getRoles()) {
-            role.initializeAuthority();            
+            role.initializeAuthority();
             authorities.add(role);
             roleIds.add(role.getRoleTypeId());
         }
-        
-        
+
+
         // return user details for the retrieved account
-        return new CompanyUserDetails(username,user.getPassword(), user.isEnabled(),
-                                      !user.isAccountExpired(), !user.isPasswordExpired(), !user.isAccountLocked(),
-                                      authorities,
-                                      user, userService.getLocale(user), user.getId(), selectMainRole(roleIds),
-                                      user.getEntity().getId(), user.getCurrency().getId(), user.getLanguage().getId());
+        return new CompanyUserDetails(username, user.getPassword(), user.isEnabled(),
+                !user.isAccountExpired(), !user.isPasswordExpired(), !user.isAccountLocked(),
+                authorities,
+                user, userService.getLocale(user), user.getId(), selectMainRole(roleIds),
+                user.getEntity().getId(), user.getCurrency().getId(), user.getLanguage().getId());
     }
-    
-    private Integer selectMainRole(Collection<Integer> allRoleIds){
+
+    private Integer selectMainRole(Collection<Integer> allRoleIds) {
         Integer result = null;
-        for (Iterator<Integer> roleIds = allRoleIds.iterator(); roleIds.hasNext();){
-            Integer nextId = (Integer)roleIds.next();
+        for (Iterator<Integer> roleIds = allRoleIds.iterator(); roleIds.hasNext(); ) {
+            Integer nextId = (Integer) roleIds.next();
             if (result == null || nextId.compareTo(result) < 0) {
                 result = nextId;
             }

@@ -23,92 +23,70 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.metafield;
 
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.persistence.dto.util.EntityType;
-import com.ngbilling.core.server.util.ServerConstants;
-
 /**
  * A meta-field group that is associated with a particular entity type.
- * 
+ *
  * @author Pance Isajeski, Oleg Baskakov
  * @since 18-Apr-2013
  */
 @Entity
 @Table(name = "meta_field_group")
 @TableGenerator(
-	    name = "metafield_group_GEN",
-	    table = "jbilling_seqs",
-	    pkColumnName = "name",
-	    valueColumnName = "next_id",
-	    pkColumnValue = "meta_field_group",
-	    allocationSize = 10
-	)
+        name = "metafield_group_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "meta_field_group",
+        allocationSize = 10
+)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("METAFIELD_GROUP")
 public class MetaFieldGroup extends AbstractDescription implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
+    private static final long serialVersionUID = 1L;
+
+    @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "metafield_group_GEN")
     @Column(name = "id", unique = true, nullable = false)
-	private int id;
-	
-	@Generated(GenerationTime.INSERT)
-	@Column(name = "date_created")
-	private Date dateCreated;
-	
-	@Generated(GenerationTime.ALWAYS)
-	@Column(name = "date_updated", nullable=true)
-	private Date dateUpdated;
-	
+    private int id;
+
+    @Generated(GenerationTime.INSERT)
+    @Column(name = "date_created")
+    private Date dateCreated;
+
+    @Generated(GenerationTime.ALWAYS)
+    @Column(name = "date_updated", nullable = true)
+    private Date dateUpdated;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id")
     private CompanyDTO entity;
-	
-	@Column(name = "display_order")
+
+    @Column(name = "display_order")
     private Integer displayOrder;
 
-	
+
     @Enumerated(EnumType.STRING)
     @Column(name = "entity_type", nullable = false, length = 25)
-	private EntityType entityType;
-	
+    private EntityType entityType;
+
     @Version
-    @Column(name="optlock")
-	private Integer versionNum;
+    @Column(name = "optlock")
+    private Integer versionNum;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -116,7 +94,7 @@ public class MetaFieldGroup extends AbstractDescription implements Serializable 
             joinColumns = @JoinColumn(name = "metafield_group_id"),
             inverseJoinColumns = @JoinColumn(name = "meta_field_value_id")
     )
-	private Set<MetaField> metaFields = new HashSet<MetaField>(0);
+    private Set<MetaField> metaFields = new HashSet<MetaField>(0);
 
     public int getId() {
         return id;
@@ -127,39 +105,39 @@ public class MetaFieldGroup extends AbstractDescription implements Serializable 
     }
 
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
+    public Date getDateCreated() {
+        return dateCreated;
+    }
 
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
-	public Date getDateUpdated() {
-		return dateUpdated;
-	}
+    public Date getDateUpdated() {
+        return dateUpdated;
+    }
 
-	public void setDateUpdated(Date dateUpdated) {
-		this.dateUpdated = dateUpdated;
-	}
+    public void setDateUpdated(Date dateUpdated) {
+        this.dateUpdated = dateUpdated;
+    }
 
 
-	public EntityType getEntityType() {
-		return entityType;
-	}
+    public EntityType getEntityType() {
+        return entityType;
+    }
 
-	public void setEntityType(EntityType entityType) {
-		this.entityType = entityType;
-	}
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
 
-	public Set<MetaField> getMetaFields() {
-		return metaFields;
-	}
+    public Set<MetaField> getMetaFields() {
+        return metaFields;
+    }
 
-	public void setMetaFields(Set<MetaField> metaFields) {
-		this.metaFields = metaFields;
-	}
-	
+    public void setMetaFields(Set<MetaField> metaFields) {
+        this.metaFields = metaFields;
+    }
+
     @Transient
     protected String getTable() {
         return ServerConstants.TABLE_METAFIELD_GROUP;
@@ -167,34 +145,34 @@ public class MetaFieldGroup extends AbstractDescription implements Serializable 
 
     public String toString() {
         return "MetaField Group{" +
-               "id=" + id +
+                "id=" + id +
 //               ", name='" + entityType + '\'' +
-               ", entityType=" + entityType +
+                ", entityType=" + entityType +
 
-               '}';
+                '}';
     }
 
-	public CompanyDTO getEntity() {
-		return entity;
-	}
+    public CompanyDTO getEntity() {
+        return entity;
+    }
 
-	public void setEntity(CompanyDTO entity) {
-		this.entity = entity;
-	}
+    public void setEntity(CompanyDTO entity) {
+        this.entity = entity;
+    }
 
-	public Integer getDisplayOrder() {
-		return displayOrder;
-	}
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
 
-	public void setDisplayOrder(Integer displayOrder) {
-		this.displayOrder = displayOrder;
-	}
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
 
-	public Integer getVersionNum() {
-		return versionNum;
-	}
+    public Integer getVersionNum() {
+        return versionNum;
+    }
 
-	public void setVersionNum(Integer versionNum) {
-		this.versionNum = versionNum;
-	}
+    public void setVersionNum(Integer versionNum) {
+        this.versionNum = versionNum;
+    }
 }

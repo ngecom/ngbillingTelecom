@@ -16,14 +16,14 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
+import com.ngbilling.core.server.persistence.dto.mediation.MediationOrderMap;
+import com.ngbilling.core.server.persistence.dto.mediation.MediationProcess;
+import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.ngbilling.core.server.persistence.dto.mediation.MediationOrderMap;
-import com.ngbilling.core.server.persistence.dto.mediation.MediationProcess;
-import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
 
 /**
  * MediationProcessWS
@@ -34,14 +34,14 @@ import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
 public class MediationProcessWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer configurationId;
     private Date startDatetime;
     private Date endDatetime;
-    private Integer ordersAffected;   
+    private Integer ordersAffected;
     private List<Integer> orderIds;
     private List<Integer> recordIds;
 

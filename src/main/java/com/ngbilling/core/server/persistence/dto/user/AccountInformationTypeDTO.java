@@ -1,22 +1,15 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
-import java.io.Serializable;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
+import java.io.Serializable;
 
 /**
  * Account Information Type entity.
- * 
+ *
  * @author Oleg Baskakov
  * @since 07-May-2013
  */
@@ -25,11 +18,11 @@ import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
 public class AccountInformationTypeDTO extends MetaFieldGroup implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100)
     @NotEmpty(message = "validation.error.notnull")
     @Size(min = 1, max = 100, message = "validation.error.size,1,100")
     private String name;
@@ -38,7 +31,7 @@ public class AccountInformationTypeDTO extends MetaFieldGroup implements Seriali
     @JoinColumn(name = "account_type_id", nullable = false)
     private AccountTypeDTO accountType;
 
-	@Transient
+    @Transient
     private boolean useForNotifications;
 
     public AccountInformationTypeDTO() {
@@ -68,7 +61,7 @@ public class AccountInformationTypeDTO extends MetaFieldGroup implements Seriali
     public void setAccountType(AccountTypeDTO accountType) {
         this.accountType = accountType;
     }
-    
+
     public boolean isUseForNotifications() {
         return useForNotifications;
     }

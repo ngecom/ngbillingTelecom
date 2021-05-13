@@ -16,12 +16,12 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
+import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
 
 /**
  * MediationRecordWS
@@ -32,10 +32,10 @@ import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
 public class MediationRecordWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private String key;
     private Date started;
     private Integer processId;
@@ -105,12 +105,12 @@ public class MediationRecordWS implements Serializable {
     @Override
     public String toString() {
         return "MediationRecordWS{"
-               + "id=" + id
-               + ", key='" + key + '\''
-               + ", started=" + started
-               + ", processId=" + processId
-               + ", recordStatusId=" + recordStatusId
-               + ", lines=" + (lines != null ? lines.size() : null)
-               + '}';
+                + "id=" + id
+                + ", key='" + key + '\''
+                + ", started=" + started
+                + ", processId=" + processId
+                + ", recordStatusId=" + recordStatusId
+                + ", lines=" + (lines != null ? lines.size() : null)
+                + '}';
     }
 }

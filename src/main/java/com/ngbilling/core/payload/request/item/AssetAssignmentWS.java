@@ -15,10 +15,9 @@
  */
 package com.ngbilling.core.payload.request.item;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * This entities (WSs) are meant to be created by the system and only
@@ -30,74 +29,74 @@ import javax.validation.constraints.NotNull;
  */
 public class AssetAssignmentWS implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	@NotNull(message = "validation.error.notnull")
-	private Integer assetId;
-	@NotNull(message = "validation.error.notnull")
-	private Integer orderId;
-	@NotNull(message = "validation.error.notnull")
-	private Integer orderLineId;
-	private Date startDatetime;
-	private Date endDatetime;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    @NotNull(message = "validation.error.notnull")
+    private Integer assetId;
+    @NotNull(message = "validation.error.notnull")
+    private Integer orderId;
+    @NotNull(message = "validation.error.notnull")
+    private Integer orderLineId;
+    private Date startDatetime;
+    private Date endDatetime;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getAssetId() {
-		return assetId;
-	}
+    public Integer getAssetId() {
+        return assetId;
+    }
 
-	public void setAssetId(Integer assetId) {
-		this.assetId = assetId;
-	}
+    public void setAssetId(Integer assetId) {
+        this.assetId = assetId;
+    }
 
-	public Integer getOrderId() {
-		return orderId;
-	}
+    public Integer getOrderId() {
+        return orderId;
+    }
 
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
-	}
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
 
-	public Integer getOrderLineId() {
-		return orderLineId;
-	}
+    public Integer getOrderLineId() {
+        return orderLineId;
+    }
 
-	public void setOrderLineId(Integer orderLineId) {
-		this.orderLineId = orderLineId;
-	}
+    public void setOrderLineId(Integer orderLineId) {
+        this.orderLineId = orderLineId;
+    }
 
-	public Date getStartDatetime() {
-		return startDatetime;
-	}
+    public Date getStartDatetime() {
+        return startDatetime;
+    }
 
-	public void setStartDatetime(Date startDatetime) {
-		this.startDatetime = startDatetime;
-	}
+    public void setStartDatetime(Date startDatetime) {
+        this.startDatetime = startDatetime;
+    }
 
-	public Date getEndDatetime() {
-		return endDatetime;
-	}
+    public Date getEndDatetime() {
+        return endDatetime;
+    }
 
-	public void setEndDatetime(Date endDatetime) {
-		this.endDatetime = endDatetime;
-	}
+    public void setEndDatetime(Date endDatetime) {
+        this.endDatetime = endDatetime;
+    }
 
-	@Override
-	public String toString() {
-		return "Asset Assign ID: " + id +
-				", Asset ID: " + assetId +
-				", Order Line ID: " + orderLineId +
-				", Start Date: " + startDatetime +
-				", End Date: " + endDatetime;
-	}
+    @Override
+    public String toString() {
+        return "Asset Assign ID: " + id +
+                ", Asset ID: " + assetId +
+                ", Order Line ID: " + orderLineId +
+                ", Start Date: " + startDatetime +
+                ", End Date: " + endDatetime;
+    }
 }

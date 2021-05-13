@@ -24,10 +24,10 @@ import java.util.Date;
 public class AssetReservationWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
     private Integer userId;
     private Integer creatorId;
     private Integer assetId;

@@ -21,7 +21,7 @@ import java.io.Serializable;
 /**
  * Web-service compatible representation of the value map returned by
  * {@link IMediationSessionBean#getMediationRecordsByMediationProcess(Integer)}.
- *
+ * <p>
  * This class is necessary as Apache CXF (JAXB) does not handle Maps and a custom JAXB binding
  * might not be supported by SOAP clients.
  *
@@ -31,10 +31,10 @@ import java.io.Serializable;
 public class RecordCountWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer statusId;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer statusId;
     private Long count;
 
     public RecordCountWS() {
@@ -64,8 +64,8 @@ public class RecordCountWS implements Serializable {
     @Override
     public String toString() {
         return "RecordCountWS{"
-               + "statusId=" + statusId
-               + ", count=" + count
-               + '}';
+                + "statusId=" + statusId
+                + ", count=" + count
+                + '}';
     }
 }

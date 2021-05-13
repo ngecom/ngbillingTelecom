@@ -23,30 +23,20 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
 @Entity
 @TableGenerator(
-        name="partner_referral_commission_GEN",
-        table="jbilling_seqs",
+        name = "partner_referral_commission_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="partner_referral_commission",
-        allocationSize=10
+        pkColumnValue = "partner_referral_commission",
+        allocationSize = 10
 )
-@Table(name="partner_referral_commission")
+@Table(name = "partner_referral_commission")
 public class PartnerReferralCommissionDTO {
     private int id;
     private PartnerDTO referral;
@@ -56,60 +46,60 @@ public class PartnerReferralCommissionDTO {
     private BigDecimal percentage;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="partner_referral_commission_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "partner_referral_commission_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="referral_id", nullable=false)
-    public PartnerDTO getReferral () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "referral_id", nullable = false)
+    public PartnerDTO getReferral() {
         return referral;
     }
 
-    public void setReferral (PartnerDTO partner) {
+    public void setReferral(PartnerDTO partner) {
         this.referral = partner;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="referrer_id", nullable=false)
-    public PartnerDTO getReferrer () {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "referrer_id", nullable = false)
+    public PartnerDTO getReferrer() {
         return referrer;
     }
 
-    public void setReferrer (PartnerDTO partner) {
+    public void setReferrer(PartnerDTO partner) {
         this.referrer = partner;
     }
 
-    @Column(name="start_date", length=13)
-    public Date getStartDate () {
+    @Column(name = "start_date", length = 13)
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate (Date startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    @Column(name="end_date", length=13)
-    public Date getEndDate () {
+    @Column(name = "end_date", length = 13)
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate (Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    @Column(name="percentage", nullable=false, precision=17, scale=17)
-    public BigDecimal getPercentage () {
+    @Column(name = "percentage", nullable = false, precision = 17, scale = 17)
+    public BigDecimal getPercentage() {
         return percentage;
     }
 
-    public void setPercentage (BigDecimal percentage) {
+    public void setPercentage(BigDecimal percentage) {
         this.percentage = percentage;
     }
 

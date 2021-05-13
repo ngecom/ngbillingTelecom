@@ -25,31 +25,30 @@ You may download the latest source from webdataconsulting.github.io.
 */
 
 
+import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
-
 /**
-* IntegerReportParameterDTO
-*
-* @author Brian Cowdery
-* @since 07/03/11
-*/
+ * IntegerReportParameterDTO
+ *
+ * @author Brian Cowdery
+ * @since 07/03/11
+ */
 @Entity
 @DiscriminatorValue("integer")
 public class IntegerReportParameterDTO extends ReportParameterDTO<Integer> {
 
-   private Integer value;
+    private Integer value;
 
-   @Transient
-   public Integer getValue() {
-       return value;
-   }
+    @Transient
+    public Integer getValue() {
+        return value;
+    }
 
-   public void setValue(Integer value) {
-       this.value = value;
-   }
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }

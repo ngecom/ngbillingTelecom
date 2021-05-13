@@ -24,33 +24,24 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="preference_type")
+@Table(name = "preference_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class PreferenceTypeDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private String defaultValue;
     private Set<PreferenceDTO> preferences = new HashSet<PreferenceDTO>(0);
 
@@ -68,7 +59,7 @@ public class PreferenceTypeDTO extends AbstractDescription implements java.io.Se
     }
 
     @Id
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -77,7 +68,7 @@ public class PreferenceTypeDTO extends AbstractDescription implements java.io.Se
         this.id = id;
     }
 
-    @Column(name="def_value", length=200)
+    @Column(name = "def_value", length = 200)
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -86,7 +77,7 @@ public class PreferenceTypeDTO extends AbstractDescription implements java.io.Se
         this.defaultValue = defaultValue;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="preferenceType")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "preferenceType")
     public Set<PreferenceDTO> getPreferences() {
         return this.preferences;
     }
@@ -100,15 +91,6 @@ public class PreferenceTypeDTO extends AbstractDescription implements java.io.Se
         return ServerConstants.TABLE_PREFERENCE_TYPE;
     }
 
-    @Transient
-    public String getInstructions() {
-        return getDescription(ServerConstants.LANGUAGE_ENGLISH_ID, "instruction");
-    }
-
-    @Transient
-    public String getInstructions(Integer languageId) {
-        return getDescription(languageId, "instruction");
-    }
 
 
 

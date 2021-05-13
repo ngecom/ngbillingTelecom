@@ -24,38 +24,6 @@
 
 package com.ngbilling.core.server.persistence.dto.item;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceLineDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
 import com.ngbilling.core.server.persistence.dto.user.AccountTypeDTO;
@@ -63,6 +31,12 @@ import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Entity
 @TableGenerator(
@@ -78,10 +52,10 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class ItemDTO extends AbstractDescription {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private CompanyDTO entity;
     private Set<CompanyDTO> entities = new HashSet<CompanyDTO>(0);
     private String internalNumber;
@@ -94,13 +68,15 @@ public class ItemDTO extends AbstractDescription {
     private Set<ItemTypeDTO> itemTypes = new HashSet<ItemTypeDTO>(0);
     private Set<InvoiceLineDTO> invoiceLines = new HashSet<InvoiceLineDTO>(0);
     private Set<ItemPriceDTO> itemPrices = new HashSet<ItemPriceDTO>(0);
-    private Set<OrderLineDTO> orderLineDTOs = new HashSet<OrderLineDTO>(0); 
+    private Set<OrderLineDTO> orderLineDTOs = new HashSet<OrderLineDTO>(0);
     private boolean standardAvailability = true;
     private boolean global = false;
     private List<AccountTypeDTO> accountTypeAvailability = new ArrayList<AccountTypeDTO>();
-	
 
-    /** If the item will do asset management. Only possible if one linked ItemTypeDTO allows asset management */
+
+    /**
+     * If the item will do asset management. Only possible if one linked ItemTypeDTO allows asset management
+     */
     private Integer assetManagementEnabled;
     private int versionNum;
 
@@ -121,9 +97,9 @@ public class ItemDTO extends AbstractDescription {
     private Integer currencyId = null;
     private BigDecimal price = null;
     private Integer orderLineTypeId = null;
-    
+
     private Integer priceModelCompanyId = null;
-    
+
     private Date activeSince;
     private Date activeUntil;
 
@@ -141,7 +117,7 @@ public class ItemDTO extends AbstractDescription {
         this.id = id;
     }
 
-    public ItemDTO(int id, String internalNumber, String glCode,BigDecimal percentage, Integer priceManual,
+    public ItemDTO(int id, String internalNumber, String glCode, BigDecimal percentage, Integer priceManual,
                    Integer hasDecimals, Integer deleted, CompanyDTO entity, Integer assetManagementEnabled) {
         this.id = id;
         this.internalNumber = internalNumber;
@@ -182,7 +158,7 @@ public class ItemDTO extends AbstractDescription {
     // ItemDTOEx
     public ItemDTO(int id, String number, String glCode, CompanyDTO entity, String description, Integer deleted, Integer priceManual,
                    Integer currencyId, BigDecimal price, BigDecimal percentage, Integer orderLineTypeId,
-                   Integer hasDecimals, Integer assetManagementEnabled , boolean isPercentage) {
+                   Integer hasDecimals, Integer assetManagementEnabled, boolean isPercentage) {
 
         this(id, number, glCode, percentage, priceManual, hasDecimals, deleted, entity, assetManagementEnabled);
         setDescription(description);
@@ -198,7 +174,8 @@ public class ItemDTO extends AbstractDescription {
         return ServerConstants.TABLE_ITEM;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_GEN")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_GEN")
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -217,11 +194,11 @@ public class ItemDTO extends AbstractDescription {
     public void setEntity(CompanyDTO entity) {
         this.entity = entity;
     }
-    
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "item_entity_map", joinColumns = { 
-    		@JoinColumn(name = "item_id", updatable = true) }, inverseJoinColumns = { 
-    		@JoinColumn(name = "entity_id", updatable = true) })
+    @JoinTable(name = "item_entity_map", joinColumns = {
+            @JoinColumn(name = "item_id", updatable = true)}, inverseJoinColumns = {
+            @JoinColumn(name = "entity_id", updatable = true)})
     public Set<CompanyDTO> getEntities() {
         return this.entities;
     }
@@ -229,13 +206,13 @@ public class ItemDTO extends AbstractDescription {
     public void setEntities(Set<CompanyDTO> entities) {
         this.entities = entities;
     }
-    
+
     @Transient
     public Set<Integer> getChildEntitiesIds() {
         if (this.childEntityIds == null) {
             this.childEntityIds = new HashSet<Integer>();
-            for(CompanyDTO dto : this.entities) {
-            	this.childEntityIds.add(dto.getId());
+            for (CompanyDTO dto : this.entities) {
+                this.childEntityIds.add(dto.getId());
             }
 
         }
@@ -260,28 +237,24 @@ public class ItemDTO extends AbstractDescription {
         this.internalNumber = internalNumber;
     }
 
-    @Column (name = "gl_code", length = 50)
+    @Column(name = "gl_code", length = 50)
     public String getGlCode() {
-		return glCode;
-	}
+        return glCode;
+    }
 
-	public void setGlCode(String glCode) {
-		this.glCode = glCode;
-	}
+    public void setGlCode(String glCode) {
+        this.glCode = glCode;
+    }
 
-	@Transient
+    @Transient
     public BigDecimal getPercentage() {
         return this.percentage;
     }
 
-    public void setPercentage(BigDecimal percentage) {
-        this.percentage = percentage;
-    }
-
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "item_type_exclude_map",
-               joinColumns = {@JoinColumn(name = "item_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "type_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "item_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "type_id", updatable = false)}
     )
     public Set<ItemTypeDTO> getExcludedTypes() {
         return excludedTypes;
@@ -291,11 +264,10 @@ public class ItemDTO extends AbstractDescription {
         this.excludedTypes = excludedTypes;
     }
 
-    @Column(name="price_manual", nullable=false)
+    @Column(name = "price_manual", nullable = false)
     public Integer getPriceManual() {
         return this.priceManual;
     }
-
 
     public void setPriceManual(Integer priceManual) {
         this.priceManual = priceManual;
@@ -321,8 +293,8 @@ public class ItemDTO extends AbstractDescription {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "item_type_map",
-               joinColumns = {@JoinColumn(name = "item_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "type_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "item_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "type_id", updatable = false)}
     )
     public Set<ItemTypeDTO> getItemTypes() {
         return this.itemTypes;
@@ -348,7 +320,7 @@ public class ItemDTO extends AbstractDescription {
         return null;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="item")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
     public Set<ItemPriceDTO> getItemPrices() {
         return this.itemPrices;
     }
@@ -356,17 +328,17 @@ public class ItemDTO extends AbstractDescription {
     public void setItemPrices(Set<ItemPriceDTO> itemPrices) {
         this.itemPrices = itemPrices;
     }
-    
+
     @Transient
     public List<?> getPrices() {
         return prices;
     }
-    
+
     @Transient
     public void setPrices(List<?> prices) {
         this.prices = prices;
     }
-    
+
     @Version
     @Column(name = "OPTLOCK")
     public int getVersionNum() {
@@ -376,8 +348,6 @@ public class ItemDTO extends AbstractDescription {
     public void setVersionNum(int versionNum) {
         this.versionNum = versionNum;
     }
-
-   
 
     @Column(name = "standard_availability", nullable = false)
     public boolean isStandardAvailability() {
@@ -390,47 +360,52 @@ public class ItemDTO extends AbstractDescription {
 
     @Column(name = "global", nullable = false, updatable = true)
     public boolean isGlobal() {
-		return global;
-	}
+        return global;
+    }
 
-	public void setGlobal(boolean global) {
-		this.global = global;
-	}
-	
-	public void setAccountTypeAvailability(
-			List<AccountTypeDTO> accountTypeAvailability) {
-		this.accountTypeAvailability = accountTypeAvailability;
-	}
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
+
+    public void setAccountTypeAvailability(
+            List<AccountTypeDTO> accountTypeAvailability) {
+        this.accountTypeAvailability = accountTypeAvailability;
+    }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item", orphanRemoval = true)
     public Set<ItemDependencyDTO> getDependencies() {
         return dependencies;
     }
 
+    public void setDependencies(Set<ItemDependencyDTO> dependencies) {
+        this.dependencies = dependencies;
+        dependencyIds = null;
+    }
+
     @Transient
     public List<ItemDTO> getDependItems() {
         List<ItemDTO> dependItems = new ArrayList<ItemDTO>();
-        for(ItemDependencyDTO itemDependencyDTO : dependencies) {
+        for (ItemDependencyDTO itemDependencyDTO : dependencies) {
             dependItems.add((ItemDTO) itemDependencyDTO.getDependent());
         }
         return dependItems;
     }
 
     @Column(name = "standard_partner_percentage")
-    public BigDecimal getStandardPartnerPercentage () {
+    public BigDecimal getStandardPartnerPercentage() {
         return standardPartnerPercentage;
     }
 
-    public void setStandardPartnerPercentage (BigDecimal standardPartnerPercentage) {
+    public void setStandardPartnerPercentage(BigDecimal standardPartnerPercentage) {
         this.standardPartnerPercentage = standardPartnerPercentage;
     }
 
     @Column(name = "master_partner_percentage")
-    public BigDecimal getMasterPartnerPercentage () {
+    public BigDecimal getMasterPartnerPercentage() {
         return masterPartnerPercentage;
     }
 
-    public void setMasterPartnerPercentage (BigDecimal masterPartnerPercentage) {
+    public void setMasterPartnerPercentage(BigDecimal masterPartnerPercentage) {
         this.masterPartnerPercentage = masterPartnerPercentage;
     }
 
@@ -441,11 +416,6 @@ public class ItemDTO extends AbstractDescription {
 
     public void setReservationDuration(Integer reservationDuration) {
         this.reservationDuration = reservationDuration;
-    }
-
-    public void setDependencies(Set<ItemDependencyDTO> dependencies) {
-        this.dependencies = dependencies;
-        dependencyIds = null;
     }
 
     public void addDependency(ItemDependencyDTO dependencyDTO) {
@@ -463,10 +433,6 @@ public class ItemDTO extends AbstractDescription {
         setInternalNumber(number);
     }
 
-    /*
-        Transient fields
-     */
-
     @Transient
     public Integer[] getTypes() {
         if (this.types == null && itemTypes != null) {
@@ -479,6 +445,10 @@ public class ItemDTO extends AbstractDescription {
         }
         return types;
     }
+
+    /*
+        Transient fields
+     */
 
     @Transient
     public void setTypes(Integer[] types) {
@@ -493,9 +463,9 @@ public class ItemDTO extends AbstractDescription {
     public boolean hasType(Integer typeId) {
         return Arrays.asList(getTypes()).contains(typeId);
     }
-    
+
     @Temporal(TemporalType.DATE)
-    @Column(name="active_since", length=13)
+    @Column(name = "active_since", length = 13)
     public Date getActiveSince() {
         return this.activeSince;
     }
@@ -505,7 +475,7 @@ public class ItemDTO extends AbstractDescription {
     }
 
     @Temporal(TemporalType.DATE)
-    @Column(name="active_until", length=13)
+    @Column(name = "active_until", length = 13)
     public Date getActiveUntil() {
         return this.activeUntil;
     }
@@ -513,7 +483,7 @@ public class ItemDTO extends AbstractDescription {
     public void setActiveUntil(Date activeUntil) {
         this.activeUntil = activeUntil;
     }
-    
+
     @Transient
     public Integer[] getExcludedTypeIds() {
         if (this.excludedTypeIds == null && excludedTypes != null) {
@@ -536,18 +506,18 @@ public class ItemDTO extends AbstractDescription {
         return Arrays.asList(getExcludedTypeIds()).contains(typeId);
     }
 
-	@Transient
-	public Integer[] getAccountTypeIds() {
-		if (this.accountTypeIds == null && accountTypeAvailability != null) {
-			Integer[] types = new Integer[accountTypeAvailability.size()];
-			int i = 0;
-			for (AccountTypeDTO type : accountTypeAvailability) {
-				types[i++] = type.getId();
-			}
-			setAccountTypeIds(types);
-		}
-		return accountTypeIds;
-	}
+    @Transient
+    public Integer[] getAccountTypeIds() {
+        if (this.accountTypeIds == null && accountTypeAvailability != null) {
+            Integer[] types = new Integer[accountTypeAvailability.size()];
+            int i = 0;
+            for (AccountTypeDTO type : accountTypeAvailability) {
+                types[i++] = type.getId();
+            }
+            setAccountTypeIds(types);
+        }
+        return accountTypeIds;
+    }
 
     public void setAccountTypeIds(Integer[] accountTypeIds) {
         this.accountTypeIds = accountTypeIds;
@@ -562,9 +532,9 @@ public class ItemDTO extends AbstractDescription {
      */
     public Collection<ItemDependencyDTO> getDependenciesOfType(ItemDependencyType type) {
         ArrayList<ItemDependencyDTO> result = new ArrayList<ItemDependencyDTO>();
-        if(dependencies != null) {
-            for(ItemDependencyDTO dependency : dependencies) {
-                if(dependency.getType().equals(type)) {
+        if (dependencies != null) {
+            for (ItemDependencyDTO dependency : dependencies) {
+                if (dependency.getType().equals(type)) {
                     result.add(dependency);
                 }
             }
@@ -585,6 +555,11 @@ public class ItemDTO extends AbstractDescription {
         return dependencyIds;
     }
 
+    @Transient
+    public void setDependencyIds(Integer[] ids) {
+        this.dependencyIds = types;
+    }
+
     /**
      * From the dependencies extract the ids of those of type {@code type }
      * which has a minimum required qty of 1
@@ -594,9 +569,9 @@ public class ItemDTO extends AbstractDescription {
      */
     public Integer[] getMandatoryDependencyIdsOfType(ItemDependencyType type) {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        if(dependencies != null) {
-            for(ItemDependencyDTO dependency : dependencies) {
-                if(dependency.getType().equals(type) && dependency.getMinimum() > 0) {
+        if (dependencies != null) {
+            for (ItemDependencyDTO dependency : dependencies) {
+                if (dependency.getType().equals(type) && dependency.getMinimum() > 0) {
                     result.add(dependency.getDependentObjectId());
                 }
             }
@@ -605,21 +580,17 @@ public class ItemDTO extends AbstractDescription {
     }
 
     @Transient
-    public void setDependencyIds(Integer[] ids) {
-        this.dependencyIds = types;
+    public List<Integer> getParentAndChildIds() {
+        return parentAndChildIds;
     }
 
-    @Transient
-    public List<Integer> getParentAndChildIds() {
-		return parentAndChildIds;
-	}
+    public void setParentAndChildIds(List<Integer> parentAndChildIds) {
+        this.parentAndChildIds = parentAndChildIds;
+    }
 
-	public void setParentAndChildIds(List<Integer> parentAndChildIds) {
-		this.parentAndChildIds = parentAndChildIds;
-	}
-
-	/**
+    /**
      * Rules 'contains' operator only works on a collections of strings
+     *
      * @return collection of ItemTypeDTO ID's as strings.
      */
     @Transient
@@ -637,7 +608,6 @@ public class ItemDTO extends AbstractDescription {
     public String getPromoCode() {
         return promoCode;
     }
-
 
     @Transient
     public void setPromoCode(String string) {
@@ -681,34 +651,39 @@ public class ItemDTO extends AbstractDescription {
 
     @Transient
     public Integer getPriceModelCompanyId() {
-		return priceModelCompanyId;
-	}
+        return priceModelCompanyId;
+    }
 
     @Transient
-	public void setPriceModelCompanyId(Integer priceModelCompanyId) {
-		this.priceModelCompanyId = priceModelCompanyId;
-	}
+    public void setPriceModelCompanyId(Integer priceModelCompanyId) {
+        this.priceModelCompanyId = priceModelCompanyId;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "ItemDTO: id=" + getId();
     }
 
     public ItemTypeDTO findItemTypeWithAssetManagement() {
-        for(ItemTypeDTO type : itemTypes) {
-            if(type.getAllowAssetManagement().intValue() == 1) return type;
+        for (ItemTypeDTO type : itemTypes) {
+            if (type.getAllowAssetManagement().intValue() == 1) return type;
         }
         return null;
     }
+
     @Transient
     public boolean isPercentage() {
-		return isPercentage;
-	}
+        return isPercentage;
+    }
 
-	public void setIsPercentage(boolean isPercentage) {
-		this.isPercentage = isPercentage;
-	}
-    
+    public void setPercentage(BigDecimal percentage) {
+        this.percentage = percentage;
+    }
+
+    public void setIsPercentage(boolean isPercentage) {
+        this.isPercentage = isPercentage;
+    }
+
     /*public ItemTypeDTO findItemWithAssetManagement(ItemDTO item) {
         for(ItemDTO type : item) {
             if(type.getAssetManagementEnabled().intValue() == 1) return type;
@@ -717,7 +692,7 @@ public class ItemDTO extends AbstractDescription {
     }*/
     @Transient
     public String[] getFieldNames() {
-        String headers[] = new String[] {
+        String headers[] = new String[]{
                 "id",
                 "productCode",
                 "itemTypes",
@@ -726,9 +701,9 @@ public class ItemDTO extends AbstractDescription {
                 "percentage",
                 "prices",
         };
-        
+
         List<String> list = new ArrayList<String>(Arrays.asList(headers));
-       
+
         return list.toArray(new String[list.size()]);
     }
 
@@ -739,30 +714,29 @@ public class ItemDTO extends AbstractDescription {
             itemTypes.append(type.getDescription()).append(' ');
         }
         StringBuilder prices = new StringBuilder();
-        for (Iterator<ItemPriceDTO> it = this.itemPrices.iterator(); it.hasNext();) {
-    	    ItemPriceDTO price = it.next();
-    	    prices.append(price.getPrice()).append(" ").append(price.getCurrency().getCode());
-    	    if (it.hasNext()) prices.append(",");
-    	}
-        
-        Object values[][] = new Object[][] {
-            {
-                id,
-                internalNumber,
-                itemTypes.toString(),
-                hasDecimals,
-                priceManual,
-                percentage,
-                prices.toString(),
-            }
+        for (Iterator<ItemPriceDTO> it = this.itemPrices.iterator(); it.hasNext(); ) {
+            ItemPriceDTO price = it.next();
+            prices.append(price.getPrice()).append(" ").append(price.getCurrency().getCode());
+            if (it.hasNext()) prices.append(",");
+        }
+
+        Object values[][] = new Object[][]{
+                {
+                        id,
+                        internalNumber,
+                        itemTypes.toString(),
+                        hasDecimals,
+                        priceManual,
+                        percentage,
+                        prices.toString(),
+                }
         };
-        
+
         List<Object> aitList = new ArrayList<>(Arrays.asList(values[0]));
-        
-        Object obj[][] = new Object[][] {aitList.toArray()};  
+
+        Object obj[][] = new Object[][]{aitList.toArray()};
         return obj;
     }
-
 
 
 }

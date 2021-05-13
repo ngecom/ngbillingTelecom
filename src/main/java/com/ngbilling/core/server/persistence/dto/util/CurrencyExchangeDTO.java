@@ -24,51 +24,39 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
+import com.ngbilling.core.common.util.CommonConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.common.util.CommonConstants;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 @Entity
 @TableGenerator(
-        name="currency_exchange_GEN",
-        table="jbilling_seqs",
+        name = "currency_exchange_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="currency_exchange",
+        pkColumnValue = "currency_exchange",
         allocationSize = 100
-        )
-@Table(name="currency_exchange")
+)
+@Table(name = "currency_exchange")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CurrencyExchangeDTO  implements java.io.Serializable {
+public class CurrencyExchangeDTO implements java.io.Serializable {
 
-     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
-     private CurrencyDTO currencyDTO;
-     private Integer entityId;
-     private BigDecimal rate;
-     private Date validSince;
-     private Date createDatetime;
-     private int versionNum;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
+    private CurrencyDTO currencyDTO;
+    private Integer entityId;
+    private BigDecimal rate;
+    private Date validSince;
+    private Date createDatetime;
+    private int versionNum;
 
     public CurrencyExchangeDTO() {
         createDatetime = new Date();
@@ -82,17 +70,19 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
         this.rate = rate;
         this.createDatetime = createDatetime;
     }
+
     public CurrencyExchangeDTO(int id, CurrencyDTO currencyDTO, Integer entityId, BigDecimal rate, Date createDatetime) {
-       this();
-       this.id = id;
-       this.currencyDTO = currencyDTO;
-       this.entityId = entityId;
-       this.rate = rate;
-       this.createDatetime = createDatetime;
+        this();
+        this.id = id;
+        this.currencyDTO = currencyDTO;
+        this.entityId = entityId;
+        this.rate = rate;
+        this.createDatetime = createDatetime;
     }
 
-    @Id  @GeneratedValue(strategy=GenerationType.TABLE, generator="currency_exchange_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "currency_exchange_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
@@ -102,7 +92,7 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="currency_id")
+    @JoinColumn(name = "currency_id")
     public CurrencyDTO getCurrency() {
         return this.currencyDTO;
     }
@@ -111,7 +101,7 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
         this.currencyDTO = currencyDTO;
     }
 
-    @Column(name="entity_id")
+    @Column(name = "entity_id")
     public Integer getEntityId() {
         return this.entityId;
     }
@@ -120,7 +110,7 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
         this.entityId = entityId;
     }
 
-    @Column(name="rate", nullable=false, precision=17, scale=17)
+    @Column(name = "rate", nullable = false, precision = 17, scale = 17)
     public BigDecimal getRate() {
         return this.rate;
     }
@@ -129,7 +119,7 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
         this.rate = rate;
     }
 
-    @Column(name="create_datetime", nullable=false, length=29)
+    @Column(name = "create_datetime", nullable = false, length = 29)
     public Date getCreateDatetime() {
         return this.createDatetime;
     }
@@ -138,7 +128,7 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
         this.createDatetime = createDatetime;
     }
 
-    @Column(name="valid_since", nullable=false)
+    @Column(name = "valid_since", nullable = false)
     public Date getValidSince() {
         return validSince;
     }
@@ -148,10 +138,11 @@ public class CurrencyExchangeDTO  implements java.io.Serializable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public Integer getVersionNum() {
         return versionNum;
     }
+
     public void setVersionNum(Integer versionNum) {
         this.versionNum = versionNum;
     }

@@ -15,26 +15,13 @@
  */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * AssetTransitionDTO objects record status changes of AssetDTOs. Instances are immutable.
@@ -60,17 +47,21 @@ import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 public class AssetTransitionDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private Date createDatetime;
     private AssetStatusDTO previousStatus;
     private AssetStatusDTO newStatus;
     private AssetDTO asset;
-    /** user the asset is assign to (through OrderLine linked to the asset) */
+    /**
+     * user the asset is assign to (through OrderLine linked to the asset)
+     */
     private UserDTO assignedTo;
-    /** user who made the change */
+    /**
+     * user who made the change
+     */
     private UserDTO user;
 
     @Id
@@ -129,7 +120,7 @@ public class AssetTransitionDTO implements Serializable {
         return this.assignedTo;
     }
 
-    public void setAssignedTo(UserDTO  assignedTo) {
+    public void setAssignedTo(UserDTO assignedTo) {
         this.assignedTo = assignedTo;
     }
 

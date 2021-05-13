@@ -15,74 +15,58 @@
  */
 package com.ngbilling.core.server.persistence.dto.order;
 
+import com.ngbilling.core.common.util.FormatLogger;
+import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
+import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-
-import com.ngbilling.core.common.util.FormatLogger;
-import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
-import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-
 /**
  * This class describes changes in order that can be applied on target date to produce changes in order lines (create/updates)
  * Order change can be created for:
- *      Existed Order Line update - quantity, price, description, assets, order and orderLine fields will be filled
- *      New order line create - item, quantity, price, description, assets, order, useItem fields will be filled
- *      New order line create as child to another order line - parentOrderLine field will be filled additionally to usual line create
- *      New order line create as child for another line, that will be created later - parentOrderChange filed will be filled additionally to usual line create
+ * Existed Order Line update - quantity, price, description, assets, order and orderLine fields will be filled
+ * New order line create - item, quantity, price, description, assets, order, useItem fields will be filled
+ * New order line create as child to another order line - parentOrderLine field will be filled additionally to usual line create
+ * New order line create as child for another line, that will be created later - parentOrderChange filed will be filled additionally to usual line create
  * Other fields:
- *      createDateTime - order change create time
- *      startDate - order change planned application to order date
- *      applicationDate - actual order change application to order date
- *      userAssignedStatus - user status of order change
- *      status - system status of order change (before apply, after apply)
- *      errorMessage - error message if some error was found during change application to order
- *      errorCodes - error code if some error was found during change application to order
+ * createDateTime - order change create time
+ * startDate - order change planned application to order date
+ * applicationDate - actual order change application to order date
+ * userAssignedStatus - user status of order change
+ * status - system status of order change (before apply, after apply)
+ * errorMessage - error message if some error was found during change application to order
+ * errorCodes - error code if some error was found during change application to order
+ *
  * @author Alexander Aksenov
  * @since 09.07.13
  */
 @Entity
 @TableGenerator(
-        name="order_change_GEN",
-        table="jbilling_seqs",
+        name = "order_change_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="order_change",
+        pkColumnValue = "order_change",
         allocationSize = 100
 )
-@Table(name="order_change")
+@Table(name = "order_change")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
-public class OrderChangeDTO  implements java.io.Serializable {
+public class OrderChangeDTO implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private static final FormatLogger LOG = new FormatLogger(OrderChangeDTO.class);
+    private static final FormatLogger LOG = new FormatLogger(OrderChangeDTO.class);
 
     private Integer id;
     private OrderChangeDTO parentOrderChange;
@@ -117,11 +101,11 @@ public class OrderChangeDTO  implements java.io.Serializable {
     // this field filled after creation of orderLine during change apply
     private OrderLineDTO lineCreated;
     private boolean isTouched = false;
-    private boolean isPercentage =false;
-    
+    private boolean isPercentage = false;
+
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="order_change_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_change_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;
     }
@@ -130,8 +114,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="parent_order_change_id", nullable=true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_order_change_id", nullable = true)
     public OrderChangeDTO getParentOrderChange() {
         return parentOrderChange;
     }
@@ -140,8 +124,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.parentOrderChange = parentOrderChange;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="parent_order_line_id", nullable=true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_order_line_id", nullable = true)
     public OrderLineDTO getParentOrderLine() {
         return parentOrderLine;
     }
@@ -150,8 +134,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.parentOrderLine = parentOrderLine;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
     public OrderDTO getOrder() {
         return order;
     }
@@ -160,8 +144,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.order = order;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="item_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", nullable = false)
     public ItemDTO getItem() {
         return item;
     }
@@ -169,7 +153,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
     public void setItem(ItemDTO item) {
         this.item = item;
     }
-    @Column(name="quantity", precision=17, scale=17)
+
+    @Column(name = "quantity", precision = 17, scale = 17)
     public BigDecimal getQuantity() {
         return quantity;
     }
@@ -178,7 +163,7 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.quantity = quantity;
     }
 
-    @Column(name="price", precision=17, scale=17)
+    @Column(name = "price", precision = 17, scale = 17)
     public BigDecimal getPrice() {
         return price;
     }
@@ -187,7 +172,7 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.price = price;
     }
 
-    @Column(name="description", length=1000)
+    @Column(name = "description", length = 1000)
     public String getDescription() {
         return description;
     }
@@ -210,8 +195,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.useItem = useItem;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     public UserDTO getUser() {
         return user;
     }
@@ -247,8 +232,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.applicationDate = applicationDate;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_assigned_status_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_assigned_status_id", nullable = false)
     public OrderChangeStatusDTO getUserAssignedStatus() {
         return userAssignedStatus;
     }
@@ -257,8 +242,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.userAssignedStatus = userAssignedStatus;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="status_id", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id", nullable = false)
     public OrderChangeStatusDTO getStatus() {
         return status;
     }
@@ -267,8 +252,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.status = status;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_line_id", nullable=true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_line_id", nullable = true)
     public OrderLineDTO getOrderLine() {
         return orderLine;
     }
@@ -280,8 +265,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.DETACH})
     @JoinTable(name = "order_change_asset_map",
-               joinColumns = {@JoinColumn(name = "order_change_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "asset_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "order_change_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "asset_id", updatable = false)}
     )
     public Set<AssetDTO> getAssets() {
         return assets;
@@ -291,7 +276,7 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.assets = assets;
     }
 
-    @Column(name="error_message", length=500)
+    @Column(name = "error_message", length = 500)
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -304,7 +289,7 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.errorMessage = errorMessage;
     }
 
-    @Column(name="error_codes", length=200)
+    @Column(name = "error_codes", length = 200)
     public String getErrorCodes() {
         return errorCodes;
     }
@@ -328,8 +313,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
     }
 
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_change_type_id", nullable=true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_change_type_id", nullable = true)
     public OrderChangeTypeDTO getOrderChangeType() {
         return orderChangeType;
     }
@@ -338,8 +323,8 @@ public class OrderChangeDTO  implements java.io.Serializable {
         this.orderChangeType = orderChangeType;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="order_status_id", nullable=true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_status_id", nullable = true)
     public OrderStatusDTO getOrderStatusToApply() {
         return orderStatusToApply;
     }
@@ -349,45 +334,44 @@ public class OrderChangeDTO  implements java.io.Serializable {
     }
 
     @Column(name = "applied_manually", nullable = true)
-    public Integer getAppliedManually () {
+    public Integer getAppliedManually() {
         return appliedManually;
     }
 
-    public void setAppliedManually (Integer appliedManually) {
+    public void setAppliedManually(Integer appliedManually) {
         this.appliedManually = appliedManually;
     }
 
     @Column(name = "removal", nullable = true)
-    public Integer getRemoval () {
+    public Integer getRemoval() {
         return removal;
     }
 
-    public void setRemoval (Integer removal) {
+    public void setRemoval(Integer removal) {
         this.removal = removal;
     }
 
     @Column(name = "next_billable_date", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    public Date getNextBillableDate () {
+    public Date getNextBillableDate() {
         return nextBillableDate;
     }
 
-    public void setNextBillableDate (Date nextBillableDate) {
+    public void setNextBillableDate(Date nextBillableDate) {
         this.nextBillableDate = nextBillableDate;
     }
 
     @Column(name = "end_date", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    public Date getEndDate () {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate (Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    
-    
+
     @Transient
     public OrderLineDTO getLineCreated() {
         return lineCreated;
@@ -400,13 +384,13 @@ public class OrderChangeDTO  implements java.io.Serializable {
 
     @Column(name = "is_percentage", nullable = false)
     public boolean isPercentage() {
-		return isPercentage;
-	}
+        return isPercentage;
+    }
 
-	public void setPercentage(boolean isPercentage) {
-		this.isPercentage = isPercentage;
-	}
-    
+    public void setPercentage(boolean isPercentage) {
+        this.isPercentage = isPercentage;
+    }
+
     public void touch() {
         // touch entity with possible cycle dependencies only once
         if (isTouched) return;
@@ -416,7 +400,7 @@ public class OrderChangeDTO  implements java.io.Serializable {
         if (getItem() != null) {
             getItem().getInternalNumber();
         }
-        for(AssetDTO asset: assets) {
+        for (AssetDTO asset : assets) {
             asset.getIdentifier();
         }
         if (getParentOrderLine() != null) {

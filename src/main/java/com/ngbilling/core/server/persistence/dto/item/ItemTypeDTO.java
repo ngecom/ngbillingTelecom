@@ -24,35 +24,18 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.item;
 
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @TableGenerator(
@@ -65,13 +48,13 @@ import com.ngbilling.core.server.util.ServerConstants;
 )
 @Table(name = "item_type")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class ItemTypeDTO extends AbstractDescription implements  Serializable {
+public class ItemTypeDTO extends AbstractDescription implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private CompanyDTO entity;
     private Set<CompanyDTO> entities = new HashSet<CompanyDTO>(0);
     private String description;
@@ -85,7 +68,7 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
     private String assetIdentifierLabel;
     private int versionNum;
     private ItemTypeDTO parent;
-    
+
     private boolean onePerOrder = false;
     private boolean onePerCustomer = false;
 
@@ -115,7 +98,8 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
         return ServerConstants.TABLE_ITEM_TYPE;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_type_GEN")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_type_GEN")
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
@@ -124,7 +108,7 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
     public void setId(int id) {
         this.id = id;
     }
-   
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id", nullable = false)
     public CompanyDTO getEntity() {
@@ -136,9 +120,9 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
     }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "item_type_entity_map", 
-    			joinColumns = {@JoinColumn(name = "item_type_id", updatable = true) }, 
-    			inverseJoinColumns = {@JoinColumn(name = "entity_id", updatable = true) })
+    @JoinTable(name = "item_type_entity_map",
+            joinColumns = {@JoinColumn(name = "item_type_id", updatable = true)},
+            inverseJoinColumns = {@JoinColumn(name = "entity_id", updatable = true)})
     public Set<CompanyDTO> getEntities() {
         return this.entities;
     }
@@ -194,17 +178,17 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
 
     @Column(name = "global", nullable = false, updatable = true)
     public boolean isGlobal() {
-		return global;
-	}
+        return global;
+    }
 
-	public void setGlobal(boolean global) {
-		this.global = global;
-	}
+    public void setGlobal(boolean global) {
+        this.global = global;
+    }
 
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "item_type_map",
-               joinColumns = {@JoinColumn(name = "type_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "item_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "type_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "item_id", updatable = false)}
     )
     public Set<ItemDTO> getItems() {
         return this.items;
@@ -216,8 +200,8 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "item_type_exclude_map",
-               joinColumns = {@JoinColumn(name = "type_id", updatable = false)},
-               inverseJoinColumns = {@JoinColumn(name = "item_id", updatable = false)}
+            joinColumns = {@JoinColumn(name = "type_id", updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "item_id", updatable = false)}
     )
     public Set<ItemDTO> getExcludedItems() {
         return excludedItems;
@@ -249,39 +233,39 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    public ItemTypeDTO getParent(){
+    public ItemTypeDTO getParent() {
         return this.parent;
     }
 
-    public void setParent(ItemTypeDTO parent){
+    public void setParent(ItemTypeDTO parent) {
         this.parent = parent;
     }
-    
+
     @Column(name = "one_per_order", nullable = false)
     public boolean isOnePerOrder() {
-		return onePerOrder;
-	}
+        return onePerOrder;
+    }
 
-	public void setOnePerOrder(boolean onePerOrder) {
-		this.onePerOrder = onePerOrder;
-		
-		if(onePerOrder) {
-			this.onePerCustomer = false;
-		}
-	}
+    public void setOnePerOrder(boolean onePerOrder) {
+        this.onePerOrder = onePerOrder;
 
-	@Column(name = "one_per_customer", nullable = false)
-	public boolean isOnePerCustomer() {
-		return onePerCustomer;
-	}
+        if (onePerOrder) {
+            this.onePerCustomer = false;
+        }
+    }
 
-	public void setOnePerCustomer(boolean onePerCustomer) {
-		this.onePerCustomer = onePerCustomer;
-		
-		if(onePerCustomer) {
-			this.onePerOrder = false;
-		}
-	}
+    @Column(name = "one_per_customer", nullable = false)
+    public boolean isOnePerCustomer() {
+        return onePerCustomer;
+    }
+
+    public void setOnePerCustomer(boolean onePerCustomer) {
+        this.onePerCustomer = onePerCustomer;
+
+        if (onePerCustomer) {
+            this.onePerOrder = false;
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -310,11 +294,11 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
     @Override
     public String toString() {
         return "ItemTypeDTO{"
-               + "id=" + id
-               + ", orderLineTypeId=" + orderLineTypeId
-               + ", description='" + description + '\''
-               + ", parent=" + (null != parent ? parent.getId() : null)
-               + '}';
+                + "id=" + id
+                + ", orderLineTypeId=" + orderLineTypeId
+                + ", description='" + description + '\''
+                + ", parent=" + (null != parent ? parent.getId() : null)
+                + '}';
     }
 
     /**
@@ -327,7 +311,7 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
     }
 
     public void addAssetStatuses(Collection<AssetStatusDTO> assetStatusDTOs) {
-        for(AssetStatusDTO status: assetStatusDTOs) {
+        for (AssetStatusDTO status : assetStatusDTOs) {
             addAssetStatus(status);
         }
     }
@@ -342,15 +326,15 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
     }
 
     public AssetStatusDTO findDefaultAssetStatus() {
-        for( AssetStatusDTO assetStatusDTO : assetStatuses) {
-            if(assetStatusDTO.getDeleted() == 0 && assetStatusDTO.getIsDefault() == 1) return assetStatusDTO;
+        for (AssetStatusDTO assetStatusDTO : assetStatuses) {
+            if (assetStatusDTO.getDeleted() == 0 && assetStatusDTO.getIsDefault() == 1) return assetStatusDTO;
         }
         return null;
     }
 
     public AssetStatusDTO findOrderSavedStatus() {
-        for( AssetStatusDTO assetStatusDTO : assetStatuses) {
-            if(assetStatusDTO.getDeleted() == 0 && assetStatusDTO.getIsOrderSaved() == 1) return assetStatusDTO;
+        for (AssetStatusDTO assetStatusDTO : assetStatuses) {
+            if (assetStatusDTO.getDeleted() == 0 && assetStatusDTO.getIsOrderSaved() == 1) return assetStatusDTO;
         }
         return null;
     }
@@ -361,7 +345,7 @@ public class ItemTypeDTO extends AbstractDescription implements  Serializable {
         return getEntity() != null ? getEntity().getId() : null;
     }
 
-  
+
 }
 
 

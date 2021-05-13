@@ -23,26 +23,15 @@
  */
 package com.ngbilling.core.server.persistence.dto.order;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.payload.request.order.OrderStatusFlag;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 
 
 @Entity
@@ -54,25 +43,36 @@ import com.ngbilling.core.server.util.ServerConstants;
         allocationSize = 100)
 @Table(name = "order_status")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class OrderStatusDTO  extends AbstractDescription implements java.io.Serializable {
+public class OrderStatusDTO extends AbstractDescription implements java.io.Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private static final FormatLogger LOG = new FormatLogger(OrderStatusDTO.class);
+    private static final FormatLogger LOG = new FormatLogger(OrderStatusDTO.class);
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="order_status_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_status_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     private int id;
 
-    @Column(name="order_status_flag", unique=true, nullable=false)
+    @Column(name = "order_status_flag", unique = true, nullable = false)
     private OrderStatusFlag orderStatusFlag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id")
     private CompanyDTO entity;
+
+    public OrderStatusDTO() {
+
+    }
+
+    public OrderStatusDTO(OrderStatusFlag orderStatusFlag, CompanyDTO entity, String content, Integer languageId) {
+        this.orderStatusFlag = orderStatusFlag;
+        this.entity = entity;
+        //this.setDescription(content, languageId);
+    }
+
     public CompanyDTO getEntity() {
         return entity;
     }
@@ -81,33 +81,20 @@ public class OrderStatusDTO  extends AbstractDescription implements java.io.Seri
         this.entity = entity;
     }
 
-    public String getStatusValue(){
+    public String getStatusValue() {
         return getDescription();
     }
 
-    public void setStatusValue(String text){
+    public void setStatusValue(String text) {
         setDescription(text);
     }
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
     public int getId() {
         return id;
     }
 
-
-    public OrderStatusDTO() {
-
-    }
-    
-    public OrderStatusDTO(OrderStatusFlag orderStatusFlag, CompanyDTO entity, String content, Integer languageId) {
-    	this.orderStatusFlag=orderStatusFlag;
-    	this.entity=entity;
-    	this.setDescription(content, languageId);
+    public void setId(int id) {
+        this.id = id;
     }
 
     public OrderStatusFlag getOrderStatusFlag() {

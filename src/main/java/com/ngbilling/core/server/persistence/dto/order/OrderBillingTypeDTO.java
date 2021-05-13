@@ -24,72 +24,64 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.server.persistence.dto.order;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
-import com.ngbilling.core.server.util.ServerConstants;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
-@Table(name="order_billing_type")
+@Table(name = "order_billing_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class OrderBillingTypeDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private Set<OrderDTO> orderDTOs = new HashSet<OrderDTO>(0);
 
     public OrderBillingTypeDTO() {
     }
-    
+
     public OrderBillingTypeDTO(int id) {
         this.id = id;
     }
 
     public OrderBillingTypeDTO(int id, Set<OrderDTO> orderDTOs) {
-       this.id = id;
-       this.orderDTOs = orderDTOs;
+        this.id = id;
+        this.orderDTOs = orderDTOs;
     }
 
     @Transient
     public String getTable() {
         return ServerConstants.TABLE_ORDER_BILLING_TYPE;
     }
-    
-    @Id 
-    @Column(name="id", unique=true, nullable=false)
+
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="orderBillingType")
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orderBillingType")
     public Set<OrderDTO> getPurchaseOrders() {
         return this.orderDTOs;
     }
-    
+
     public void setPurchaseOrders(Set<OrderDTO> orderDTOs) {
         this.orderDTOs = orderDTOs;
     }
-    
+
     public String toString() {
         return " OrderBillingType=" + id;
     }

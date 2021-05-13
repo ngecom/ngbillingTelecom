@@ -1,12 +1,11 @@
 package com.ngbilling.core.payload.request.metafield;
 
-import java.io.Serializable;
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import java.io.Serializable;
 
 public class MetaFieldWS implements Serializable {
 
@@ -16,7 +15,7 @@ public class MetaFieldWS implements Serializable {
     private int id;
     private Integer entityId;
 
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Size(min = 1, max = 100, message = "validation.error.size,1,100")
     private String name;
     private EntityType entityType;
@@ -39,14 +38,14 @@ public class MetaFieldWS implements Serializable {
     //All other dynamic metafields created on the fly in the system (example: Account Information Type, Product Category) will not be considered as primary
     private boolean primary;
     private MetaFieldType fieldUsage;
-    
+
     @Size(min = 0, max = 100, message = "validation.error.size,0,100")
     private String filename;
-    
+
     private boolean unique = false;
-    
-	public MetaFieldWS() {
-	}
+
+    public MetaFieldWS() {
+    }
 
 
     public int getId() {
@@ -171,7 +170,7 @@ public class MetaFieldWS implements Serializable {
     public void setFilename(String filename) {
         this.filename = filename;
     }
-    
+
     public boolean isUnique() {
         return unique;
     }

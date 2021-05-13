@@ -23,43 +23,31 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
+import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodDTO;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @TableGenerator(
-        name = "process_run_total_pm_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "process_run_total_pm", 
+        name = "process_run_total_pm_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "process_run_total_pm",
         allocationSize = 100)
 @Table(name = "process_run_total_pm")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProcessRunTotalPmDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private PaymentMethodDTO paymentMethod;
     private BigDecimal total;
     private ProcessRunTotalDTO processRunTotal;
@@ -102,8 +90,8 @@ public class ProcessRunTotalPmDTO implements Serializable {
     }
 
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="process_run_total_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "process_run_total_id")
     public ProcessRunTotalDTO getProcessRunTotal() {
         return processRunTotal;
     }
@@ -111,6 +99,7 @@ public class ProcessRunTotalPmDTO implements Serializable {
     public void setProcessRunTotal(ProcessRunTotalDTO processRunTotal) {
         this.processRunTotal = processRunTotal;
     }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_method_id")
     public PaymentMethodDTO getPaymentMethod() {
@@ -122,7 +111,7 @@ public class ProcessRunTotalPmDTO implements Serializable {
     }
 
     @Version
-    @Column(name="OPTLOCK")
+    @Column(name = "OPTLOCK")
     public int getVersionNum() {
         return versionNum;
     }

@@ -24,25 +24,13 @@
 
 package com.ngbilling.core.server.persistence.dto.pluggableTask;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
+import com.ngbilling.core.common.util.FormatLogger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.common.util.FormatLogger;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @TableGenerator(
@@ -57,19 +45,16 @@ import com.ngbilling.core.common.util.FormatLogger;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PluggableTaskParameterDTO implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private static final FormatLogger LOG = new FormatLogger(PluggableTaskParameterDTO.class);
-
     public static final int INT = 1;
     public static final int STR = 2;
     public static final int FLO = 3;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private static final FormatLogger LOG = new FormatLogger(PluggableTaskParameterDTO.class);
 
     // MAPPED COLUMS
-
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "pluggable_task_parameter_GEN")
     private Integer id;
@@ -101,27 +86,25 @@ public class PluggableTaskParameterDTO implements Serializable {
     @Transient
     private String value = null;
 
-	public PluggableTaskParameterDTO(String name, String strValue, PluggableTaskDTO task) {
-		super();
-		this.name = name;
-		this.strValue = strValue;
-		this.task = task;
-	}
-	
-	 public PluggableTaskParameterDTO(String name, String strValue) {
-			super();
-			this.name = name;
-			this.strValue = strValue;
-		}
-	 
-	 
-	 
-	 public PluggableTaskParameterDTO()
-	 {
-		 
-	 }
+    public PluggableTaskParameterDTO(String name, String strValue, PluggableTaskDTO task) {
+        super();
+        this.name = name;
+        this.strValue = strValue;
+        this.task = task;
+    }
 
-	public BigDecimal getFloatValue() {
+    public PluggableTaskParameterDTO(String name, String strValue) {
+        super();
+        this.name = name;
+        this.strValue = strValue;
+    }
+
+
+    public PluggableTaskParameterDTO() {
+
+    }
+
+    public BigDecimal getFloatValue() {
         return floatValue;
     }
 
@@ -237,12 +220,12 @@ public class PluggableTaskParameterDTO implements Serializable {
         this.value = value;
     }
 
-    public void setVersionNum(Integer versionNum) {
-        this.versionNum = versionNum;
-    }
-
     public Integer getVersionNum() {
         return versionNum;
+    }
+
+    public void setVersionNum(Integer versionNum) {
+        this.versionNum = versionNum;
     }
 
 }

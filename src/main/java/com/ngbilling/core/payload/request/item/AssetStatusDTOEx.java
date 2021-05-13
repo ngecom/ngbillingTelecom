@@ -15,25 +15,24 @@
  */
 package com.ngbilling.core.payload.request.item;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 /**
  * Version of AssetStatusDTO which is safe for external communication.
  *
  * @author Gerhard
- * @since 15/04/13
  * @see com.sapienter.jbilling.server.item.db.AssetStatusDTO
+ * @since 15/04/13
  */
 public class AssetStatusDTOEx implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
-    @Size(min=1,max=50, message="validation.error.size,1,50")
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
+    @Size(min = 1, max = 50, message = "validation.error.size,1,50")
     private String description;
     private int isDefault;
     private int isAvailable;

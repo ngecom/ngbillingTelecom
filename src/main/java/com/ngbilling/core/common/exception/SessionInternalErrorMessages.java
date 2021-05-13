@@ -1,13 +1,14 @@
 package com.ngbilling.core.common.exception;
 
 /**
-* Session internal error messages
+ * Session internal error messages
  * </p>
  * Provides the error messages returned from the jBIlling API
-*
-* @author: Panche.Isajeski
-* @since: 01/23/13
-*/
+ *
+ * @author: Panche.Isajeski
+ * @since: 01/23/13
+ */
+
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 

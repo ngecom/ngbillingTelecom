@@ -1,20 +1,20 @@
 package com.ngbilling.core.payload.request.user;
-import java.io.Serializable;
-import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
 
 public class CustomerNoteWS implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int noteId;
-    @NotNull(message="validation.error.notnull")
-    @Size(min= 1, max = 50, message = "validation.error.size,5,50")
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int noteId;
+    @NotNull(message = "validation.error.notnull")
+    @Size(min = 1, max = 50, message = "validation.error.size,5,50")
     private String noteTitle;
-    @NotNull(message="validation.error.notnull")
+    @NotNull(message = "validation.error.notnull")
     @Size(min = 1, max = 1000, message = "validation.error.size,5,1000")
     private String noteContent;
     private Date creationTime;

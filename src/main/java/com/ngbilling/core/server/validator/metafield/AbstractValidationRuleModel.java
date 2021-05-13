@@ -1,18 +1,18 @@
 package com.ngbilling.core.server.validator.metafield;
 
+import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
+import com.ngbilling.core.server.util.pricing.AttributeDefinition;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
-import com.ngbilling.core.server.util.pricing.AttributeDefinition;
-
 /**
- *  Abstraction of the validation rule model
- *  </p>
- *  Provides attributes to be used by the validation rule models
+ * Abstraction of the validation rule model
+ * </p>
+ * Provides attributes to be used by the validation rule models
  *
- *  @author Panche Isajeski
+ * @author Panche Isajeski
  */
 public abstract class AbstractValidationRuleModel<T> implements ValidationRuleModel<T> {
 
@@ -23,7 +23,7 @@ public abstract class AbstractValidationRuleModel<T> implements ValidationRuleMo
         return attributeDefinitions;
     }
 
-    public void setAttributeDefinitions(AttributeDefinition ...attributeDefinitions) {
+    public void setAttributeDefinitions(AttributeDefinition... attributeDefinitions) {
         this.attributeDefinitions = Collections.unmodifiableList(Arrays.asList(attributeDefinitions));
     }
 
@@ -31,7 +31,7 @@ public abstract class AbstractValidationRuleModel<T> implements ValidationRuleMo
 
         if (null == object) {
             return false;
-        } else if( object instanceof String && ((String) object).trim().isEmpty()){
+        } else if (object instanceof String && ((String) object).trim().isEmpty()) {
             return false;
         }
         if (null == validationRule) {

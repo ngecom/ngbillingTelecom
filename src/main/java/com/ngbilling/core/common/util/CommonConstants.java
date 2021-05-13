@@ -25,10 +25,10 @@
 package com.ngbilling.core.common.util;
 
 
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 import java.util.Date;
-
-import org.joda.time.DateTime;
 
 /**
  * @author Emil
@@ -109,19 +109,113 @@ public class CommonConstants {
     public static final Integer REVIEW_STATUS_GENERATED = 1;
     public static final Integer REVIEW_STATUS_APPROVED = 2;
     public static final Integer REVIEW_STATUS_DISAPPROVED = 3;
-    
- // user status in synch with db table user_status
+
+    // user status in synch with db table user_status
     public static final Integer STATUS_ACTIVE = 1; // this HAS to be the very first status
-    
+
     // subscriber status in synch with db table subscriber_status
-    public static final Integer SUBSCRIBER_ACTIVE = 1; 
+    public static final Integer SUBSCRIBER_ACTIVE = 1;
     public static final Integer SUBSCRIBER_PENDING_UNSUBSCRIPTION = 2;
     public static final Integer SUBSCRIBER_UNSUBSCRIBED = 3;
-    public static final Integer SUBSCRIBER_PENDING_EXPIRATION= 4;
+    public static final Integer SUBSCRIBER_PENDING_EXPIRATION = 4;
     public static final Integer SUBSCRIBER_EXPIRED = 5;
     public static final Integer SUBSCRIBER_NONSUBSCRIBED = 6;
     public static final Integer SUBSCRIBER_DISCONTINUED = 7;
-
+    // IDs of default set of order statuses pre created.
+    public static final Integer DEFAULT_ORDER_INVOICE_STATUS_ID = 1;
+    public static final Integer DEFAULT_ORDER_FINISHED_STATUS_ID = 2;
+    public static final Integer DEFAULT_ORDER_NOT_INVOICE_STATUS_ID = 3;
+    public static final Integer DEFAULT_ORDER_SUSPENDED_AGEING_STATUS_ID = 4;
+    // order change status, in synch with db
+    public static final Integer ORDER_CHANGE_STATUS_PENDING = 1;
+    public static final Integer ORDER_CHANGE_STATUS_APPLY_ERROR = 2;
+    // order change type, in synch with db
+    public static final Integer ORDER_CHANGE_TYPE_DEFAULT = 1;
+    // invoice status, in synch with db
+    public static final Integer INVOICE_STATUS_PAID = 1;
+    public static final Integer INVOICE_STATUS_UNPAID = 2;
+    public static final Integer INVOICE_STATUS_UNPAID_AND_CARRIED = 3;
+    // process run status, in synch with db
+    public static final Integer PROCESS_RUN_STATUS_RINNING = 1;
+    public static final Integer PROCESS_RUN_STATUS_SUCCESS = 2;
+    public static final Integer PROCESS_RUN_STATUS_FAILED = 3;
+    // invoice delivery method types
+    public static final Integer D_METHOD_EMAIL = 1;
+    public static final Integer D_METHOD_PAPER = 2;
+    public static final Integer D_METHOD_EMAIL_AND_PAPER = 3;
+    // automatic payment methods
+    // how a customer wants to pay in the automatic process
+    public static final Integer AUTO_PAYMENT_TYPE_CC = 1;
+    public static final Integer AUTO_PAYMENT_TYPE_ACH = 2;
+    public static final Integer AUTO_PAYMENT_TYPE_CHEQUE = 3;
+    // types of PDF batch generation
+    public static final Integer OPERATION_TYPE_CUSTOMER = 1;
+    public static final Integer OPERATION_TYPE_RANGE = 2;
+    public static final Integer OPERATION_TYPE_PROCESS = 3;
+    public static final Integer OPERATION_TYPE_DATE = 4;
+    public static final Integer OPERATION_TYPE_NUMBER = 5;
+    // Payment Methods Type MetaFields Names
+    public static final String METAFIELD_NAME_CC_CARDHOLDER_NAME = "cc.cardholder.name";
+    public static final String METAFIELD_NAME_CC_NUMBER = "cc.number";
+    public static final String METAFIELD_NAME_CC_EXPIRY_DATE = "cc.expiry.date";
+    public static final String METAFIELD_NAME_CC_GATEWAY_KEY = "cc.gateway.key";
+    public static final String METAFIELD_NAME_CC_TYPE = "cc.type";
+    public static final String METAFIELD_NAME_CHEQUE_BANK_NAME = "cheque.bank.name";
+    public static final String METAFIELD_NAME_CHEQUE_NUMBER = "cheque.number";
+    public static final String METAFIELD_NAME_CHEQUE_DATE = "cheque.date";
+    public static final String METAFIELD_NAME_ACH_ROUTING_NUMBER = "ach.routing.number";
+    public static final String METAFIELD_NAME_ACH_CUSTOMER_NAME = "ach.customer.name";
+    public static final String METAFIELD_NAME_ACH_ACCOUNT_NUMBER = "ach.account.number";
+    public static final String METAFIELD_NAME_ACH_BANK_NAME = "ach.bank.name";
+    public static final String METAFIELD_NAME_ACH_GATEWAY_KEY = "ach.gateway.key";
+    public static final String METAFIELD_NAME_ACH_ACCOUNT_TYPE = "ach.account.type";
+    /**
+     * BigDecimal caculation constants <br/>
+     * This value must be inline with underlying SQL data type
+     */
+    public static final int BIGDECIMAL_SCALE = 10;
+    public static final int BIGDECIMAL_ROUND = BigDecimal.ROUND_HALF_UP;
+    /**
+     * Round to 2 decimals for view. Use it with formatters and/or toString
+     */
+    public static final int BIGDECIMAL_SCALE_STR = 2;
+    public static final BigDecimal BIGDECIMAL_ONE = new BigDecimal("1");
+    public static final BigDecimal BIGDECIMAL_ONE_CENT = new BigDecimal("0.01");
+    public static final String PASSWORD_PATTERN_4_UNIQUE_CLASSES = "^.*(?=.{8,40})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=]).*$";
+    public static final String USERNAME_PATTERN = "^[. A-Za-z0-9_-]*$";
+    // codes for login resuls
+    public final static Integer AUTH_OK = 0;
+    public final static Integer AUTH_WRONG_CREDENTIALS = 1;
+    public final static Integer AUTH_LOCKED = 2;  // invalid login creds - bad attempt locked account
+    public final static Integer AUTH_EXPIRED = 3; // login creds ok - password expired and needs updating
+    // mediation record status
+    public final static Integer MEDIATION_RECORD_STATUS_DONE_AND_BILLABLE = Integer.valueOf(1);
+    public final static Integer MEDIATION_RECORD_STATUS_DONE_AND_NOT_BILLABLE = Integer.valueOf(2);
+    public final static Integer MEDIATION_RECORD_STATUS_ERROR_DETECTED = Integer.valueOf(3);
+    public final static Integer MEDIATION_RECORD_STATUS_ERROR_DECLARED = Integer.valueOf(4);
+    // types of balances
+    public final static Integer BALANCE_NO_DYNAMIC = 1; // the default
+    public final static Integer BALANCE_PRE_PAID = 2;
+    public final static Integer BALANCE_CREDIT_LIMIT = 3;
+    //Route Based Rate Cards
+    public static final String DEFAULT_DATE_FIELD_NAME = "event_date";
+    public static final String DEFAULT_DURATION_FIELD_NAME = "duration";
+    public static final String ROUTE_ID_FIELD_NAME = "routeId";
+    public static final String NEXT_ROUTE_FIELD_NAME = "next_route";
+    public static final String PRODUCT_FIELD_NAME = "product";
+    public static final String MATCHING_FIELD_TABLE_PLACEHOLDER = ":table:";
+    // payment methods defined in system
+    public static final String PAYMENT_CARD = "Payment Card";
+    public static final String ACH = "ACH";
+    public static final String ACH_CHECKING = "CHECKING";
+    public static final String ACH_SAVING = "SAVINGS";
+    public static final String CHEQUE = "Cheque";
+    // subscription product constants
+    public static final String SUBSCRIPTION_ACCOUNT_PASSWORD = "subscription_password";
+    /* #10256 - Asset Reservation - 10 minutes by default */
+    public static final Integer DEFAULT_ASSET_RESERVATION_TIME_IN_MS = 600000;
+    public static final String JPA_UNIT_NAME_1 = "OnlineDataSource";
+    public static final String JPA_UNIT_NAME_2 = "BatchDataSource";
     // these are the preference's types. This has to be in synch with the DB
     //public static Integer PREFERENCE_PAYMENT_WITH_PROCESS = 1); obsolete
     public static Integer PREFERENCE_CSS_LOCATION = 2;
@@ -174,133 +268,13 @@ public class CommonConstants {
     public static Integer PREFERENCE_DIAMETER_QUOTA_THRESHOLD = 65;
     public static Integer PREFERENCE_DIAMETER_SESSION_GRACE_PERIOD_SECONDS = 66;
     public static Integer PREFERENCE_DIAMETER_UNIT_DIVISOR = Integer.valueOf(67);
-
     public static Integer PREFERENCE_ACCOUNT_LOCKOUT_TIME = 68;
     public static Integer PREFERENCE_ITG_INVOICE_NOTIFICATION = 69;
     public static Integer PREFERENCE_EXPIRE_INACTIVE_AFTER_DAYS = 70;
     public static Integer PREFERENCE_FORGOT_PASSWORD_EXPIRATION = 71;
     public static Integer PREFERENCE_CREATE_CREDENTIALS_BY_DEFAULT = 75;
     public static Integer PREFERENCE_ASSET_RESERVATION_DURATION = 76;
-
-    // IDs of default set of order statuses pre created.
-    public static final Integer DEFAULT_ORDER_INVOICE_STATUS_ID = 1;
-    public static final Integer DEFAULT_ORDER_FINISHED_STATUS_ID = 2;
-    public static final Integer DEFAULT_ORDER_NOT_INVOICE_STATUS_ID = 3;
-    public static final Integer DEFAULT_ORDER_SUSPENDED_AGEING_STATUS_ID = 4;
-
-    // order change status, in synch with db
-    public static final Integer ORDER_CHANGE_STATUS_PENDING = 1;
-    public static final Integer ORDER_CHANGE_STATUS_APPLY_ERROR = 2;
-
-    // order change type, in synch with db
-    public static final Integer ORDER_CHANGE_TYPE_DEFAULT = 1;
-
-    // invoice status, in synch with db
-    public static final Integer INVOICE_STATUS_PAID = 1;
-    public static final Integer INVOICE_STATUS_UNPAID = 2;
-    public static final Integer INVOICE_STATUS_UNPAID_AND_CARRIED = 3;
-
-    // process run status, in synch with db
-    public static final Integer PROCESS_RUN_STATUS_RINNING = 1;
-    public static final Integer PROCESS_RUN_STATUS_SUCCESS = 2;
-    public static final Integer PROCESS_RUN_STATUS_FAILED = 3;
-
-    // invoice delivery method types
-    public static final Integer D_METHOD_EMAIL = 1;
-    public static final Integer D_METHOD_PAPER = 2;
-    public static final Integer D_METHOD_EMAIL_AND_PAPER = 3;
-
-    // automatic payment methods
-    // how a customer wants to pay in the automatic process
-    public static final Integer AUTO_PAYMENT_TYPE_CC = 1;
-    public static final Integer AUTO_PAYMENT_TYPE_ACH = 2;
-    public static final Integer AUTO_PAYMENT_TYPE_CHEQUE = 3;
-
-    // types of PDF batch generation
-    public static final Integer OPERATION_TYPE_CUSTOMER = 1;
-    public static final Integer OPERATION_TYPE_RANGE = 2;
-    public static final Integer OPERATION_TYPE_PROCESS = 3;
-    public static final Integer OPERATION_TYPE_DATE = 4;
-    public static final Integer OPERATION_TYPE_NUMBER = 5;
-
-    // Payment Methods Type MetaFields Names
-    public static final String METAFIELD_NAME_CC_CARDHOLDER_NAME = "cc.cardholder.name";
-    public static final String METAFIELD_NAME_CC_NUMBER = "cc.number";
-    public static final String METAFIELD_NAME_CC_EXPIRY_DATE = "cc.expiry.date";
-    public static final String METAFIELD_NAME_CC_GATEWAY_KEY = "cc.gateway.key";
-    public static final String METAFIELD_NAME_CC_TYPE = "cc.type";
-
-    public static final String METAFIELD_NAME_CHEQUE_BANK_NAME = "cheque.bank.name";
-    public static final String METAFIELD_NAME_CHEQUE_NUMBER = "cheque.number";
-    public static final String METAFIELD_NAME_CHEQUE_DATE = "cheque.date";
-
-    public static final String METAFIELD_NAME_ACH_ROUTING_NUMBER = "ach.routing.number";
-    public static final String METAFIELD_NAME_ACH_CUSTOMER_NAME = "ach.customer.name";
-    public static final String METAFIELD_NAME_ACH_ACCOUNT_NUMBER = "ach.account.number";
-    public static final String METAFIELD_NAME_ACH_BANK_NAME = "ach.bank.name";
-    public static final String METAFIELD_NAME_ACH_GATEWAY_KEY = "ach.gateway.key";
-    public static final String METAFIELD_NAME_ACH_ACCOUNT_TYPE = "ach.account.type";
-
-    /**
-     * BigDecimal caculation constants <br/>
-     * This value must be inline with underlying SQL data type
-     */
-    public static final int BIGDECIMAL_SCALE = 10;
-    public static final int BIGDECIMAL_ROUND = BigDecimal.ROUND_HALF_UP;
-
-    /**
-     * Round to 2 decimals for view. Use it with formatters and/or toString
-     */
-    public static final int BIGDECIMAL_SCALE_STR = 2;
-
-    public static final BigDecimal BIGDECIMAL_ONE = new BigDecimal("1");
-    public static final BigDecimal BIGDECIMAL_ONE_CENT = new BigDecimal("0.01");
-
-    public static final String PASSWORD_PATTERN_4_UNIQUE_CLASSES = "^.*(?=.{8,40})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=]).*$";
-    public static final String USERNAME_PATTERN = "^[. A-Za-z0-9_-]*$";
-
-    // codes for login resuls
-    public final static Integer AUTH_OK = 0;
-    public final static Integer AUTH_WRONG_CREDENTIALS = 1;
-    public final static Integer AUTH_LOCKED = 2;  // invalid login creds - bad attempt locked account
-    public final static Integer AUTH_EXPIRED = 3; // login creds ok - password expired and needs updating
-
-    // mediation record status
-    public final static Integer MEDIATION_RECORD_STATUS_DONE_AND_BILLABLE = Integer.valueOf(1);
-    public final static Integer MEDIATION_RECORD_STATUS_DONE_AND_NOT_BILLABLE = Integer.valueOf(2);
-    public final static Integer MEDIATION_RECORD_STATUS_ERROR_DETECTED = Integer.valueOf(3);
-    public final static Integer MEDIATION_RECORD_STATUS_ERROR_DECLARED = Integer.valueOf(4);
-
-    // types of balances
-    public final static Integer BALANCE_NO_DYNAMIC = 1; // the default
-    public final static Integer BALANCE_PRE_PAID = 2;
-    public final static Integer BALANCE_CREDIT_LIMIT = 3;
-
-    //Route Based Rate Cards
-    public static final String DEFAULT_DATE_FIELD_NAME = "event_date";
-    public static final String DEFAULT_DURATION_FIELD_NAME = "duration";
-    public static final String ROUTE_ID_FIELD_NAME = "routeId";
-    public static final String NEXT_ROUTE_FIELD_NAME = "next_route";
-    public static final String PRODUCT_FIELD_NAME = "product";
-    public static final String MATCHING_FIELD_TABLE_PLACEHOLDER = ":table:";
-
-    // payment methods defined in system
-    public static final String PAYMENT_CARD = "Payment Card";
-    public static final String ACH = "ACH";
-    public static final String ACH_CHECKING = "CHECKING";
-    public static final String ACH_SAVING = "SAVINGS";
-    public static final String CHEQUE = "Cheque";
-
-    // subscription product constants
-    public static final String SUBSCRIPTION_ACCOUNT_PASSWORD = "subscription_password";
-
-    /* #10256 - Asset Reservation - 10 minutes by default */
-    public static final Integer DEFAULT_ASSET_RESERVATION_TIME_IN_MS = 600000;
-
     //11369 - Inactive User Account Management
     public static Integer MAX_VALUE_FOR_PREFERENCE_EXPIRE_INACTIVE_ACCOUNTS_IN_DAYS = 90;
-    
-    public static final String JPA_UNIT_NAME_1 = "OnlineDataSource";
-    public static final String JPA_UNIT_NAME_2 = "BatchDataSource";
 
 }

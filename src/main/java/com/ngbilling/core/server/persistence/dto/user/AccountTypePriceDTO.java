@@ -1,23 +1,16 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 /**
- *  Account Type Pricing mapping.
- *  Provides a list of prices per account type.
+ * Account Type Pricing mapping.
+ * Provides a list of prices per account type.
  *
- *  @author Panche Isajeski
- *  @since 05/14/2013
+ * @author Panche Isajeski
+ * @since 05/14/2013
  */
 @Entity
 @Table(name = "account_type_price")
@@ -25,10 +18,10 @@ import javax.persistence.Transient;
 public class AccountTypePriceDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private AccountTypePricePK id = new AccountTypePricePK();
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private AccountTypePricePK id = new AccountTypePricePK();
     private Date createDatetime = new Date();
     private Date priceExpiryDate = null;
 

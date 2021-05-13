@@ -23,73 +23,63 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.user;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.boot.model.relational.Exportable;
 
 @Entity
 // No cache, mutable and critical
 @Table(name = "reset_password_code")
 public class ResetPasswordCodeDTO implements Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private UserDTO user;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private UserDTO user;
     private Date dateCreated;
     private String token;
     private String newPassword;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "base_user_id", unique = true)
-    public UserDTO getUser () {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser (UserDTO user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
     @Column(name = "date_created")
-    public Date getDateCreated () {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated (Date dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
     @Id
     @Column(name = "token", length = 32)
-    public String getToken () {
+    public String getToken() {
         return token;
     }
 
-    public void setToken (String token) {
+    public void setToken(String token) {
         this.token = token;
     }
 
     @Column(name = "new_password", length = 40)
-    public String getNewPassword () {
+    public String getNewPassword() {
         return newPassword;
     }
 
-    public void setNewPassword (String newPassword) {
+    public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
 
     @Transient
-    public String[] getFieldNames () {
+    public String[] getFieldNames() {
         return new String[]{
                 "user",
                 "dateCreated",
@@ -99,7 +89,7 @@ public class ResetPasswordCodeDTO implements Serializable {
     }
 
     @Transient
-    public Object[][] getFieldValues () {
+    public Object[][] getFieldValues() {
         return new Object[][]{
                 {
                         (user != null ? user.getUserName() : null),

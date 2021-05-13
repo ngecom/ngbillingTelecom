@@ -23,47 +23,33 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.invoice;
 
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.user.CustomerDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.persistence.dto.user.CustomerDTO;
-
 @Entity
 @TableGenerator(
-        name = "invoice_delivery_method_GEN", 
-        table = "jbilling_seqs", 
-        pkColumnName = "name", 
-        valueColumnName = "next_id", 
-        pkColumnValue = "invoice_delivery_method", 
+        name = "invoice_delivery_method_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "invoice_delivery_method",
         allocationSize = 100)
 @Table(name = "invoice_delivery_method")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class InvoiceDeliveryMethodDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private Set<CompanyDTO> entities = new HashSet<CompanyDTO>(0);
     private Set<CustomerDTO> customers = new HashSet<CustomerDTO>(0);
 
@@ -75,7 +61,7 @@ public class InvoiceDeliveryMethodDTO implements Serializable {
     }
 
     public InvoiceDeliveryMethodDTO(int id, Set<CompanyDTO> entities,
-            Set<CustomerDTO> customers) {
+                                    Set<CustomerDTO> customers) {
         this.id = id;
         this.entities = entities;
         this.customers = customers;
@@ -93,7 +79,7 @@ public class InvoiceDeliveryMethodDTO implements Serializable {
     }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "entity_delivery_method_map", joinColumns = { @JoinColumn(name = "method_id", updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "entity_id", updatable = false) })
+    @JoinTable(name = "entity_delivery_method_map", joinColumns = {@JoinColumn(name = "method_id", updatable = false)}, inverseJoinColumns = {@JoinColumn(name = "entity_id", updatable = false)})
     public Set<CompanyDTO> getEntities() {
         return this.entities;
     }

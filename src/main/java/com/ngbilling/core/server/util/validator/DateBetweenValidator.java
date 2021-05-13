@@ -25,15 +25,13 @@
 package com.ngbilling.core.server.util.validator;
 
 
-import java.util.Date;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
+import com.ngbilling.core.common.util.FormatLogger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.ngbilling.core.common.util.FormatLogger;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.util.Date;
 
 /**
  * DateBetweenValidator
@@ -49,7 +47,7 @@ public class DateBetweenValidator implements ConstraintValidator<DateBetween, Da
     private String endDate;
 
     public void initialize(final DateBetween dateRange) {
-        if(dateRange!=null){
+        if (dateRange != null) {
             startDate = dateRange.start();
             endDate = dateRange.end();
         }
@@ -57,7 +55,7 @@ public class DateBetweenValidator implements ConstraintValidator<DateBetween, Da
 
     public boolean isValid(Date date, ConstraintValidatorContext constraintValidatorContext) {
         try {
-            if (date == null || "".equals(date.toString()) ) {
+            if (date == null || "".equals(date.toString())) {
                 return true;
             }
             DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy");

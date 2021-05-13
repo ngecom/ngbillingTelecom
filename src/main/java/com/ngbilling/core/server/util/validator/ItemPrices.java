@@ -24,13 +24,8 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.server.util.validator;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import javax.validation.Payload;
+import java.lang.annotation.*;
 
 /**
  * Validates that a list of ItemPriceDTOEx contains at least one price with a dollar value.
@@ -38,7 +33,7 @@ import javax.validation.Payload;
  * @author Brian Cowdery
  * @since 23/12/10
  */
-@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ItemPrices {

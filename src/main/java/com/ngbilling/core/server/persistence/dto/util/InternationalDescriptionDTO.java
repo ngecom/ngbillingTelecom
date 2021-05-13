@@ -24,60 +24,55 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
+
 @Entity
-@Table(name="international_description")
+@Table(name = "international_description")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class InternationalDescriptionDTO  implements java.io.Serializable {
+public class InternationalDescriptionDTO implements java.io.Serializable {
 
 
-     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private InternationalDescriptionId id;
-     private String content;
-     // OPTLOCK: it makes no sense in this entity. The optimistic locking id done at the
-     // parent level (the entity that delegates the column to this one).
-     // OR, the content is simple readonly
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private InternationalDescriptionId id;
+    private String content;
+    // OPTLOCK: it makes no sense in this entity. The optimistic locking id done at the
+    // parent level (the entity that delegates the column to this one).
+    // OR, the content is simple readonly
 
     public InternationalDescriptionDTO() {
     }
 
     public InternationalDescriptionDTO(InternationalDescriptionId id, String content) {
-       this.id = id;
-       this.content = content;
+        this.id = id;
+        this.content = content;
     }
-   
-     @EmbeddedId
-    
-    @AttributeOverrides( {
-        @AttributeOverride(name="tableId", column=@Column(name="table_id", nullable=false) ), 
-        @AttributeOverride(name="foreignId", column=@Column(name="foreign_id", nullable=false) ), 
-        @AttributeOverride(name="psudoColumn", column=@Column(name="psudo_column", nullable=false, length=20) ), 
-        @AttributeOverride(name="languageId", column=@Column(name="language_id", nullable=false) ) } )
+
+    @EmbeddedId
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "tableId", column = @Column(name = "table_id", nullable = false)),
+            @AttributeOverride(name = "foreignId", column = @Column(name = "foreign_id", nullable = false)),
+            @AttributeOverride(name = "psudoColumn", column = @Column(name = "psudo_column", nullable = false, length = 20)),
+            @AttributeOverride(name = "languageId", column = @Column(name = "language_id", nullable = false))})
     public InternationalDescriptionId getId() {
         return this.id;
     }
-    
+
     public void setId(InternationalDescriptionId id) {
         this.id = id;
     }
-    
-    @Column(name="content", nullable=false, length=5000)
+
+    @Column(name = "content", nullable = false, length = 5000)
     public String getContent() {
         return this.content;
     }
-    
+
     public void setContent(String content) {
         this.content = content;
     }

@@ -24,40 +24,17 @@
 
 package com.ngbilling.core.server.persistence.dto.report;
 
-import com.ngbilling.core.common.util.Util;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.util.ServerConstants;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-import java.io.File;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Report
@@ -68,16 +45,16 @@ import java.util.Set;
 @Entity
 @Table(name = "report")
 @TableGenerator(
-    name = "report_GEN",
-    table = "jbilling_seqs",
-    pkColumnName = "name",
-    valueColumnName = "next_id",
-    pkColumnValue = "report",
-    allocationSize = 10
+        name = "report_GEN",
+        table = "jbilling_seqs",
+        pkColumnName = "name",
+        valueColumnName = "next_id",
+        pkColumnValue = "report",
+        allocationSize = 10
 )
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ReportDTO extends AbstractDescription implements Serializable {
-   // public static final String BASE_PATH = Util.getSysProp("base_dir") + File.separator + "reports" + File.separator;
+    // public static final String BASE_PATH = Util.getSysProp("base_dir") + File.separator + "reports" + File.separator;
 
     private int id;
     private Set<CompanyDTO> entities = new HashSet<CompanyDTO>();
@@ -87,7 +64,7 @@ public class ReportDTO extends AbstractDescription implements Serializable {
     private List<ReportParameterDTO<?>> parameters = new ArrayList<ReportParameterDTO<?>>();
     private Integer versionNum;
     private List<Integer> childEntities = new ArrayList<Integer>(0);
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "report_GEN")
     @Column(name = "id", unique = true, nullable = false)
@@ -101,12 +78,12 @@ public class ReportDTO extends AbstractDescription implements Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "entity_report_map",
-           joinColumns = {
-                   @JoinColumn(name = "report_id", updatable = false)
-           },
-           inverseJoinColumns = {
-                   @JoinColumn(name = "entity_id", updatable = false)
-           }
+            joinColumns = {
+                    @JoinColumn(name = "report_id", updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "entity_id", updatable = false)
+            }
     )
     public Set<CompanyDTO> getEntities() {
         return entities;
@@ -193,7 +170,7 @@ public class ReportDTO extends AbstractDescription implements Serializable {
     @Transient
     public String getReportBaseDir() {
         //return BASE_PATH + getType().getName() + File.separator;
-    	return null;
+        return null;
     }
 
     /**
@@ -217,15 +194,15 @@ public class ReportDTO extends AbstractDescription implements Serializable {
     }
 
     @Transient
-	public List<Integer> getChildEntities() {
-		return childEntities;
-	}
+    public List<Integer> getChildEntities() {
+        return childEntities;
+    }
 
-	public void setChildEntities(List<Integer> childEntities) {
-		this.childEntities = childEntities;
-	}
+    public void setChildEntities(List<Integer> childEntities) {
+        this.childEntities = childEntities;
+    }
 
-	@Transient
+    @Transient
     protected String getTable() {
         return ServerConstants.TABLE_REPORT;
     }
@@ -233,10 +210,10 @@ public class ReportDTO extends AbstractDescription implements Serializable {
     @Override
     public String toString() {
         return "Report{"
-               + "id=" + id
-               + ", type=" + (type != null ? type.getName() : null)
-               + ", fileName='" + fileName + '\''
-               + '}';
+                + "id=" + id
+                + ", type=" + (type != null ? type.getName() : null)
+                + ", fileName='" + fileName + '\''
+                + '}';
     }
 
 }

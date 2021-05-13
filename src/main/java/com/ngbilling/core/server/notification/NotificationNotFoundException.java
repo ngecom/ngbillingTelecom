@@ -1,8 +1,8 @@
 package com.ngbilling.core.server.notification;
 
-public class NotificationNotFoundException extends Exception{
+public class NotificationNotFoundException extends Exception {
 
-	public NotificationNotFoundException() {
+    public NotificationNotFoundException() {
         super();
     }
 

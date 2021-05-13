@@ -30,10 +30,10 @@ import java.math.BigDecimal;
 public class ItemPriceDTOEx implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	// ItemPriceDTO
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    // ItemPriceDTO
     private Integer id;
     private String price;
     private Integer currencyId;
@@ -70,16 +70,16 @@ public class ItemPriceDTOEx implements Serializable {
         return this.price;
     }
 
-    public BigDecimal getPriceAsDecimal() {
-        return price != null ? new BigDecimal(price) : null;
-    }
-
     public void setPrice(String price) {
         this.price = price;
     }
 
     public void setPrice(BigDecimal price) {
         this.price = (price != null ? price.toString() : null);
+    }
+
+    public BigDecimal getPriceAsDecimal() {
+        return price != null ? new BigDecimal(price) : null;
     }
 
     public Integer getCurrencyId() {

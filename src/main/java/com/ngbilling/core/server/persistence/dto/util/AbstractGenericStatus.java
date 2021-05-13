@@ -24,17 +24,7 @@
 
 package com.ngbilling.core.server.persistence.dto.util;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
 
 /**
  * Abstract class for status classes. The get/setId() methods maps to
@@ -53,39 +43,40 @@ import javax.persistence.TableGenerator;
 )
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
-    name="dtype",
-    discriminatorType = DiscriminatorType.STRING
+        name = "dtype",
+        discriminatorType = DiscriminatorType.STRING
 )
 public abstract class AbstractGenericStatus extends AbstractDescription {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	protected int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    protected int id;
     protected Integer statusValue;
     protected Integer order;
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "generic_status_GEN")
-    @Column(name="id", unique=true, nullable=false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "generic_status_GEN")
+    @Column(name = "id", unique = true, nullable = false)
     public Integer getPrimaryKey() {
         return id;
     }
-    
+
     public void setPrimaryKey(Integer id) {
         this.id = id;
     }
 
-    @Column(name="status_value", unique=true, nullable=false)
+    @Column(name = "status_value", unique = true, nullable = false)
     public int getId() {
         return statusValue;
     }
-    
+
     public void setId(int statusValue) {
         this.statusValue = statusValue;
     }
 
-    @Column(name="ordr")
+    @Column(name = "ordr")
     public Integer getOrder() {
         return order;
     }

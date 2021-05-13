@@ -23,28 +23,22 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
 import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
+
+import javax.persistence.*;
 
 /**
  * Class represents a dependency of an ItemDTO on another ItemDTO.
- *
  */
 @Entity
 @DiscriminatorValue("item")
 public class ItemDependencyOnItemDTO extends ItemDependencyDTO {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ItemDTO dependent;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private ItemDTO dependent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dependent_item_id")

@@ -24,10 +24,9 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.server.util.validator;
 
-import java.io.Serializable;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.io.Serializable;
 
 /**
  * ItemTypesValidator

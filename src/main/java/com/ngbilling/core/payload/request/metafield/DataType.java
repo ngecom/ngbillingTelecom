@@ -25,13 +25,11 @@ You may download the latest source from webdataconsulting.github.io.
 package com.ngbilling.core.payload.request.metafield;
 
 
-
 /**
  * Allowed data types for meta-field values.
  *
- * @see com.sapienter.jbilling.server.metafields.db.MetaField#createValue()
- *
  * @author Brian Cowdery
+ * @see com.sapienter.jbilling.server.metafields.db.MetaField#createValue()
  * @since 03-Oct-2011
  */
 public enum DataType {

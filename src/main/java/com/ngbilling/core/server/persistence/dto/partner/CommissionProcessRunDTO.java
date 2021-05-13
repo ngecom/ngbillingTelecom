@@ -23,34 +23,22 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.partner;
 
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-
 @Entity
 @TableGenerator(
-        name="partner_commission_process_run_GEN",
-        table="jbilling_seqs",
+        name = "partner_commission_process_run_GEN",
+        table = "jbilling_seqs",
         pkColumnName = "name",
         valueColumnName = "next_id",
-        pkColumnValue="partner_commission_process_run",
-        allocationSize=10
+        pkColumnValue = "partner_commission_process_run",
+        allocationSize = 10
 )
-@Table(name="partner_commission_process_run")
+@Table(name = "partner_commission_process_run")
 public class CommissionProcessRunDTO {
     private int id;
     private Date runDate;
@@ -60,59 +48,59 @@ public class CommissionProcessRunDTO {
     private CompanyDTO entity;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE, generator="partner_commission_process_run_GEN")
-    @Column(name="id", unique=true, nullable=false)
-    public int getId () {
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "partner_commission_process_run_GEN")
+    @Column(name = "id", unique = true, nullable = false)
+    public int getId() {
         return id;
     }
 
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @Column(name="run_date", length=13)
-    public Date getRunDate () {
+    @Column(name = "run_date", length = 13)
+    public Date getRunDate() {
         return runDate;
     }
 
-    public void setRunDate (Date runDate) {
+    public void setRunDate(Date runDate) {
         this.runDate = runDate;
     }
 
-    @Column(name="period_start", length=13)
-    public Date getPeriodStart () {
+    @Column(name = "period_start", length = 13)
+    public Date getPeriodStart() {
         return periodStart;
     }
 
-    public void setPeriodStart (Date periodStart) {
+    public void setPeriodStart(Date periodStart) {
         this.periodStart = periodStart;
     }
 
-    @Column(name="period_end", length=13)
-    public Date getPeriodEnd () {
+    @Column(name = "period_end", length = 13)
+    public Date getPeriodEnd() {
         return periodEnd;
     }
 
-    public void setPeriodEnd (Date periodEnd) {
+    public void setPeriodEnd(Date periodEnd) {
         this.periodEnd = periodEnd;
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commissionProcessRun")
-    public List<CommissionDTO> getCommissions () {
+    public List<CommissionDTO> getCommissions() {
         return commissions;
     }
 
-    public void setCommissions (List<CommissionDTO> commissions) {
+    public void setCommissions(List<CommissionDTO> commissions) {
         this.commissions = commissions;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entity_id")
-    public CompanyDTO getEntity () {
+    public CompanyDTO getEntity() {
         return entity;
     }
 
-    public void setEntity (CompanyDTO entity) {
+    public void setEntity(CompanyDTO entity) {
         this.entity = entity;
     }
 }

@@ -24,13 +24,12 @@
 
 package com.ngbilling.core.payload.request.process;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.ngbilling.core.server.util.validator.DateBetween;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import com.ngbilling.core.server.util.validator.DateBetween;
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -42,10 +41,10 @@ import com.ngbilling.core.server.util.validator.DateBetween;
 public class BillingProcessConfigurationWS implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private Integer periodUnitId;
     private Integer entityId;
     @DateBetween(start = "01/01/1901", end = "12/31/9999")
@@ -66,30 +65,30 @@ public class BillingProcessConfigurationWS implements Serializable {
     private int autoPaymentApplication;
     private boolean lastDayOfMonth = false;
     private String proratingType;
-    
+
     public BillingProcessConfigurationWS() {
     }
 
-	public BillingProcessConfigurationWS(BillingProcessConfigurationWS ws) {
-		this.id = ws.getId();
-		this.periodUnitId = ws.getPeriodUnitId();
-		this.entityId = ws.getEntityId();
-		this.nextRunDate = ws.getNextRunDate();
-		this.generateReport = ws.getGenerateReport();
-		this.retries = ws.getRetries();
-		this.daysForRetry = ws.getDaysForRetry();
-		this.daysForReport = ws.getDaysForReport();
-		this.reviewStatus = ws.getReviewStatus();
-		this.dueDateUnitId = ws.getDueDateUnitId();
-		this.dueDateValue = ws.getDueDateValue();
-		this.dfFm = ws.getDfFm();
-		this.onlyRecurring = ws.getOnlyRecurring();
-		this.invoiceDateProcess = ws.getInvoiceDateProcess();
-		this.maximumPeriods = ws.getMaximumPeriods();
-		this.autoPaymentApplication = ws.getAutoPaymentApplication();
-		this.lastDayOfMonth = ws.isLastDayOfMonth();
-		this.proratingType = ws.getProratingType();
-	}
+    public BillingProcessConfigurationWS(BillingProcessConfigurationWS ws) {
+        this.id = ws.getId();
+        this.periodUnitId = ws.getPeriodUnitId();
+        this.entityId = ws.getEntityId();
+        this.nextRunDate = ws.getNextRunDate();
+        this.generateReport = ws.getGenerateReport();
+        this.retries = ws.getRetries();
+        this.daysForRetry = ws.getDaysForRetry();
+        this.daysForReport = ws.getDaysForReport();
+        this.reviewStatus = ws.getReviewStatus();
+        this.dueDateUnitId = ws.getDueDateUnitId();
+        this.dueDateValue = ws.getDueDateValue();
+        this.dfFm = ws.getDfFm();
+        this.onlyRecurring = ws.getOnlyRecurring();
+        this.invoiceDateProcess = ws.getInvoiceDateProcess();
+        this.maximumPeriods = ws.getMaximumPeriods();
+        this.autoPaymentApplication = ws.getAutoPaymentApplication();
+        this.lastDayOfMonth = ws.isLastDayOfMonth();
+        this.proratingType = ws.getProratingType();
+    }
 
     public int getId() {
         return id;
@@ -98,7 +97,7 @@ public class BillingProcessConfigurationWS implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public Integer getPeriodUnitId() {
         return periodUnitId;
     }
@@ -106,7 +105,7 @@ public class BillingProcessConfigurationWS implements Serializable {
     public void setPeriodUnitId(Integer periodUnitId) {
         this.periodUnitId = periodUnitId;
     }
-    
+
     public Integer getEntityId() {
         return entityId;
     }
@@ -202,7 +201,7 @@ public class BillingProcessConfigurationWS implements Serializable {
     public void setInvoiceDateProcess(Integer invoiceDateProcess) {
         this.invoiceDateProcess = invoiceDateProcess;
     }
-    
+
     public int getMaximumPeriods() {
         return maximumPeriods;
     }
@@ -220,42 +219,42 @@ public class BillingProcessConfigurationWS implements Serializable {
     }
 
     public boolean isLastDayOfMonth() {
-		return lastDayOfMonth;
-	}
+        return lastDayOfMonth;
+    }
 
-	public void setLastDayOfMonth(boolean lastDayOfMonth) {
-		this.lastDayOfMonth = lastDayOfMonth;
-	}
+    public void setLastDayOfMonth(boolean lastDayOfMonth) {
+        this.lastDayOfMonth = lastDayOfMonth;
+    }
 
-	public String getProratingType() {
-		return proratingType;
-	}
+    public String getProratingType() {
+        return proratingType;
+    }
 
-	public void setProratingType(String proratingType) {
-		this.proratingType = proratingType;
-	}
+    public void setProratingType(String proratingType) {
+        this.proratingType = proratingType;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "BillingProcessConfigurationWS{"
-               + "id=" + id
-               + ", entityId=" + entityId
-               + ", nextRunDate=" + nextRunDate
-               + ", generateReport=" + generateReport
-               + ", retries=" + retries
-               + ", daysForRetry=" + daysForRetry
-               + ", daysForReport=" + daysForReport
-               + ", reviewStatus=" + reviewStatus
-               + ", dueDateUnitId=" + dueDateUnitId
-               + ", dueDateValue=" + dueDateValue
-               + ", dfFm=" + dfFm
-               + ", onlyRecurring=" + onlyRecurring
-               + ", invoiceDateProcess=" + invoiceDateProcess
-               + ", maximumPeriods=" + maximumPeriods
-               + ", autoPaymentApplication=" + autoPaymentApplication
-               + ", periodUnitId=" + periodUnitId
-               + ", lastDayOfMonth=" + lastDayOfMonth
-               + ", proratingType=" + proratingType
-               + '}';
+                + "id=" + id
+                + ", entityId=" + entityId
+                + ", nextRunDate=" + nextRunDate
+                + ", generateReport=" + generateReport
+                + ", retries=" + retries
+                + ", daysForRetry=" + daysForRetry
+                + ", daysForReport=" + daysForReport
+                + ", reviewStatus=" + reviewStatus
+                + ", dueDateUnitId=" + dueDateUnitId
+                + ", dueDateValue=" + dueDateValue
+                + ", dfFm=" + dfFm
+                + ", onlyRecurring=" + onlyRecurring
+                + ", invoiceDateProcess=" + invoiceDateProcess
+                + ", maximumPeriods=" + maximumPeriods
+                + ", autoPaymentApplication=" + autoPaymentApplication
+                + ", periodUnitId=" + periodUnitId
+                + ", lastDayOfMonth=" + lastDayOfMonth
+                + ", proratingType=" + proratingType
+                + '}';
     }
 }

@@ -23,38 +23,21 @@
  */
 package com.ngbilling.core.server.persistence.dto.notification;
 
+import com.ngbilling.core.payload.request.util.NotificationMediumType;
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.OrderBy;
-
-import com.ngbilling.core.payload.request.util.NotificationMediumType;
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 
 @Entity
 @TableGenerator(
@@ -69,10 +52,10 @@ import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 public class NotificationMessageDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private NotificationMessageTypeDTO notificationMessageType;
     private CompanyDTO entity;
     private LanguageDTO language;
@@ -90,33 +73,6 @@ public class NotificationMessageDTO implements Serializable {
     private Integer notifyParent;
     private Integer notifyAllParents;
     private List<NotificationMediumType> mediumTypes;
-
-    @Column(name = "include_attachment", nullable = true)
-    public Integer getIncludeAttachment() {
-        return includeAttachment;
-    }
-
-    public void setIncludeAttachment(Integer includeAttachment) {
-        this.includeAttachment = includeAttachment;
-    }
-
-    @Column(name = "attachment_type", nullable = true)
-    public String getAttachmentType() {
-        return attachmentType;
-    }
-
-    public void setAttachmentType(String attachmentType) {
-        this.attachmentType = attachmentType;
-    }
-
-    @Column(name = "attachment_design", nullable = true)
-    public String getAttachmentDesign() {
-        return attachmentDesign;
-    }
-
-    public void setAttachmentDesign(String attachmentDesign) {
-        this.attachmentDesign = attachmentDesign;
-    }
 
     public NotificationMessageDTO() {
         this.notifyAdmin = 0;
@@ -151,6 +107,33 @@ public class NotificationMessageDTO implements Serializable {
         this.notifyPartner = 0;
         this.notifyPartner = 0;
         this.notifyAllParents = 0;
+    }
+
+    @Column(name = "include_attachment", nullable = true)
+    public Integer getIncludeAttachment() {
+        return includeAttachment;
+    }
+
+    public void setIncludeAttachment(Integer includeAttachment) {
+        this.includeAttachment = includeAttachment;
+    }
+
+    @Column(name = "attachment_type", nullable = true)
+    public String getAttachmentType() {
+        return attachmentType;
+    }
+
+    public void setAttachmentType(String attachmentType) {
+        this.attachmentType = attachmentType;
+    }
+
+    @Column(name = "attachment_design", nullable = true)
+    public String getAttachmentDesign() {
+        return attachmentDesign;
+    }
+
+    public void setAttachmentDesign(String attachmentDesign) {
+        this.attachmentDesign = attachmentDesign;
     }
 
     @Id
@@ -236,13 +219,13 @@ public class NotificationMessageDTO implements Serializable {
         this.notifyAdmin = notifyAdmin;
     }
 
-    public void setNotifyPartner(Integer notifyPartner) {
-        this.notifyPartner = notifyPartner;
-    }
-
     @Column(name = "notify_partner", nullable = false)
     public Integer getNotifyPartner() {
         return this.notifyPartner;
+    }
+
+    public void setNotifyPartner(Integer notifyPartner) {
+        this.notifyPartner = notifyPartner;
     }
 
     @Column(name = "notify_parent", nullable = false)
@@ -263,10 +246,10 @@ public class NotificationMessageDTO implements Serializable {
         this.notifyAllParents = notifyAllParents;
     }
 
-    @ElementCollection(targetClass=NotificationMediumType.class)
-    @CollectionTable( name="notification_medium_type", joinColumns=@JoinColumn(name="notification_id"))
+    @ElementCollection(targetClass = NotificationMediumType.class)
+    @CollectionTable(name = "notification_medium_type", joinColumns = @JoinColumn(name = "notification_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name="medium_type")
+    @Column(name = "medium_type")
     public List<NotificationMediumType> getMediumTypes() {
         return mediumTypes;
     }

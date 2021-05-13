@@ -1,12 +1,11 @@
 package com.ngbilling.core.server.persistence.dao;
 
-import java.io.Serializable;
-import java.util.List;
+import com.ngbilling.core.common.util.CommonConstants;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import com.ngbilling.core.common.util.CommonConstants;
+import java.io.Serializable;
+import java.util.List;
 
 public abstract class AbstractJpaDAO<T extends Serializable> {
 
@@ -20,7 +19,7 @@ public abstract class AbstractJpaDAO<T extends Serializable> {
     }
 
     public T findOne(final long id) {
-        return entityManager.find(clazz, id);  
+        return entityManager.find(clazz, id);
     }
 
     @SuppressWarnings("unchecked")
@@ -45,13 +44,13 @@ public abstract class AbstractJpaDAO<T extends Serializable> {
         delete(entity);
     }
 
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
 
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
-    
+
 }

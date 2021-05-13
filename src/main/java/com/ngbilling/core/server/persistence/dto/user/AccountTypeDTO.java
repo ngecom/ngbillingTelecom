@@ -1,34 +1,17 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDeliveryMethodDTO;
 import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodTypeDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractDescription;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 import com.ngbilling.core.server.util.ServerConstants;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @TableGenerator(
@@ -44,10 +27,10 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class AccountTypeDTO extends AbstractDescription implements java.io.Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private CompanyDTO company;
     private BigDecimal creditLimit;
     private String invoiceDesign;
@@ -62,11 +45,11 @@ public class AccountTypeDTO extends AbstractDescription implements java.io.Seria
     private Set<AccountInformationTypeDTO> informationTypes = new HashSet<AccountInformationTypeDTO>();
     private Set<CustomerDTO> customers = new HashSet<CustomerDTO>(0);
     private Set<PaymentMethodTypeDTO> paymentMethodTypes = new HashSet<PaymentMethodTypeDTO>(0);
-    
-    private Integer preferredNotificationAitId;
-    
 
-	public AccountTypeDTO() {
+    private Integer preferredNotificationAitId;
+
+
+    public AccountTypeDTO() {
     }
 
     public AccountTypeDTO(int id) {
@@ -206,15 +189,15 @@ public class AccountTypeDTO extends AbstractDescription implements java.io.Seria
     public void setCreditLimit(BigDecimal creditLimit) {
         this.creditLimit = creditLimit;
     }
-    
-    @OneToMany(mappedBy = "accountType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public Set<AccountInformationTypeDTO> getInformationTypes() {
-		return informationTypes;
-	}
 
-	public void setInformationTypes(Set<AccountInformationTypeDTO> informationTypes) {
-		this.informationTypes = informationTypes;
-	}
+    @OneToMany(mappedBy = "accountType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Set<AccountInformationTypeDTO> getInformationTypes() {
+        return informationTypes;
+    }
+
+    public void setInformationTypes(Set<AccountInformationTypeDTO> informationTypes) {
+        this.informationTypes = informationTypes;
+    }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountType")
     public Set<CustomerDTO> getCustomers() {
@@ -224,19 +207,19 @@ public class AccountTypeDTO extends AbstractDescription implements java.io.Seria
     public void setCustomers(Set<CustomerDTO> customers) {
         this.customers = customers;
     }
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name="payment_method_account_type_map",
-            joinColumns = @JoinColumn( name="account_type_id"),
-            inverseJoinColumns = @JoinColumn( name="payment_method_id")
+            name = "payment_method_account_type_map",
+            joinColumns = @JoinColumn(name = "account_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_method_id")
     )
     public Set<PaymentMethodTypeDTO> getPaymentMethodTypes() {
-    	return paymentMethodTypes;
+        return paymentMethodTypes;
     }
-    
+
     public void setPaymentMethodTypes(Set<PaymentMethodTypeDTO> paymentMethodTypes) {
-    	this.paymentMethodTypes = paymentMethodTypes;
+        this.paymentMethodTypes = paymentMethodTypes;
     }
 
     @Version
@@ -249,17 +232,17 @@ public class AccountTypeDTO extends AbstractDescription implements java.io.Seria
         this.versionNum = versionNum;
     }
 
-    
-	@Column(name = "notification_ait_id")
-	public Integer getPreferredNotificationAitId() {
-		return preferredNotificationAitId;
-	}
 
-	public void setPreferredNotificationAitId(Integer preferredNotificationAitId) {
-		this.preferredNotificationAitId = preferredNotificationAitId;
-	}
-	
-	
+    @Column(name = "notification_ait_id")
+    public Integer getPreferredNotificationAitId() {
+        return preferredNotificationAitId;
+    }
+
+    public void setPreferredNotificationAitId(Integer preferredNotificationAitId) {
+        this.preferredNotificationAitId = preferredNotificationAitId;
+    }
+
+
     @Transient
     protected String getTable() {
         return ServerConstants.TABLE_ACCOUNT_TYPE;

@@ -23,35 +23,17 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
-import javax.persistence.Transient;
-
+import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
+import javax.persistence.*;
+import java.io.Serializable;
 
 
 /**
  * Class represents a dependency of an ItemDTO on other products.
  * It specifies a minimum and maximum quantity of the dependent product which must be in the same order hierarchy.
- *
  */
 @Entity
 @TableGenerator(
@@ -75,15 +57,16 @@ import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
 public abstract class ItemDependencyDTO implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int id;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private int id;
     private ItemDTO item;
     private Integer minimum;
     private Integer maximum;
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_dependency_GEN")
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_dependency_GEN")
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return id;
@@ -103,7 +86,7 @@ public abstract class ItemDependencyDTO implements Serializable {
         this.item = item;
     }
 
-    @Column (name = "min")
+    @Column(name = "min")
     public Integer getMinimum() {
         return minimum;
     }
@@ -112,7 +95,7 @@ public abstract class ItemDependencyDTO implements Serializable {
         this.minimum = minimum;
     }
 
-    @Column (name = "max")
+    @Column(name = "max")
     public Integer getMaximum() {
         return maximum;
     }

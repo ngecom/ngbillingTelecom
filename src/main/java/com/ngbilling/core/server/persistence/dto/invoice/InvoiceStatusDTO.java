@@ -23,19 +23,17 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.invoice;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
+import com.ngbilling.core.server.util.ServerConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
-import com.ngbilling.core.server.util.ServerConstants;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("invoice_status")
@@ -43,12 +41,13 @@ import com.ngbilling.core.server.util.ServerConstants;
 public class InvoiceStatusDTO extends AbstractGenericStatus implements Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Set<InvoiceDTO> invoiceDTOs = new HashSet<InvoiceDTO>(0);
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Set<InvoiceDTO> invoiceDTOs = new HashSet<InvoiceDTO>(0);
 
-    public InvoiceStatusDTO() { }
+    public InvoiceStatusDTO() {
+    }
 
     public InvoiceStatusDTO(int statusValue) {
         this.statusValue = statusValue;
@@ -63,12 +62,12 @@ public class InvoiceStatusDTO extends AbstractGenericStatus implements Serializa
     protected String getTable() {
         return ServerConstants.TABLE_INVOICE_STATUS;
     }
-    
+
     public Integer getStatusValue() {
-    	return statusValue;
+        return statusValue;
     }
-    
+
     public void setStatusValue(Integer statusValue) {
-    	 this.statusValue = statusValue;
+        this.statusValue = statusValue;
     }
 }
