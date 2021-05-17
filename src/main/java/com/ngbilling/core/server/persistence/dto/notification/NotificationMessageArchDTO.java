@@ -32,13 +32,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "notification_message_arch_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "notification_message_arch",
-        allocationSize = 100)
 @Table(name = "notification_message_arch")
 public class NotificationMessageArchDTO implements Serializable {
 
@@ -75,8 +68,12 @@ public class NotificationMessageArchDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "notification_message_arch_GEN")
-    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_message_arch_GEN")
+    @SequenceGenerator(
+            name = "notification_message_arch_GEN",
+            allocationSize = 1
+    )
+   @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;
     }

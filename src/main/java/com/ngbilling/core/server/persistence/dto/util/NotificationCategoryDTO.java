@@ -34,13 +34,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "notification_category_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "notification_category",
-        allocationSize = 10)
 @Table(name = "notification_category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class NotificationCategoryDTO extends AbstractDescription implements java.io.Serializable {
@@ -71,7 +64,7 @@ public class NotificationCategoryDTO extends AbstractDescription implements java
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "notification_category_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

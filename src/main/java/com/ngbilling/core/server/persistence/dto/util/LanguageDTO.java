@@ -35,14 +35,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "language_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "language",
-        allocationSize = 10
-)
 @Table(name = "language")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 public class LanguageDTO implements java.io.Serializable {
@@ -81,7 +73,7 @@ public class LanguageDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "language_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

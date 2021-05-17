@@ -27,13 +27,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@TableGenerator(
-        name = "notification_message_arch_line_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "notification_message_arch_line",
-        allocationSize = 100)
 @Table(name = "notification_message_arch_line")
 public class NotificationMessageArchLineDTO implements Serializable {
 
@@ -66,7 +59,11 @@ public class NotificationMessageArchLineDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "notification_message_arch_line_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_message_arch_line_GEN")
+    @SequenceGenerator(
+            name = "notification_message_arch_line_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

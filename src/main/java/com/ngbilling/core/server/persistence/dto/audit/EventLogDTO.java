@@ -35,14 +35,6 @@ import java.util.Date;
 
 
 @Entity
-@TableGenerator(
-        name = "event_log_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "event_log",
-        allocationSize = 1000
-)
 @Table(name = "event_log")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class EventLogDTO implements java.io.Serializable {
@@ -53,7 +45,11 @@ public class EventLogDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "event_log_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_log_GEN")
+    @SequenceGenerator(
+            name = "event_log_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 

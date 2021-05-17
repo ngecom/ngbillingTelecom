@@ -37,7 +37,6 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("invoice_status")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class InvoiceStatusDTO extends AbstractGenericStatus implements Serializable {
 
     /**

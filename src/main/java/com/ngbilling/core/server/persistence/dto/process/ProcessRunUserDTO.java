@@ -29,13 +29,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "process_run_user_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "process_run_user",
-        allocationSize = 100)
 @Table(name = "process_run_user")
 // No cache
 public class ProcessRunUserDTO implements java.io.Serializable {
@@ -66,7 +59,11 @@ public class ProcessRunUserDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "process_run_user_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "process_run_user_GEN")
+    @SequenceGenerator(
+            name = "process_run_user_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

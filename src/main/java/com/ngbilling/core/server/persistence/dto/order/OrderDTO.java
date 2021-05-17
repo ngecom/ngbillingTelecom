@@ -51,14 +51,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@TableGenerator(
-        name = "purchase_order_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "purchase_order",
-        allocationSize = 100
-)
 @Table(name = "purchase_order")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 public class OrderDTO implements Serializable {
@@ -227,7 +219,12 @@ public class OrderDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "purchase_order_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "purchase_order_GEN")
+    @SequenceGenerator(
+            name = "purchase_order_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

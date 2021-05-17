@@ -1,23 +1,20 @@
 package com.ngbilling.core.server.service.user.impl;
 
-import com.ngbilling.core.common.exception.SessionInternalError;
 import com.ngbilling.core.common.util.CommonConstants;
 import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
-import com.ngbilling.core.payload.request.user.UserWS;
-import com.ngbilling.core.server.notification.NotificationNotFoundException;
 import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
 import com.ngbilling.core.server.persistence.dao.user.*;
 import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
 import com.ngbilling.core.server.persistence.dto.user.*;
-import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
-import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
+import com.ngbilling.core.server.service.item.ProductService;
 import com.ngbilling.core.server.service.user.UserService;
 import com.ngbilling.core.server.service.util.UtilService;
 import com.ngbilling.core.server.util.ServerConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -53,6 +50,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UtilService utilService;
 
+    @Autowired
+    ProductService productService;
+
     @Override
     public Locale getLocale(UserDTO user) {
         String languageCode = user.getLanguage().getCode();
@@ -87,25 +87,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CompanyDTO createCompany(UserWS userWS) {
+    @Transactional
+    public UserDTO createCompany(UserDTO userDTO) {
         CompanyDTO company = new CompanyDTO();
-        company.setDescription(StringUtils.left(userWS.getContact().getOrganizationName(), 100));
+        company.setDescription(StringUtils.left(userDTO.getContact().getOrganizationName(), 100));
         company.setCreateDatetime(new Date());
-        LanguageDTO language = utilService.findByLanguageCode(userWS.getLanguageCode());
-        CurrencyDTO currency = utilService.findByCurrencyCode(userWS.getCurrencyCode());
-        company.setLanguage(language);
-        company.setCurrency(currency);
+        company.setLanguage(userDTO.getLanguage());
+        company.setCurrency(userDTO.getCurrency());
         company.setDeleted(0);
-        return companyDAO.save(company);
+        userDTO.setCompany(companyDAO.save(company));
+        ContactDTO adminContact  = userDTO.getContact();
+        userDTO.setContact(null);
+        createContact(adminContact, ServerConstants.TABLE_ENTITY,userDTO.getCompany().getId());
+        createRole(ServerConstants.TYPE_ROOT, userDTO); createRole(ServerConstants.TYPE_CLERK, userDTO); createRole(ServerConstants.TYPE_CUSTOMER, userDTO);
+        userDTO = createAdminUser(userDTO);
+        createContact(adminContact, ServerConstants.TABLE_BASE_USER,userDTO.getId());
+        utilService.initEntityDefault(userDTO,getLocale(userDTO));
+        productService.createInternalTypeCategory(company);
+        return userDTO;
     }
 
     @Override
-    public ContactDTO createContact(ContactDTO contactDTO, CompanyDTO companyDTO, String tableName) {
-        contactDTO = contactDAO.save(contactDTO);
+    @Transactional
+    public ContactDTO createContact(ContactDTO contactUserDTO, String tableName,Integer foreignId) {
+        ContactDTO contactDTO = contactDAO.save(contactUserDTO);
         ContactMapDTO contactMapDTO = new ContactMapDTO();
         contactMapDTO.setJbillingTable(utilService.findByName(tableName));
         contactMapDTO.setContact(contactDTO);
-        contactMapDTO.setForeignId(companyDTO.getId());
+        contactMapDTO.setForeignId(foreignId);
         contactMapDAO.save(contactMapDTO);
         return contactDTO;
     }
@@ -126,15 +135,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO createAdminUser(UserDTO userDTO) {
         userDTO.setCurrency(userDTO.getCompany().getCurrency());
         userDTO.setLanguage(userDTO.getCompany().getLanguage());
         userDTO.setDeleted(0);
         userDTO.setUserStatus(userStatusDAO.findById(CommonConstants.STATUS_ACTIVE).get());
-        userDTO.setSubscriberStatus(userSubscriptionStatusDAO.findById(CommonConstants.SUBSCRIBER_ACTIVE).get());
+        userDTO.setSubscriberStatus(userSubscriptionStatusDAO.findByStatusValue(CommonConstants.SUBSCRIBER_ACTIVE));
         userDTO.setCreateDatetime(new Date());
         List<RoleDTO> roleList = findRoleTypeIdAndCompanyId(ServerConstants.TYPE_ROOT, userDTO.getCompany().getId());
         userDTO.getRoles().add(roleList.get(0));
+        userDTO = userDAO.save(userDTO);
         return userDTO;
     }
 
@@ -154,13 +165,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RoleDTO createRole(Integer roleTypeId, CompanyDTO companyDTO) {
+    public List<RoleDTO> findByRoleTypeId(Integer roleTypeId) {
+        return roleDAO.findByRoleTypeId(roleTypeId);
+    }
+
+    @Override
+    @Transactional
+    public RoleDTO createRole(Integer roleTypeId, UserDTO userDTO) {
+        List<RoleDTO> roleDTOList = findByRoleTypeId(roleTypeId);
+        RoleDTO existingRole = roleDTOList.get(0);
         RoleDTO newRole = new RoleDTO();
-        newRole.setCompany(companyDTO);
+        newRole.setCompany(userDTO.getCompany());
         newRole.setRoleTypeId(roleTypeId);
-        //newRole.setDescription(newRole.getDescription(companyDTO.getLanguage().getId()), companyDTO.getLanguage().getId());
-        //newRole.setDescription("title", companyDTO.getLanguage().getId(), newRole.getTitle(companyDTO.getLanguage().getId()));
         roleDAO.save(newRole);
+        String description  = utilService.getDescription(ServerConstants.TABLE_ROLE, existingRole.getId(), "description",userDTO.getCompany().getLanguageId());
+        String title =  utilService.getDescription(ServerConstants.TABLE_ROLE, existingRole.getId(), "title",userDTO.getCompany().getLanguageId());
+        utilService.setDescription(ServerConstants.TABLE_ROLE,newRole.getId(),"description",userDTO.getCompany().getLanguageId(), description);
+        utilService.setDescription(ServerConstants.TABLE_ROLE,newRole.getId(),"title",userDTO.getCompany().getLanguageId(), title);
         return newRole;
     }
 

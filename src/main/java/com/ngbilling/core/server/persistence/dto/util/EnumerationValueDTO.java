@@ -16,14 +16,6 @@ import java.io.Serializable;
  */
 
 @Entity
-@TableGenerator(
-        name = "enumerationValues_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "enumeration_values",
-        allocationSize = 1000
-)
 @Table(name = "enumeration_values")
 //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class EnumerationValueDTO implements Serializable {
@@ -51,7 +43,7 @@ public class EnumerationValueDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "enumerationValues_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

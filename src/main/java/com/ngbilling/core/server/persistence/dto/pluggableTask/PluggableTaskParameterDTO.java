@@ -33,14 +33,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@TableGenerator(
-        name = "pluggable_task_parameter_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "pluggable_task_parameter",
-        allocationSize = 100
-)
 @Table(name = "pluggable_task_parameter")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PluggableTaskParameterDTO implements Serializable {
@@ -56,7 +48,7 @@ public class PluggableTaskParameterDTO implements Serializable {
 
     // MAPPED COLUMS
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "pluggable_task_parameter_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(name = "name")

@@ -36,15 +36,6 @@ import java.io.Serializable;
  * It specifies a minimum and maximum quantity of the dependent product which must be in the same order hierarchy.
  */
 @Entity
-@TableGenerator(
-        name = "item_dependency_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "item_dependency",
-        allocationSize = 100
-)
-
 @NamedQueries({
         @NamedQuery(name = "ItemDependencyOnItemDTO.countForDependItem",
                 query = "select count(a.id) from ItemDependencyOnItemDTO a where a.dependent.id = :item_id ")
@@ -66,7 +57,11 @@ public abstract class ItemDependencyDTO implements Serializable {
     private Integer maximum;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_dependency_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_dependency_GEN")
+    @SequenceGenerator(
+            name = "item_dependency_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return id;

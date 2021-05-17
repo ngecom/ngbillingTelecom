@@ -32,14 +32,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@TableGenerator(
-        name = "item_price_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "item_price",
-        allocationSize = 100
-)
 @Table(name = "item_price")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ItemPriceDTO implements java.io.Serializable {
@@ -86,7 +78,11 @@ public class ItemPriceDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_price_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_price_GEN")
+    @SequenceGenerator(
+            name = "item_price_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

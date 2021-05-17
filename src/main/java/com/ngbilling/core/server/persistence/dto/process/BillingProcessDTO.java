@@ -45,12 +45,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(name = "billing_process_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "billing_process",
-        allocationSize = 10)
 @Table(name = "billing_process")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BillingProcessDTO implements Serializable {
@@ -104,7 +98,12 @@ public class BillingProcessDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "billing_process_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "billing_process_GEN")
+    @SequenceGenerator(
+            name = "billing_process_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

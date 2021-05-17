@@ -50,6 +50,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    show-sql: true
   batch:
     datasource:
       driver-class-name: org.postgresql.Driver

@@ -35,14 +35,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "contact_type_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "contact_type",
-        allocationSize = 10
-)
 @Table(name = "contact_type")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ContactTypeDTO extends AbstractDescription implements java.io.Serializable {
@@ -70,9 +62,12 @@ public class ContactTypeDTO extends AbstractDescription implements java.io.Seria
         this.isPrimary = isPrimary;
         this.contactMaps = contactMaps;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "contact_type_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_type_GEN")
+    @SequenceGenerator(
+            name = "contact_type_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

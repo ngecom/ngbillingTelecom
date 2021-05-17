@@ -1,9 +1,11 @@
 package com.ngbilling.core.server.service.util;
 
 import com.ngbilling.core.server.persistence.dto.audit.EventLogAPIDTO;
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-import com.ngbilling.core.server.persistence.dto.util.*;
+import com.ngbilling.core.server.persistence.dto.util.CountryDTO;
+import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
+import com.ngbilling.core.server.persistence.dto.util.JbillingTable;
+import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +24,7 @@ public interface UtilService {
 
     public List<Object> findAllLanguages(Integer languageId);
 
-    public void initEntityDefault(CompanyDTO company, UserDTO rootUser, LanguageDTO language, Locale locale);
+    public void initEntityDefault(UserDTO rootUser, Locale locale);
 
     public EventLogAPIDTO createEventLogAPI(EventLogAPIDTO eventLogAPIDTO);
 

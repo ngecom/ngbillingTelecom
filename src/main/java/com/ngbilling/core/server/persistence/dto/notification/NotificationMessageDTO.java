@@ -40,13 +40,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "notification_message_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "notification_message",
-        allocationSize = 100)
 @Table(name = "notification_message")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class NotificationMessageDTO implements Serializable {
@@ -137,7 +130,11 @@ public class NotificationMessageDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "notification_message_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_message_GEN")
+    @SequenceGenerator(
+            name = "notification_message_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

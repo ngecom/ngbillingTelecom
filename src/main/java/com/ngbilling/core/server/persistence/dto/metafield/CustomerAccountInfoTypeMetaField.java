@@ -9,18 +9,14 @@ import java.util.Date;
 
 @Entity
 @Table(name = "customer_account_info_type_timeline")
-@TableGenerator(
-        name = "customer_account_info_type_timeline_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "customer_account_info_type_timeline",
-        allocationSize = 100
-)
 public class CustomerAccountInfoTypeMetaField implements java.io.Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "customer_account_info_type_timeline_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_account_info_type_timeline_GEN")
+    @SequenceGenerator(
+            name = "customer_account_info_type_timeline_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 

@@ -33,14 +33,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "generic_status")
-@TableGenerator(
-        name = "generic_status_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "generic_status",
-        allocationSize = 1
-)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(
         name = "dtype",
@@ -57,23 +49,19 @@ public abstract class AbstractGenericStatus extends AbstractDescription {
     protected Integer order;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "generic_status_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genericStatus_GEN")
+    @SequenceGenerator(
+            name = "genericStatus_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getPrimaryKey() {
+    public int getId() {
         return id;
     }
 
-    public void setPrimaryKey(Integer id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    @Column(name = "status_value", unique = true, nullable = false)
-    public int getId() {
-        return statusValue;
-    }
-
-    public void setId(int statusValue) {
-        this.statusValue = statusValue;
     }
 
     @Column(name = "ordr")
@@ -85,4 +73,12 @@ public abstract class AbstractGenericStatus extends AbstractDescription {
         this.order = order;
     }
 
+    @Column(name = "status_value", unique = true, nullable = false)
+    public Integer getStatusValue() {
+        return statusValue;
+    }
+
+    public void setStatusValue(Integer statusValue) {
+        this.statusValue = statusValue;
+    }
 }

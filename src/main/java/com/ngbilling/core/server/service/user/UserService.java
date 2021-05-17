@@ -1,9 +1,6 @@
 package com.ngbilling.core.server.service.user;
 
-import com.ngbilling.core.common.exception.SessionInternalError;
 import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
-import com.ngbilling.core.payload.request.user.UserWS;
-import com.ngbilling.core.server.notification.NotificationNotFoundException;
 import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 import com.ngbilling.core.server.persistence.dto.user.*;
 
@@ -20,13 +17,13 @@ public interface UserService {
 
     public CompanyDTO getEntity(Integer userId);
 
-    public CompanyDTO createCompany(UserWS userWS);
+    public UserDTO createCompany(UserDTO userDTO);
 
     public UserDTO createAdminUser(UserDTO userDTO);
 
     public CompanyDTO findByDescription(String companyName);
 
-    public ContactDTO createContact(ContactDTO contactDTO, CompanyDTO companyDTO, String tableName);
+    public ContactDTO createContact(ContactDTO contactUserDTO, String tableName,Integer foreignId);
 
     public Boolean existsByUserName(String username);
 
@@ -37,8 +34,9 @@ public interface UserService {
     public SubscriberStatusDTO findBySubscriptionStatus(Integer statusID);
 
     public List<RoleDTO> findRoleTypeIdAndCompanyId(Integer roleTypeId, Integer companyId);
+    public List<RoleDTO> findByRoleTypeId(Integer roleTypeId);
 
-    public RoleDTO createRole(Integer roleTypeId, CompanyDTO companyDTO);
+    public RoleDTO createRole(Integer roleTypeId, UserDTO userDTO);
 
 
 }

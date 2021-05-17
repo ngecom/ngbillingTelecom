@@ -32,13 +32,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@TableGenerator(
-        name = "process_run_total_pm_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "process_run_total_pm",
-        allocationSize = 100)
 @Table(name = "process_run_total_pm")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProcessRunTotalPmDTO implements Serializable {
@@ -67,9 +60,12 @@ public class ProcessRunTotalPmDTO implements Serializable {
         this.paymentMethod = paymentMethod;
         this.total = total;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "process_run_total_pm_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "process_run_total_pm_GEN")
+    @SequenceGenerator(
+            name = "process_run_total_pm_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

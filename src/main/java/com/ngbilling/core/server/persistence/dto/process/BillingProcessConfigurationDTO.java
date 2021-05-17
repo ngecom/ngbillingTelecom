@@ -33,13 +33,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "billing_process_configuration_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "billing_process_configuration",
-        allocationSize = 100)
 @Table(name = "billing_process_configuration")
 public class BillingProcessConfigurationDTO implements Serializable {
 
@@ -142,7 +135,11 @@ public class BillingProcessConfigurationDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "billing_process_configuration_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "billing_process_configuration_GEN")
+    @SequenceGenerator(
+            name = "billing_process_configuration_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

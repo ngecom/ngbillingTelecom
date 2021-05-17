@@ -35,7 +35,6 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("subscriber_status")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class SubscriberStatusDTO extends AbstractGenericStatus implements java.io.Serializable {
 
     /**

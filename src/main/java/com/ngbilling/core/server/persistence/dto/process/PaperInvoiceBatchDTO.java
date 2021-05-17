@@ -34,12 +34,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(name = "paper_invoice_batch_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "paper_invoice_batch",
-        allocationSize = 100)
 @Table(name = "paper_invoice_batch")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PaperInvoiceBatchDTO implements java.io.Serializable {
@@ -73,9 +67,12 @@ public class PaperInvoiceBatchDTO implements java.io.Serializable {
         this.billingProcesses = billingProcesses;
         this.invoices = invoices;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "paper_invoice_batch_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paper_invoice_batch_GEN")
+    @SequenceGenerator(
+            name = "paper_invoice_batch_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

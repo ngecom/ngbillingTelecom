@@ -34,14 +34,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "asset_status")
-@TableGenerator(
-        name = "asset_status_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "asset_status",
-        allocationSize = 100
-)
 @NamedQueries({
         @NamedQuery(name = "AssetStatusDTO.findForItemType",
                 query = "select at from AssetStatusDTO at where at.itemType.id = :item_type_id " +
@@ -96,7 +88,11 @@ public class AssetStatusDTO extends AbstractDescription {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "asset_status_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_status_GEN")
+    @SequenceGenerator(
+            name = "asset_status_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

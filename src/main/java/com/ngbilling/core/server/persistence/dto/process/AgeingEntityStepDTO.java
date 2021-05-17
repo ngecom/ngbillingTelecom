@@ -34,12 +34,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@TableGenerator(name = "ageing_entity_step_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "ageing_entity_step",
-        allocationSize = 100)
 @Table(name = "ageing_entity_step")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class AgeingEntityStepDTO extends AbstractDescription implements Serializable {
@@ -80,7 +74,12 @@ public class AgeingEntityStepDTO extends AbstractDescription implements Serializ
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "ageing_entity_step_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ageing_entity_step_GEN")
+    @SequenceGenerator(
+            name = "ageing_entity_step_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

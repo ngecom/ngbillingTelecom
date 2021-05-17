@@ -33,14 +33,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "order_process_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "order_process",
-        allocationSize = 100
-)
 @Table(name = "order_process")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class OrderProcessDTO implements java.io.Serializable {
@@ -85,7 +77,11 @@ public class OrderProcessDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_process_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_process_GEN")
+    @SequenceGenerator(
+            name = "order_process_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

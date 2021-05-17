@@ -1,12 +1,13 @@
-package com.ngbilling.core.server.service.user.impl;
+package com.ngbilling.core.server.service.item.impl;
 
 import com.ngbilling.core.server.persistence.dao.item.ItemTypeDAO;
 import com.ngbilling.core.server.persistence.dto.item.ItemTypeDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.service.user.ProductService;
+import com.ngbilling.core.server.service.item.ProductService;
 import com.ngbilling.core.server.util.ServerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class ProductServiceImpl implements ProductService {
     private ItemTypeDAO itemTypeDAO;
 
     @Override
+    @Transactional
     public void createInternalTypeCategory(CompanyDTO companyDTO) {
         // TODO Auto-generated method stub
         ItemTypeDTO itemTypeDTO = new ItemTypeDTO();

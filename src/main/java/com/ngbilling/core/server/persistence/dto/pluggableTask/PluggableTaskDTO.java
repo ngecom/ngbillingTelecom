@@ -41,14 +41,6 @@ import java.util.Set;
 
 
 @Entity
-@TableGenerator(
-        name = "pluggable_task_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "pluggable_task",
-        allocationSize = 10
-)
 @Table(name = "pluggable_task")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PluggableTaskDTO implements java.io.Serializable {
@@ -61,7 +53,7 @@ public class PluggableTaskDTO implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private static final FormatLogger LOG = new FormatLogger(PluggableTaskDTO.class);
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "pluggable_task_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(name = "entity_id")

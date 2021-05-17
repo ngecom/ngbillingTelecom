@@ -25,10 +25,6 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import com.ngbilling.core.server.persistence.dao.util.InternationalDescriptionDAO;
-import com.ngbilling.core.server.persistence.dao.util.JbillingTableDAO;
-import com.ngbilling.core.server.util.ServerConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;

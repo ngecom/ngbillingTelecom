@@ -34,14 +34,6 @@ import java.util.Date;
 
 
 @Entity
-@TableGenerator(
-        name = "currency_exchange_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "currency_exchange",
-        allocationSize = 100
-)
 @Table(name = "currency_exchange")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CurrencyExchangeDTO implements java.io.Serializable {
@@ -81,7 +73,7 @@ public class CurrencyExchangeDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "currency_exchange_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

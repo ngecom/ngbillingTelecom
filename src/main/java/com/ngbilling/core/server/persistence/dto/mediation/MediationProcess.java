@@ -22,14 +22,6 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "mediation_process_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "mediation_process",
-        allocationSize = 10
-)
 @Table(name = "mediation_process")
 // no cache. This table is not read repeatedly
 public class MediationProcess implements Serializable {
@@ -44,7 +36,11 @@ public class MediationProcess implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "process")
     public Collection<MediationRecordDTO> records = new ArrayList<MediationRecordDTO>(0);
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_process_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mediation_process_GEN")
+    @SequenceGenerator(
+            name = "mediation_process_GEN",
+            allocationSize = 1
+    )
     private Integer id;
     @Column(name = "start_datetime")
     private Date startDatetime;

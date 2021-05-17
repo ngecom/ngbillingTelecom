@@ -46,14 +46,6 @@ import java.util.*;
 
 
 @Entity
-@TableGenerator(
-        name = "customer_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "customer",
-        allocationSize = 100
-)
 // No cache, mutable and critical
 @Table(name = "customer")
 public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serializable {
@@ -217,7 +209,12 @@ public class CustomerDTO extends GroupCustomizedEntity implements java.io.Serial
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "customer_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_GEN")
+    @SequenceGenerator(
+            name = "customer_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

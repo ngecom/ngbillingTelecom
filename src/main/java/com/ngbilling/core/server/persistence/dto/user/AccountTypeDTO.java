@@ -14,14 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "account_type_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "account_type",
-        allocationSize = 100
-)
 // No cache, mutable and critical
 @Table(name = "account_type")
 public class AccountTypeDTO extends AbstractDescription implements java.io.Serializable {
@@ -73,7 +65,7 @@ public class AccountTypeDTO extends AbstractDescription implements java.io.Seria
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "account_type_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return id;

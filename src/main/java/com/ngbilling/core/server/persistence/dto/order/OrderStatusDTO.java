@@ -35,12 +35,6 @@ import javax.persistence.*;
 
 
 @Entity
-@TableGenerator(name = "order_status_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "order_status",
-        allocationSize = 100)
 @Table(name = "order_status")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class OrderStatusDTO extends AbstractDescription implements java.io.Serializable {
@@ -52,7 +46,11 @@ public class OrderStatusDTO extends AbstractDescription implements java.io.Seria
     private static final FormatLogger LOG = new FormatLogger(OrderStatusDTO.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_status_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_status_GEN")
+    @SequenceGenerator(
+            name = "order_status_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 
