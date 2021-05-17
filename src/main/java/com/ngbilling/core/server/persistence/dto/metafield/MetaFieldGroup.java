@@ -44,14 +44,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "meta_field_group")
-@TableGenerator(
-        name = "metafield_group_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "meta_field_group",
-        allocationSize = 10
-)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "discriminator", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("METAFIELD_GROUP")
@@ -60,7 +52,11 @@ public class MetaFieldGroup extends AbstractDescription implements Serializable 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "metafield_group_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "metafield_group_GEN")
+    @SequenceGenerator(
+            name = "metafield_group_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 

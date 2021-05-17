@@ -42,14 +42,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@TableGenerator(
-        name = "order_line_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "order_line",
-        allocationSize = 100
-)
 @Table(name = "order_line")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 public class OrderLineDTO implements Serializable, Comparable {
@@ -161,7 +153,11 @@ public class OrderLineDTO implements Serializable, Comparable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_line_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_line_GEN")
+    @SequenceGenerator(
+            name = "order_line_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

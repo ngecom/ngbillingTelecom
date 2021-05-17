@@ -30,7 +30,6 @@ import javax.persistence.*;
  */
 @Entity
 @DiscriminatorValue("order_change_status")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class OrderChangeStatusDTO extends AbstractGenericStatus implements java.io.Serializable {
 
 

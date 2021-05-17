@@ -23,14 +23,6 @@ import java.util.List;
  */
 
 @Entity
-@TableGenerator(
-        name = "enumeration_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "enumeration",
-        allocationSize = 10
-)
 @Table(name = "enumeration")
 @NamedQueries({
         @NamedQuery(name = "EnumerationDTO.findByEntityAndId",
@@ -78,7 +70,7 @@ public class EnumerationDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "enumeration_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

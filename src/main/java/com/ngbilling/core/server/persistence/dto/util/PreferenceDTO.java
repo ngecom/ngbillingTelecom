@@ -31,14 +31,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@TableGenerator(
-        name = "preference_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "preference",
-        allocationSize = 10
-)
 @Table(name = "preference")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PreferenceDTO implements java.io.Serializable {
@@ -78,7 +70,7 @@ public class PreferenceDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "preference_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

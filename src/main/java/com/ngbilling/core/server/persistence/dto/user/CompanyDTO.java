@@ -51,14 +51,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "entity")
-@TableGenerator(
-        name = "entity_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "entity",
-        allocationSize = 10
-)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CompanyDTO implements java.io.Serializable {
 
@@ -137,7 +129,7 @@ public class CompanyDTO implements java.io.Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "entity_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

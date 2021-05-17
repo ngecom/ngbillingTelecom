@@ -7,14 +7,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "customer_notes_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "customer_notes",
-        allocationSize = 100
-)
 @Table(name = "customer_notes")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CustomerNoteDTO implements java.io.Serializable {
@@ -31,7 +23,12 @@ public class CustomerNoteDTO implements java.io.Serializable {
     private UserDTO user;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "customer_notes_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_notes_GEN")
+    @SequenceGenerator(
+            name = "customer_notes_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public int getNoteId() {
         return this.noteId;

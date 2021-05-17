@@ -39,14 +39,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@TableGenerator(
-        name = "item_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "item",
-        allocationSize = 100
-)
 @Table(name = "item")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ItemDTO extends AbstractDescription {
@@ -175,7 +167,11 @@ public class ItemDTO extends AbstractDescription {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_GEN")
+    @SequenceGenerator(
+            name = "item_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

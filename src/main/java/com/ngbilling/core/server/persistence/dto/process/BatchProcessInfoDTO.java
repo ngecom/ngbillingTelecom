@@ -32,13 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "process_run_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "batch_process_info",
-        allocationSize = 100)
 @Table(name = "batch_process_info")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class BatchProcessInfoDTO implements java.io.Serializable {
@@ -68,7 +61,11 @@ public class BatchProcessInfoDTO implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "process_run_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "process_run_GEN")
+    @SequenceGenerator(
+            name = "process_run_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

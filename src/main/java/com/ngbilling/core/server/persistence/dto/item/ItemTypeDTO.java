@@ -38,14 +38,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "item_type_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "item_type",
-        allocationSize = 100
-)
 @Table(name = "item_type")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ItemTypeDTO extends AbstractDescription implements Serializable {
@@ -97,9 +89,12 @@ public class ItemTypeDTO extends AbstractDescription implements Serializable {
     protected String getTable() {
         return ServerConstants.TABLE_ITEM_TYPE;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "item_type_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_type_GEN")
+    @SequenceGenerator(
+            name = "item_type_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

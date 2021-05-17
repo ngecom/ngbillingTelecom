@@ -35,12 +35,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(name = "user_status_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "user_status",
-        allocationSize = 100)
 @Table(name = "user_status")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserStatusDTO extends AbstractDescription implements java.io.Serializable {
@@ -67,9 +61,12 @@ public class UserStatusDTO extends AbstractDescription implements java.io.Serial
         this.ageingEntityStep = ageingEntityStep;
         this.baseUsers = baseUsers;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_status_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_status_GEN")
+    @SequenceGenerator(
+            name = "user_status_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return id;

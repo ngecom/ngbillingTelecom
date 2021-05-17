@@ -37,14 +37,6 @@ import java.util.*;
  */
 @Entity
 @Table(name = "asset")
-@TableGenerator(
-        name = "asset_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "asset",
-        allocationSize = 100
-)
 @NamedQueries({
         @NamedQuery(name = "AssetDTO.countForItem",
                 query = "select count(a.id) from AssetDTO a where a.item.id = :item_id " +
@@ -132,7 +124,11 @@ public class AssetDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "asset_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_GEN")
+    @SequenceGenerator(
+            name = "asset_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

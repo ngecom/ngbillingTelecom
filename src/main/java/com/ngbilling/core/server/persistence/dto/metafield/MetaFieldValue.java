@@ -41,14 +41,6 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "meta_field_value")
-@TableGenerator(
-        name = "meta_field_value_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "meta_field_value",
-        allocationSize = 10
-)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 public abstract class MetaFieldValue<T> implements Serializable {
@@ -64,7 +56,11 @@ public abstract class MetaFieldValue<T> implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "meta_field_value_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meta_field_value_GEN")
+    @SequenceGenerator(
+            name = "meta_field_value_GEN",
+            allocationSize = 1
+    )
     public Integer getId() {
         return id;
     }

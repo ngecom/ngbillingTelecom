@@ -24,14 +24,6 @@ import java.util.TreeMap;
  */
 @Entity
 @Table(name = "validation_rule")
-@TableGenerator(
-        name = "validation_rule_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "validation_rule",
-        allocationSize = 10
-)
 public class ValidationRule extends AbstractDescription implements Serializable {
 
     public static final String ERROR_MSG_LABEL = "errorMessage";
@@ -59,7 +51,11 @@ public class ValidationRule extends AbstractDescription implements Serializable 
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "validation_rule_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "validation_rule_GEN")
+    @SequenceGenerator(
+            name = "validation_rule_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return id;

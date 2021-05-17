@@ -31,14 +31,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 @Entity
-@TableGenerator(
-        name = "contact_map_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "contact_map",
-        allocationSize = 100
-)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Table(name = "contact_map"
         , uniqueConstraints = @UniqueConstraint(columnNames = "contact_id")
@@ -71,9 +63,12 @@ public class ContactMapDTO implements java.io.Serializable {
         this.contact = contact;
         this.foreignId = foreignId;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "contact_map_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_map_GEN")
+    @SequenceGenerator(
+            name = "contact_map_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

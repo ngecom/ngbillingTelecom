@@ -12,14 +12,6 @@ import java.util.Set;
 
 
 @Entity
-@TableGenerator(
-        name = "order_change_type_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "order_change_type",
-        allocationSize = 100
-)
 @Table(name = "order_change_type")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 public class OrderChangeTypeDTO implements Serializable {
@@ -42,7 +34,11 @@ public class OrderChangeTypeDTO implements Serializable {
     private int optLock;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_change_type_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_change_type_GEN")
+    @SequenceGenerator(
+            name = "order_change_type_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;

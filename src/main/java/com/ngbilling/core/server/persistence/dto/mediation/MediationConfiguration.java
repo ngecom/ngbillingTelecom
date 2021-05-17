@@ -25,14 +25,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "mediation_cfg_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "mediation_cfg",
-        allocationSize = 10
-)
 @Table(name = "mediation_cfg")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class MediationConfiguration implements Serializable {
@@ -43,7 +35,7 @@ public class MediationConfiguration implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_cfg_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(name = "entity_id")

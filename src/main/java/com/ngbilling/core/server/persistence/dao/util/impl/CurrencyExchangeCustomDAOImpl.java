@@ -2,17 +2,11 @@ package com.ngbilling.core.server.persistence.dao.util.impl;
 
 import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
 import com.ngbilling.core.server.persistence.dao.util.CurrencyExchangeCustomDAO;
-import com.ngbilling.core.server.persistence.dao.util.CurrencyExchangeDAO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyExchangeDTO;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class CurrencyExchangeCustomDAOImpl extends AbstractJpaDAO<CurrencyExchangeDTO> implements CurrencyExchangeCustomDAO{
 

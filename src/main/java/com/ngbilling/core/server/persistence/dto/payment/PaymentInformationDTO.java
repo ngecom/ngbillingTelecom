@@ -17,14 +17,6 @@ import java.util.List;
  * @author khobab
  */
 @Entity
-@TableGenerator(
-        name = "payment_information_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "payment_information",
-        allocationSize = 10
-)
 @Table(name = "payment_information")
 public class PaymentInformationDTO extends GroupCustomizedEntity implements Serializable {
     /**
@@ -71,7 +63,12 @@ public class PaymentInformationDTO extends GroupCustomizedEntity implements Seri
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "payment_information_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_information_GEN")
+    @SequenceGenerator(
+            name = "payment_information_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

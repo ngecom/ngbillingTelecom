@@ -33,13 +33,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@TableGenerator(
-        name = "process_run_total_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "process_run_total",
-        allocationSize = 100)
 @Table(name = "process_run_total")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProcessRunTotalDTO implements java.io.Serializable {
@@ -75,9 +68,12 @@ public class ProcessRunTotalDTO implements java.io.Serializable {
         this.totalPaid = totalPaid;
         this.totalNotPaid = totalNotPaid;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "process_run_total_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "process_run_total_GEN")
+    @SequenceGenerator(
+            name = "process_run_total_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

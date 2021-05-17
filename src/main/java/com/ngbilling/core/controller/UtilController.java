@@ -1,23 +1,12 @@
 package com.ngbilling.core.controller;
 
-import com.ngbilling.core.common.exception.MessageResponse;
-import com.ngbilling.core.payload.request.user.UserWS;
-import com.ngbilling.core.security.JwtUtils;
-import com.ngbilling.core.server.persistence.dao.user.CompanyDAO;
-import com.ngbilling.core.server.persistence.dao.user.RoleDAO;
-import com.ngbilling.core.server.persistence.dao.user.UserDAO;
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
-import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 import com.ngbilling.core.server.service.util.UtilService;
 import com.ngbilling.core.server.util.ServerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

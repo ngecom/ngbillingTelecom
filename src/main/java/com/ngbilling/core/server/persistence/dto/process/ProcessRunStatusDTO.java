@@ -35,7 +35,6 @@ import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("process_run_status")
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ProcessRunStatusDTO extends AbstractGenericStatus implements java.io.Serializable {
 
 

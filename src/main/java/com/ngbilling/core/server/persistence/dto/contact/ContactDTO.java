@@ -31,14 +31,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "contact_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "contact",
-        allocationSize = 100
-)
 @Table(name = "contact", uniqueConstraints = @UniqueConstraint(columnNames = "user_id"))
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ContactDTO implements java.io.Serializable {
@@ -139,9 +131,12 @@ public class ContactDTO implements java.io.Serializable {
         setContactMap(other.getContactMap());
         setVersionNum(other.getVersionNum());
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "contact_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_GEN")
+    @SequenceGenerator(
+            name = "contact_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;

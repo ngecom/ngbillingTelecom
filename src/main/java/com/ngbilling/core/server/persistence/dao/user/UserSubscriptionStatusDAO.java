@@ -4,6 +4,6 @@ import com.ngbilling.core.server.persistence.dto.user.SubscriberStatusDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserSubscriptionStatusDAO extends JpaRepository<SubscriberStatusDTO, Integer> {
-
+    public SubscriberStatusDTO findByStatusValue(Integer statusId );
 }
  

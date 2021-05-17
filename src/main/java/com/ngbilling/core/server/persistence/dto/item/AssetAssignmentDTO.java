@@ -29,14 +29,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "asset_assignment")
-@TableGenerator(
-        name = "asset_assignment_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "asset_assignment",
-        allocationSize = 1
-)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class AssetAssignmentDTO implements Serializable {
 
@@ -51,7 +43,11 @@ public class AssetAssignmentDTO implements Serializable {
     private Date endDatetime;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "asset_assignment_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_assignment_GEN")
+    @SequenceGenerator(
+            name = "asset_assignment_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

@@ -35,14 +35,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "role")
-@TableGenerator(
-        name = "role_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "role",
-        allocationSize = 10
-)
 public class RoleDTO extends AbstractDescription implements Serializable, InitializingGrantedAuthority {
 
     public static final String ROLE_AUTHORITY_PREFIX = "ROLE_";
@@ -74,7 +66,12 @@ public class RoleDTO extends AbstractDescription implements Serializable, Initia
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "role_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_GEN")
+    @SequenceGenerator(
+            name = "role_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

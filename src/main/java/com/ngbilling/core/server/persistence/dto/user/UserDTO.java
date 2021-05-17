@@ -41,14 +41,6 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-@TableGenerator(
-        name = "base_user_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "base_user",
-        allocationSize = 10
-)
 // No cache, mutable and critical
 @Table(name = "base_user")
 public class UserDTO implements Serializable {
@@ -170,9 +162,12 @@ public class UserDTO implements Serializable {
         setPaymentInstruments(another.getPaymentInstruments());
     }
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "base_user_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "base_user_GEN")
+    @SequenceGenerator(
+            name = "base_user_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

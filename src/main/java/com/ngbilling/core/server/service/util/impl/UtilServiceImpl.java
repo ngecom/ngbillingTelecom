@@ -55,6 +55,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -160,67 +161,68 @@ public class UtilServiceImpl implements UtilService {
     }
 
     @Override
-    public void initEntityDefault(CompanyDTO company, UserDTO rootUser, LanguageDTO language, Locale locale) {
+    @Transactional
+    public void initEntityDefault(UserDTO rootUser, Locale locale) {
         OrderStatusDTO invoiceOS = new OrderStatusDTO();
         invoiceOS.setOrderStatusFlag(OrderStatusFlag.INVOICE);
-        invoiceOS.setEntity(company);
+        invoiceOS.setEntity(rootUser.getCompany());
         invoiceOS = orderStatusDAO.save(invoiceOS);
-        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",language.getId(),"Active");
+        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",rootUser.getLanguage().getId(),"Active");
 
         invoiceOS = new OrderStatusDTO();
         invoiceOS.setOrderStatusFlag(OrderStatusFlag.FINISHED);
-        invoiceOS.setEntity(company);
+        invoiceOS.setEntity(rootUser.getCompany());
         orderStatusDAO.save(invoiceOS);
-        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",language.getId(),"Finished");
+        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",rootUser.getLanguage().getId(),"Finished");
         invoiceOS = new OrderStatusDTO();
         invoiceOS.setOrderStatusFlag(OrderStatusFlag.NOT_INVOICE);
-        invoiceOS.setEntity(company);
+        invoiceOS.setEntity(rootUser.getCompany());
         orderStatusDAO.save(invoiceOS);
-        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",language.getId(),"Suspended");
+        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",rootUser.getLanguage().getId(),"Suspended");
         invoiceOS = new OrderStatusDTO();
         invoiceOS.setOrderStatusFlag(OrderStatusFlag.SUSPENDED_AGEING);
-        invoiceOS.setEntity(company);
+        invoiceOS.setEntity(rootUser.getCompany());
         orderStatusDAO.save(invoiceOS);
-        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",language.getId(),"Suspended ageing(auto)");
+        setDescription(ServerConstants.TABLE_ORDER_STATUS, invoiceOS.getId(), "description",rootUser.getLanguage().getId(),"Suspended ageing(auto)");
 
-        OrderPeriodDTO orderPeriodDTO = new OrderPeriodDTO(company, new PeriodUnitDTO(ServerConstants.PERIOD_UNIT_MONTH), 1);
+        OrderPeriodDTO orderPeriodDTO = new OrderPeriodDTO(rootUser.getCompany(), new PeriodUnitDTO(ServerConstants.PERIOD_UNIT_MONTH), 1);
         orderPeriodDTO = orderPeriodDAO.save(orderPeriodDTO);
-        setDescription(ServerConstants.TABLE_ORDER_PERIOD, orderPeriodDTO.getId(), "description",language.getId(),"Monthly");
+        setDescription(ServerConstants.TABLE_ORDER_PERIOD, orderPeriodDTO.getId(), "description",rootUser.getLanguage().getId(),"Monthly");
 
         Integer orderChangeStatusId = orderChangeStatusDAO.getMaxStatusId();
         OrderChangeStatusDTO orderChangeStatusDTO = new OrderChangeStatusDTO();
-        orderChangeStatusDTO.setCompany(company);
+        orderChangeStatusDTO.setCompany(rootUser.getCompany());
         orderChangeStatusDTO.setApplyToOrder(ApplyToOrder.YES);
         orderChangeStatusDTO.setDeleted(0);
         orderChangeStatusDTO.setOrder(1);
         orderChangeStatusDTO.setId(orderChangeStatusId + 1);
         orderChangeStatusDAO.save(orderChangeStatusDTO);
-        setDescription(ServerConstants.TABLE_ORDER_CHANGE_STATUS, orderChangeStatusDTO.getId(), "description",language.getId(),getMessage("order.change.status.default.apply", locale));
+        setDescription(ServerConstants.TABLE_ORDER_CHANGE_STATUS, orderChangeStatusDTO.getId(), "description",rootUser.getLanguage().getId(),getMessage("order.change.status.default.apply", locale));
 
         MainSubscriptionDTO mainSubscriptionDTO = new MainSubscriptionDTO(orderPeriodDTO, Integer.valueOf(1));
         AccountTypeDTO accountTypeDTO = new AccountTypeDTO();
-        accountTypeDTO.setCompany(company);
+        accountTypeDTO.setCompany(rootUser.getCompany());
         accountTypeDTO.setBillingCycle(mainSubscriptionDTO);
         accountTypeDTO = accountTypeDAO.save(accountTypeDTO);
-        setDescription(ServerConstants.TABLE_ACCOUNT_TYPE, accountTypeDTO.getId(), "description",language.getId(),getMessage("default.account.type.name", locale));
+        setDescription(ServerConstants.TABLE_ACCOUNT_TYPE, accountTypeDTO.getId(), "description",rootUser.getLanguage().getId(),getMessage("default.account.type.name", locale));
 
         PaymentMethodDTO paymentMethodDTO = paymentMethodDAO.findById(ServerConstants.PAYMENT_METHOD_CHEQUE).get();
-        paymentMethodDTO.getEntities().add(company);
+        paymentMethodDTO.getEntities().add(rootUser.getCompany());
 
         PaymentMethodDTO paymentMethodVisaDTO = paymentMethodDAO.findById(ServerConstants.PAYMENT_METHOD_VISA).get();
-        paymentMethodVisaDTO.getEntities().add(company);
+        paymentMethodVisaDTO.getEntities().add(rootUser.getCompany());
 
         PaymentMethodDTO paymentMethodMasterCardDTO = paymentMethodDAO.findById(ServerConstants.PAYMENT_METHOD_MASTERCARD).get();
-        paymentMethodMasterCardDTO.getEntities().add(company);
+        paymentMethodMasterCardDTO.getEntities().add(rootUser.getCompany());
 
         InvoiceDeliveryMethodDTO InvoiceDeliveryMethodDTOEmail = invoiceDeliveryMethodDAO.findById(ServerConstants.D_METHOD_EMAIL).get();
-        InvoiceDeliveryMethodDTOEmail.getEntities().add(company);
+        InvoiceDeliveryMethodDTOEmail.getEntities().add(rootUser.getCompany());
 
         InvoiceDeliveryMethodDTO InvoiceDeliveryMethodDTOPaper = invoiceDeliveryMethodDAO.findById(ServerConstants.D_METHOD_PAPER).get();
-        InvoiceDeliveryMethodDTOPaper.getEntities().add(company);
+        InvoiceDeliveryMethodDTOPaper.getEntities().add(rootUser.getCompany());
 
         InvoiceDeliveryMethodDTO InvoiceDeliveryMethodDTOEmailAndPaper = invoiceDeliveryMethodDAO.findById(ServerConstants.D_METHOD_EMAIL_AND_PAPER).get();
-        InvoiceDeliveryMethodDTOEmailAndPaper.getEntities().add(company);
+        InvoiceDeliveryMethodDTOEmailAndPaper.getEntities().add(rootUser.getCompany());
     	
     	/* Reports code is blocked and added later
     	List<ReportDTO> reportDTOList =reportDAO.findAll();
@@ -231,7 +233,7 @@ public class UtilServiceImpl implements UtilService {
     	}*/
 
         BillingProcessConfigurationDTO billingProcessConfigurationDTO = new BillingProcessConfigurationDTO();
-        billingProcessConfigurationDTO.setEntity(company);
+        billingProcessConfigurationDTO.setEntity(rootUser.getCompany());
         billingProcessConfigurationDTO.setGenerateReport(1);
         billingProcessConfigurationDTO.setRetries(0);
         billingProcessConfigurationDTO.setDaysForRetry(1);
@@ -249,7 +251,7 @@ public class UtilServiceImpl implements UtilService {
         billingProcessConfigurationDAO.save(billingProcessConfigurationDTO);
 
         PluggableTaskDTO paymentPluggableTaskDTO = new PluggableTaskDTO();
-        paymentPluggableTaskDTO.setEntityId(company.getId());
+        paymentPluggableTaskDTO.setEntityId(rootUser.getCompany().getId());
         paymentPluggableTaskDTO.setProcessingOrder(1);
         paymentPluggableTaskDTO.setType(new PluggableTaskTypeDTO(21));
         paymentPluggableTaskDTO = pluggableTaskDAO.save(paymentPluggableTaskDTO);
@@ -257,7 +259,7 @@ public class UtilServiceImpl implements UtilService {
         pluggableTaskParameterDAO.save(pluggableTaskParameterDTO);
 
         PluggableTaskDTO emailPluggableTaskDTO = new PluggableTaskDTO();
-        emailPluggableTaskDTO.setEntityId(company.getId());
+        emailPluggableTaskDTO.setEntityId(rootUser.getCompany().getId());
         emailPluggableTaskDTO.setProcessingOrder(1);
         emailPluggableTaskDTO.setType(new PluggableTaskTypeDTO(9));
         Set<PluggableTaskParameterDTO> pluggableTaskParameterDTOSet = new HashSet<>();
@@ -274,7 +276,7 @@ public class UtilServiceImpl implements UtilService {
         updateParametersForTask(emailPluggableTaskDTO);
 
         PluggableTaskDTO notificationPluggableTaskDTO = new PluggableTaskDTO();
-        notificationPluggableTaskDTO.setEntityId(company.getId());
+        notificationPluggableTaskDTO.setEntityId(rootUser.getCompany().getId());
         notificationPluggableTaskDTO.setProcessingOrder(2);
         notificationPluggableTaskDTO.setType(new PluggableTaskTypeDTO(12));
         Set<PluggableTaskParameterDTO> notificationPluggableTaskParameterDTOSet = new HashSet<>();
@@ -286,100 +288,100 @@ public class UtilServiceImpl implements UtilService {
 
 
         PluggableTaskDTO pluggableTaskBasicLineTotalTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicLineTotalTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicLineTotalTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicLineTotalTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.BasicLineTotalTask"));
         pluggableTaskBasicLineTotalTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicLineTotalTaskDTO);
 
 
         PluggableTaskDTO pluggableTaskCalculateDueDateDTO = new PluggableTaskDTO();
-        pluggableTaskCalculateDueDateDTO.setEntityId(company.getId());
+        pluggableTaskCalculateDueDateDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskCalculateDueDateDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.CalculateDueDate"));
         pluggableTaskCalculateDueDateDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskCalculateDueDateDTO);
 
         PluggableTaskDTO pluggableTaskBasicCompositionTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicCompositionTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicCompositionTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicCompositionTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.BasicCompositionTask"));
         pluggableTaskBasicCompositionTaskDTO.setProcessingOrder(2);
         pluggableTaskDAO.save(pluggableTaskBasicCompositionTaskDTO);
 
         PluggableTaskDTO pluggableTaskBasicOrderFilterTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicOrderFilterTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicOrderFilterTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicOrderFilterTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.BasicOrderFilterTask"));
         pluggableTaskBasicOrderFilterTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicOrderFilterTaskDTO);
 
         PluggableTaskDTO pluggableTaskBasicInvoiceFilterTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicInvoiceFilterTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicInvoiceFilterTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicInvoiceFilterTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.BasicInvoiceFilterTask"));
         pluggableTaskBasicInvoiceFilterTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicInvoiceFilterTaskDTO);
 
 
         PluggableTaskDTO pluggableTaskBasicOrderPeriodTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicOrderPeriodTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicOrderPeriodTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicOrderPeriodTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.BasicOrderPeriodTask"));
         pluggableTaskBasicOrderPeriodTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicOrderPeriodTaskDTO);
         PluggableTaskDTO pluggableTaskBasicPaymentInfoTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicPaymentInfoTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicPaymentInfoTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicPaymentInfoTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.pluggableTask.BasicPaymentInfoTask"));
         pluggableTaskBasicPaymentInfoTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicPaymentInfoTaskDTO);
         PluggableTaskDTO pluggableTaskNoAsyncParametersDTO = new PluggableTaskDTO();
-        pluggableTaskNoAsyncParametersDTO.setEntityId(company.getId());
+        pluggableTaskNoAsyncParametersDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskNoAsyncParametersDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.payment.NoAsyncParameters"));
         pluggableTaskNoAsyncParametersDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskNoAsyncParametersDTO);
         PluggableTaskDTO pluggableTaskBasicItemManagerDTO = new PluggableTaskDTO();
-        pluggableTaskBasicItemManagerDTO.setEntityId(company.getId());
+        pluggableTaskBasicItemManagerDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicItemManagerDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.item.BasicItemManager"));
         pluggableTaskBasicItemManagerDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicItemManagerDTO);
         PluggableTaskDTO pluggableTaskDynamicBalanceManagerTaskDTO = new PluggableTaskDTO();
-        pluggableTaskDynamicBalanceManagerTaskDTO.setEntityId(company.getId());
+        pluggableTaskDynamicBalanceManagerTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskDynamicBalanceManagerTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.user.DynamicBalanceManagerTask"));
         pluggableTaskDynamicBalanceManagerTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskDynamicBalanceManagerTaskDTO);
         PluggableTaskDTO pluggableTaskBillingProcessTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBillingProcessTaskDTO.setEntityId(company.getId());
+        pluggableTaskBillingProcessTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBillingProcessTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.billing.BillingProcessTask"));
         pluggableTaskBillingProcessTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBillingProcessTaskDTO);
         PluggableTaskDTO pluggableTaskAgeingProcessTaskDTO = new PluggableTaskDTO();
-        pluggableTaskAgeingProcessTaskDTO.setEntityId(company.getId());
+        pluggableTaskAgeingProcessTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskAgeingProcessTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.process.AgeingProcessTask"));
         pluggableTaskAgeingProcessTaskDTO.setProcessingOrder(2);
         pluggableTaskDAO.save(pluggableTaskAgeingProcessTaskDTO);
         PluggableTaskDTO pluggableTaskBasicAgeingTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicAgeingTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicAgeingTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicAgeingTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.process.BasicAgeingTask"));
         pluggableTaskBasicAgeingTaskDTO.setProcessingOrder(1);
         pluggableTaskDAO.save(pluggableTaskBasicAgeingTaskDTO);
         PluggableTaskDTO pluggableTaskBasicBillingProcessFilterTaskDTO = new PluggableTaskDTO();
-        pluggableTaskBasicBillingProcessFilterTaskDTO.setEntityId(company.getId());
+        pluggableTaskBasicBillingProcessFilterTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskBasicBillingProcessFilterTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.process.BasicBillingProcessFilterTask"));
         pluggableTaskBasicBillingProcessFilterTaskDTO.setProcessingOrder(2);
         pluggableTaskDAO.save(pluggableTaskBasicBillingProcessFilterTaskDTO);
         PluggableTaskDTO pluggableTaskCreateOrderForResellerTaskDTO = new PluggableTaskDTO();
-        pluggableTaskCreateOrderForResellerTaskDTO.setEntityId(company.getId());
+        pluggableTaskCreateOrderForResellerTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskCreateOrderForResellerTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.order.CreateOrderForResellerTask"));
         pluggableTaskCreateOrderForResellerTaskDTO.setProcessingOrder(2);
         pluggableTaskDAO.save(pluggableTaskCreateOrderForResellerTaskDTO);
         PluggableTaskDTO pluggableTaskDeleteResellerOrderTaskDTO = new PluggableTaskDTO();
-        pluggableTaskDeleteResellerOrderTaskDTO.setEntityId(company.getId());
+        pluggableTaskDeleteResellerOrderTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskDeleteResellerOrderTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.invoice.DeleteResellerOrderTask"));
         pluggableTaskDeleteResellerOrderTaskDTO.setProcessingOrder(3);
         pluggableTaskDAO.save(pluggableTaskDeleteResellerOrderTaskDTO);
         PluggableTaskDTO pluggableTaskOrderChangeApplyOrderStatusTaskDTO = new PluggableTaskDTO();
-        pluggableTaskOrderChangeApplyOrderStatusTaskDTO.setEntityId(company.getId());
+        pluggableTaskOrderChangeApplyOrderStatusTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskOrderChangeApplyOrderStatusTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.order.OrderChangeApplyOrderStatusTask"));
         pluggableTaskOrderChangeApplyOrderStatusTaskDTO.setProcessingOrder(7);
         pluggableTaskDAO.save(pluggableTaskOrderChangeApplyOrderStatusTaskDTO);
 
         PluggableTaskDTO pluggableTaskTestNotificationTaskDTO = new PluggableTaskDTO();
-        pluggableTaskTestNotificationTaskDTO.setEntityId(company.getId());
+        pluggableTaskTestNotificationTaskDTO.setEntityId(rootUser.getCompany().getId());
         pluggableTaskTestNotificationTaskDTO.setType(pluggableTaskTypeDAO.findByClassName("com.ngbilling.core.server.persistence.dto.notification.TestNotificationTask"));
         pluggableTaskTestNotificationTaskDTO.setProcessingOrder(3);
         Set<PluggableTaskParameterDTO> notificationParameter = new HashSet<>();
@@ -396,7 +398,7 @@ public class UtilServiceImpl implements UtilService {
 
         PreferenceDTO preferenceDTO = new PreferenceDTO();
         preferenceDTO.setJbillingTable(jBillingTable);
-        preferenceDTO.setForeignId(company.getId());
+        preferenceDTO.setForeignId(rootUser.getCompany().getId());
         preferenceDTO.setValue(1);
         PreferenceTypeDTO preferenceTypeDTO = new PreferenceTypeDTO();
         preferenceTypeDTO.setId(ServerConstants.PREFERENCE_SHOW_NOTE_IN_INVOICE);
@@ -405,7 +407,7 @@ public class UtilServiceImpl implements UtilService {
 
         PreferenceDTO preferenceInvoicePrefixDTO = new PreferenceDTO();
         preferenceInvoicePrefixDTO.setJbillingTable(jBillingTable);
-        preferenceInvoicePrefixDTO.setForeignId(company.getId());
+        preferenceInvoicePrefixDTO.setForeignId(rootUser.getCompany().getId());
         preferenceInvoicePrefixDTO.setValue(0);
         PreferenceTypeDTO preferenceTypeInvoicePrefixDTO = new PreferenceTypeDTO();
         preferenceTypeInvoicePrefixDTO.setId(ServerConstants.PREFERENCE_INVOICE_PREFIX);
@@ -414,41 +416,28 @@ public class UtilServiceImpl implements UtilService {
 
         PreferenceDTO preferenceInvoiceNumberDTO = new PreferenceDTO();
         preferenceInvoiceNumberDTO.setJbillingTable(jBillingTable);
-        preferenceInvoiceNumberDTO.setForeignId(company.getId());
+        preferenceInvoiceNumberDTO.setForeignId(rootUser.getCompany().getId());
         preferenceInvoiceNumberDTO.setValue(0);
         PreferenceTypeDTO preferenceTypeInvoiceNumberDTO = new PreferenceTypeDTO();
         preferenceTypeInvoiceNumberDTO.setId(ServerConstants.PREFERENCE_INVOICE_PREFIX);
         preferenceInvoiceNumberDTO.setPreferenceType(preferenceTypeInvoiceNumberDTO);
         preferenceDAO.save(preferenceInvoiceNumberDTO);
 
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_INVOICE_EMAIL, "signup.notification.email.title", "signup.notification.email", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_USER_REACTIVATED, "signup.notification.user.reactivated.title", "signup.notification.user.reactivated", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_USER_OVERDUE, "signup.notification.overdue.title", "signup.notification.overdue", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_ORDER_EXPIRE_1, "signup.notification.order.expire.1.title", "signup.notification.order.expire.1", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_PAYMENT_SUCCESS, "signup.notification.payment.success.title", "signup.notification.payment.success", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_PAYMENT_FAILED, "signup.notification.payment.failed.title", "signup.notification.payment.failed", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_INVOICE_REMINDER, "signup.notification.invoice.reminder.title", "signup.notification.invoice.reminder", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_CREDIT_CARD_UPDATE, "signup.notification.credit.card.update.title", "signup.notification.credit.card.update", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_LOST_PASSWORD, "signup.notification.lost.password.update.title", "signup.notification.lost.password.update", company, language, locale);
-        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_INITIAL_CREDENTIALS, "signup.notification.initial.credentials.update.title", "signup.notification.initial.credentials.update", company, language, locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_INVOICE_EMAIL, "signup.notification.email.title", "signup.notification.email", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_USER_REACTIVATED, "signup.notification.user.reactivated.title", "signup.notification.user.reactivated", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_USER_OVERDUE, "signup.notification.overdue.title", "signup.notification.overdue", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_ORDER_EXPIRE_1, "signup.notification.order.expire.1.title", "signup.notification.order.expire.1", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_PAYMENT_SUCCESS, "signup.notification.payment.success.title", "signup.notification.payment.success", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_PAYMENT_FAILED, "signup.notification.payment.failed.title", "signup.notification.payment.failed", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_INVOICE_REMINDER, "signup.notification.invoice.reminder.title", "signup.notification.invoice.reminder", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_CREDIT_CARD_UPDATE, "signup.notification.credit.card.update.title", "signup.notification.credit.card.update", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_LOST_PASSWORD, "signup.notification.lost.password.update.title", "signup.notification.lost.password.update", rootUser.getCompany(), rootUser.getLanguage(), locale);
+        createNotificationMessage(ServerConstants.NOTIFICATION_TYPE_INITIAL_CREDENTIALS, "signup.notification.initial.credentials.update.title", "signup.notification.initial.credentials.update", rootUser.getCompany(), rootUser.getLanguage(), locale);
 
         PaymentMethodTemplateDTO paymentMethodTemplateCardDTO = paymentMethodTemplateDAO.findByName(ServerConstants.PAYMENT_CARD);
-        MetaField metaField = new MetaField();
-        metaField.setEntity(company);
-        metaField.setName("cc.cardholder.name");
-        metaField.setEntityType(EntityType.PAYMENT_METHOD_TEMPLATE);
-        metaField.setDataType(DataType.STRING);
-        metaField.setDisabled(false);
-        metaField.setMandatory(true);
-        metaField.setPrimary(true);
-        metaField.setDisplayOrder(1);
-        metaField.setFieldUsage(MetaFieldType.TITLE);
-        paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(metaField);
+        paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.TITLE,"cc.cardholder.name",1,rootUser.getCompany(),DataType.STRING,false,true,true));
 
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.PAYMENT_CARD_NUMBER);
-        metaField.setName("cc.number");
-        metaField.setDisplayOrder(2);
+        MetaField metaField = createMetaField(MetaFieldType.PAYMENT_CARD_NUMBER,"cc.number",2,rootUser.getCompany(),DataType.STRING,false,true,true);
         ValidationRule validationRule = new ValidationRule();
         validationRule.setRuleType(ValidationRuleType.PAYMENT_CARD);
         validationRule.setEnabled(true);
@@ -459,152 +448,75 @@ public class UtilServiceImpl implements UtilService {
 
         int valRulId = jbillingTableDAO.findByName(ServerConstants.TABLE_VALIDATION_RULE).getId();
         InternationalDescriptionId internationalDescriptionId = new InternationalDescriptionId(valRulId, validationRule.getId(),
-                "errorMessage", language.getId());
+                "errorMessage", rootUser.getLanguage().getId());
         //internationalDescriptionDAO.save(internationalDescriptionId);
         InternationalDescriptionDTO internationalDescriptionDTO = new InternationalDescriptionDTO(internationalDescriptionId,
                 getMessage("validation.payment.card.number.invalid", locale));
         internationalDescriptionDAO.save(internationalDescriptionDTO);
 
 
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.DATE);
-        SortedMap<String, String> attributes = new TreeMap<String, String>();
-        attributes.put("regularExpression", "(?:0[1-9]|1[0-2])/[0-9]{4}");
-        ValidationRule validationRuleRegex = new ValidationRule();
-        validationRuleRegex.setRuleType(ValidationRuleType.REGEX);
-        validationRuleRegex.setEnabled(true);
-        validationRuleRegex.setRuleAttributes(attributes);
-        validationRuleRegex = validationRuleDAO.save(validationRuleRegex);
-        metaField.setName("cc.expiry.date");
-        metaField.setDisplayOrder(3);
-
-        metaField.setValidationRule(validationRuleRegex);
+        metaField = createMetaField(MetaFieldType.DATE,"cc.expiry.date",3,rootUser.getCompany(),DataType.STRING,false,true,true);
+//        SortedMap<String, String> attributes = new TreeMap<String, String>();
+//        attributes.put("regularExpression", "(?:0[1-9]|1[0-2])/[0-9]{4}");
+//        ValidationRule validationRuleRegex = new ValidationRule();
+//        validationRuleRegex.setRuleType(ValidationRuleType.REGEX);
+//        validationRuleRegex.setEnabled(true);
+//        validationRuleRegex.setRuleAttributes(attributes);
+//        validationRuleRegex = validationRuleDAO.save(validationRuleRegex);
+//        metaField.setValidationRule(validationRuleRegex);
         paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(metaField);
-        InternationalDescriptionId internationalDescriptionIdRegex = new InternationalDescriptionId(valRulId, validationRuleRegex.getId(),
-                "errorMessage", language.getId());
-
-        InternationalDescriptionDTO internationalDescriptionExpiryDTO = new InternationalDescriptionDTO(internationalDescriptionIdRegex,
-                getMessage("validation.payment.card.expiry.date.invalid", locale));
-        internationalDescriptionDAO.save(internationalDescriptionExpiryDTO);
-
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.GATEWAY_KEY);
-        metaField.setValidationRule(null);
-
-        metaField.setName("cc.gateway.key");
-        metaField.setDisplayOrder(4);
-        metaField.setDisabled(true);
-        metaField.setMandatory(false);
-        paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(metaField);
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.CC_TYPE);
-        metaField.setName("cc.type");
-        metaField.setDisplayOrder(5);
-        metaField.setDataType(DataType.INTEGER);
-        paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(metaField);
+//        InternationalDescriptionId internationalDescriptionIdRegex = new InternationalDescriptionId(valRulId, validationRuleRegex.getId(),
+//                "errorMessage", rootUser.getLanguage().getId());
+//
+//        InternationalDescriptionDTO internationalDescriptionExpiryDTO = new InternationalDescriptionDTO(internationalDescriptionIdRegex,
+//                getMessage("validation.payment.card.expiry.date.invalid", locale));
+//        internationalDescriptionDAO.save(internationalDescriptionExpiryDTO);
+        paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.GATEWAY_KEY,"cc.gateway.key",4,rootUser.getCompany(),DataType.STRING,false,true,true));
+        paymentMethodTemplateCardDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.CC_TYPE,"cc.type",5,rootUser.getCompany(),DataType.INTEGER,false,true,true));
 
 
         PaymentMethodTemplateDTO paymentMethodTemplateAchDTO = paymentMethodTemplateDAO.findByName(ServerConstants.ACH);
-        metaField = new MetaField();
-        metaField.setDisabled(false);
-        metaField.setMandatory(true);
-
-        metaField.setFieldUsage(MetaFieldType.BANK_ROUTING_NUMBER);
-        metaField.setName("ach.routing.number");
-        metaField.setDisplayOrder(1);
-        metaField.setDataType(DataType.STRING);
-        SortedMap<String, String> attributesRouting = new TreeMap<String, String>();
-        attributes.put("regularExpression", "(?<=\\\\s|^)\\\\d+(?=\\\\s|$)");
-        ValidationRule validationRuleRouting = new ValidationRule();
-        validationRuleRouting.setRuleType(ValidationRuleType.REGEX);
-        validationRuleRouting.setEnabled(true);
-        validationRuleRouting.setRuleAttributes(attributesRouting);
-        validationRuleRouting = validationRuleDAO.save(validationRuleRouting);
-        metaField.setValidationRule(validationRuleRouting);
-
-
+        metaField = createMetaField(MetaFieldType.BANK_ROUTING_NUMBER,"ach.routing.number",1,rootUser.getCompany(),DataType.STRING,false,true,true);
+//        SortedMap<String, String> attributesRouting = new TreeMap<String, String>();
+//        attributes.put("regularExpression", "(?<=\\\\s|^)\\\\d+(?=\\\\s|$)");
+//        ValidationRule validationRuleRouting = new ValidationRule();
+//        validationRuleRouting.setRuleType(ValidationRuleType.REGEX);
+//        validationRuleRouting.setEnabled(true);
+//        validationRuleRouting.setRuleAttributes(attributesRouting);
+//        validationRuleRouting = validationRuleDAO.save(validationRuleRouting);
+//        metaField.setValidationRule(validationRuleRouting);
         paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(metaField);
-        InternationalDescriptionId internationalDescriptionIdRouting = new InternationalDescriptionId(valRulId, validationRuleRouting.getId(),
-                "errorMessage", language.getId());
-        InternationalDescriptionDTO internationalDescriptionRoutingDTO = new InternationalDescriptionDTO(internationalDescriptionIdRouting,
-                getMessage("validation.ach.aba.routing.number.invalid", locale));
-        internationalDescriptionDAO.save(internationalDescriptionRoutingDTO);
+//        InternationalDescriptionId internationalDescriptionIdRouting = new InternationalDescriptionId(valRulId, validationRuleRouting.getId(),
+//                "errorMessage", rootUser.getLanguage().getId());
+//        InternationalDescriptionDTO internationalDescriptionRoutingDTO = new InternationalDescriptionDTO(internationalDescriptionIdRouting,
+//                getMessage("validation.ach.aba.routing.number.invalid", locale));
+//        internationalDescriptionDAO.save(internationalDescriptionRoutingDTO);
 
-        metaField = new MetaField();
-        metaField.setValidationRule(null);
-        metaField.setFieldUsage(MetaFieldType.TITLE);
-        metaField.setName("ach.customer.name");
-        metaField.setDisplayOrder(2);
-        metaField.setDataType(DataType.STRING);
-        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(metaField);
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.BANK_ACCOUNT_NUMBER);
-        metaField.setName("ach.account.number");
-        metaField.setDisplayOrder(3);
-        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(metaField);
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.BANK_NAME);
-        metaField.setName("ach.bank.name");
-        metaField.setDisplayOrder(4);
-        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(metaField);
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.BANK_ACCOUNT_TYPE);
-        metaField.setName("ach.account.type");
-        metaField.setDisplayOrder(5);
-        metaField.setDataType(DataType.ENUMERATION);
-        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(metaField);
+        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.TITLE,"ach.customer.name",2,rootUser.getCompany(),DataType.STRING,false,true,true));
+        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.BANK_ACCOUNT_NUMBER,"ach.account.number",3,rootUser.getCompany(),DataType.STRING,false,true,true));
+        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.BANK_NAME,"ach.bank.name",4,rootUser.getCompany(),DataType.STRING,false,true,true));
+        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.BANK_ACCOUNT_TYPE,"ach.account.type",5,rootUser.getCompany(),DataType.ENUMERATION,false,true,true));
 
 
         EnumerationDTO enumerationDTO = new EnumerationDTO();
         enumerationDTO.setName("ach.account.type");
-        enumerationDTO.setEntity(company);
+        enumerationDTO.setEntity(rootUser.getCompany());
         enumerationDTO = enumerationDAO.save(enumerationDTO);
-
         EnumerationValueDTO enumerationValueCheckingDTO = new EnumerationValueDTO();
         enumerationValueCheckingDTO.setValue("CHECKING");
         enumerationValueCheckingDTO.setEnumeration(enumerationDTO);
         enumerationValueDAO.save(enumerationValueCheckingDTO);
-
         EnumerationValueDTO enumerationValueSavingsDTO = new EnumerationValueDTO();
         enumerationValueSavingsDTO.setValue("SAVINGS");
         enumerationValueSavingsDTO.setEnumeration(enumerationDTO);
         enumerationValueDAO.save(enumerationValueSavingsDTO);
 
-        metaField = new MetaField();
-        metaField.setDisabled(true);
-        metaField.setMandatory(false);
-        metaField.setFieldUsage(MetaFieldType.GATEWAY_KEY);
-        metaField.setName("ach.gateway.key");
-        metaField.setDisplayOrder(6);
-        metaField.setDataType(DataType.STRING);
-        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(metaField);
+        paymentMethodTemplateAchDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.GATEWAY_KEY,"ach.gateway.key",6,rootUser.getCompany(),DataType.STRING,true,false,true));
 
         PaymentMethodTemplateDTO paymentMethodTemplateChequeDTO = paymentMethodTemplateDAO.findByName(ServerConstants.CHEQUE);
-        metaField = new MetaField();
-        metaField.setDisabled(false);
-        metaField.setMandatory(true);
-        metaField.setFieldUsage(MetaFieldType.BANK_NAME);
-        metaField.setName("cheque.bank.name");
-        metaField.setDisplayOrder(1);
-        metaField.setDataType(DataType.STRING);
-        paymentMethodTemplateChequeDTO.addPaymentTemplateMetaField(metaField);
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.CHEQUE_NUMBER);
-        metaField.setName("cheque.number");
-        metaField.setDisplayOrder(2);
-        paymentMethodTemplateChequeDTO.addPaymentTemplateMetaField(metaField);
-
-        metaField = new MetaField();
-        metaField.setFieldUsage(MetaFieldType.DATE);
-        metaField.setName("cheque.date");
-        metaField.setDisplayOrder(3);
-        paymentMethodTemplateChequeDTO.addPaymentTemplateMetaField(metaField);
+        paymentMethodTemplateChequeDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.BANK_NAME,"cheque.bank.name",1,rootUser.getCompany(),DataType.STRING,false,true,true));
+        paymentMethodTemplateChequeDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.CHEQUE_NUMBER,"cheque.number",2,rootUser.getCompany(),DataType.STRING,false,true,true));
+        paymentMethodTemplateChequeDTO.addPaymentTemplateMetaField(createMetaField(MetaFieldType.DATE,"cheque.date",3,rootUser.getCompany(),DataType.DATE,false,true,true));
 
         paymentMethodTemplateDAO.save(paymentMethodTemplateChequeDTO);
         paymentMethodTemplateDAO.save(paymentMethodTemplateAchDTO);
@@ -612,6 +524,20 @@ public class UtilServiceImpl implements UtilService {
 
     }
 
+    private MetaField createMetaField(MetaFieldType metaFieldType,String name,Integer order,CompanyDTO companyDTO,DataType dataType ,boolean disabled,boolean mandatory,boolean primary){
+        MetaField metaField = new MetaField();
+        metaField.setFieldUsage(metaFieldType);
+        metaField.setName(name);
+        metaField.setDisplayOrder(order);
+        metaField.setEntity(companyDTO);
+        metaField.setEntityType(EntityType.PAYMENT_METHOD_TEMPLATE);
+        metaField.setDataType(dataType);
+        metaField.setDisabled(disabled);
+        metaField.setMandatory(mandatory);
+        metaField.setPrimary(primary);
+        metaFieldDAO.save(metaField);
+        return metaField;
+    }
     @Override
     public EventLogAPIDTO createEventLogAPI(EventLogAPIDTO eventLogAPIDTO) {
         EventLogAPIDTO eventAPIDTO  = eventLogAPIDAO.save(eventLogAPIDTO);

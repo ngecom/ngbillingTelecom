@@ -34,7 +34,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@TableGenerator(name = "invoice_line_GEN", table = "jbilling_seqs", pkColumnName = "name", valueColumnName = "next_id", pkColumnValue = "invoice_line", allocationSize = 100)
 @Table(name = "invoice_line")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class InvoiceLineDTO implements Serializable {
@@ -115,7 +114,11 @@ public class InvoiceLineDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice_line_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_line_GEN")
+    @SequenceGenerator(
+            name = "invoice_line_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

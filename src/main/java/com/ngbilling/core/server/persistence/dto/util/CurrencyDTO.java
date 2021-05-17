@@ -44,14 +44,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "currency")
-@TableGenerator(
-        name = "currency_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "currency",
-        allocationSize = 10
-)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class CurrencyDTO extends AbstractDescription implements java.io.Serializable {
 
@@ -133,7 +125,7 @@ public class CurrencyDTO extends AbstractDescription implements java.io.Serializ
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "currency_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

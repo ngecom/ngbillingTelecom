@@ -9,14 +9,6 @@ import java.io.Serializable;
  * @author khobab
  */
 @Entity
-@TableGenerator(
-        name = "payment_instrument_info_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "payment_instrument_info",
-        allocationSize = 10
-)
 @Table(name = "payment_instrument_info")
 @ToString
 public class PaymentInstrumentInfoDTO implements Serializable {
@@ -44,7 +36,11 @@ public class PaymentInstrumentInfoDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(generator = "payment_instrument_info_GEN", strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_instrument_info_GEN")
+    @SequenceGenerator(
+            name = "payment_instrument_info_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;

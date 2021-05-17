@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContactDAO extends JpaRepository<ContactDTO, Integer> {
 
-    @Query("SELECT c "
+    @Query("SELECT distinct c "
             + "  FROM ContactDTO c, JbillingTable d "
             + " WHERE c.contactMap.jbillingTable.id = d.id "
             + "   AND d.name = ?1 "

@@ -31,13 +31,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "payment_authorization_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "payment_authorization",
-        allocationSize = 100)
 @Table(name = "payment_authorization")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PaymentAuthorizationDTO implements Serializable {
@@ -108,7 +101,11 @@ public class PaymentAuthorizationDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "payment_authorization_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_authorization_GEN")
+    @SequenceGenerator(
+            name = "payment_authorization_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

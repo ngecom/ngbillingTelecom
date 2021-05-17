@@ -31,14 +31,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "asset_transition")
-@TableGenerator(
-        name = "asset_transition_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "asset_transition",
-        allocationSize = 100
-)
 @NamedQueries({
         @NamedQuery(name = "AssetTransitionDTO.findForAsset",
                 query = "select at from AssetTransitionDTO at where at.asset.id= :asset_id order by createDatetime desc, id desc")
@@ -65,7 +57,11 @@ public class AssetTransitionDTO implements Serializable {
     private UserDTO user;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "asset_transition_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_transition_GEN")
+    @SequenceGenerator(
+            name = "asset_transition_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

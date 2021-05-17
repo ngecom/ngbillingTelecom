@@ -31,20 +31,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@TableGenerator(
-        name = "event_logApi_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "event_api_log",
-        allocationSize = 1000
-)
 @Table(name = "event_api_log")
 @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class EventLogAPIDTO implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "event_logApi_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_logApi_GEN")
+    @SequenceGenerator(
+            name = "event_logApi_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 

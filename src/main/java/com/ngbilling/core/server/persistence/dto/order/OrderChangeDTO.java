@@ -49,14 +49,6 @@ import java.util.Set;
  * @since 09.07.13
  */
 @Entity
-@TableGenerator(
-        name = "order_change_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "order_change",
-        allocationSize = 100
-)
 @Table(name = "order_change")
 @Cache(usage = CacheConcurrencyStrategy.NONE)
 public class OrderChangeDTO implements java.io.Serializable {
@@ -104,7 +96,12 @@ public class OrderChangeDTO implements java.io.Serializable {
     private boolean isPercentage = false;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "order_change_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_change_GEN")
+    @SequenceGenerator(
+            name = "order_change_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;

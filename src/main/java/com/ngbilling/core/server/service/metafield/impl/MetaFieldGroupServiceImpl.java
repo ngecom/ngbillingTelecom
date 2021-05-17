@@ -11,7 +11,6 @@ import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.service.metafield.MetaFieldGroupService;
 import com.ngbilling.core.server.service.metafield.MetaFieldService;
-import com.ngbilling.core.server.util.ServerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

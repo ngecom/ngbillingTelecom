@@ -36,13 +36,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@TableGenerator(
-        name = "payment_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "payment",
-        allocationSize = 100)
 @Table(name = "payment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PaymentDTO implements Serializable {
@@ -178,7 +171,11 @@ public class PaymentDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "payment_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_GEN")
+    @SequenceGenerator(
+            name = "payment_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

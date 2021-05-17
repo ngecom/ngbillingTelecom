@@ -35,14 +35,6 @@ import java.util.Date;
  * @author emilc
  */
 @Entity
-@TableGenerator(
-        name = "mediation_record_line_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "mediation_record_line",
-        allocationSize = 100
-)
 @Table(name = "mediation_record_line")
 // no cache : it is hardly ever re-read 
 public class MediationRecordLineDTO implements Serializable {
@@ -83,9 +75,12 @@ public class MediationRecordLineDTO implements Serializable {
         this.quantity = ws.getQuantity();
         this.description = ws.getDescription();
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_record_line_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mediation_record_line_GEN")
+    @SequenceGenerator(
+            name = "mediation_record_line_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;

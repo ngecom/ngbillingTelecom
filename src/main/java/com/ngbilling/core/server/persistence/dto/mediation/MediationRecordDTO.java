@@ -23,13 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-@TableGenerator(
-        name = "mediation_record_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "mediation_record",
-        allocationSize = 100)
 @Entity
 @Table(name = "mediation_record")
 // no cache : it is hardly ever re-read 
@@ -68,8 +61,12 @@ public class MediationRecordDTO implements Serializable {
         this.lines = lines;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "mediation_record_GEN")
+   @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mediation_record_GEN")
+    @SequenceGenerator(
+            name = "mediation_record_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;

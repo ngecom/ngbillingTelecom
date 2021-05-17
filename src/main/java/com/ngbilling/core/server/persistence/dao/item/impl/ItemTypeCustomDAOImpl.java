@@ -2,20 +2,14 @@ package com.ngbilling.core.server.persistence.dao.item.impl;
 
 import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
 import com.ngbilling.core.server.persistence.dao.item.ItemTypeCustomDAO;
-import com.ngbilling.core.server.persistence.dao.item.ItemTypeDAO;
 import com.ngbilling.core.server.persistence.dto.item.ItemTypeDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderDTO;
 import com.ngbilling.core.server.util.ServerConstants;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class ItemTypeCustomDAOImpl extends AbstractJpaDAO<ItemTypeDTO> implements ItemTypeCustomDAO {
 

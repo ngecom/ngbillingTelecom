@@ -4,18 +4,12 @@ import com.ngbilling.core.payload.request.metafield.DataType;
 import com.ngbilling.core.payload.request.metafield.MetaFieldType;
 import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
 import com.ngbilling.core.server.persistence.dao.metafield.MetaFieldCustomDAO;
-import com.ngbilling.core.server.persistence.dao.metafield.MetaFieldDAO;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class MetaFieldCustomDAOImpl extends AbstractJpaDAO<MetaField> implements MetaFieldCustomDAO {
 

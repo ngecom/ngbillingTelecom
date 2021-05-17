@@ -30,14 +30,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "asset_reservation")
-@TableGenerator(
-        name = "asset_reservation_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "asset_reservation",
-        allocationSize = 100
-)
 @NamedQueries({
         @NamedQuery(name = "AssetReservationDTO.findActiveReservationByAsset",
                 query = "select r " +
@@ -45,7 +37,6 @@ import java.util.Date;
                         " and r.endDate>current_timestamp ")
 })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-
 public class AssetReservationDTO implements Serializable {
 
     /**
@@ -72,7 +63,11 @@ public class AssetReservationDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "asset_reservation_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asset_reservation_GEN")
+    @SequenceGenerator(
+            name = "asset_reservation_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

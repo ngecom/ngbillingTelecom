@@ -46,14 +46,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "meta_field_name")
-@TableGenerator(
-        name = "meta_field_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "meta_field_name",
-        allocationSize = 10
-)
 public class MetaField extends AbstractDescription implements Serializable {
 
     private static final long serialVersionUID = 8802138744319569281L;
@@ -108,7 +100,12 @@ public class MetaField extends AbstractDescription implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "meta_field_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meta_field_GEN")
+    @SequenceGenerator(
+            name = "meta_field_GEN",
+            allocationSize = 1
+    )
+
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return id;

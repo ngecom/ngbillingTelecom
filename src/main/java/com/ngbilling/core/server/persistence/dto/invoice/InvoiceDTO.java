@@ -47,13 +47,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@TableGenerator(
-        name = "invoice_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "invoice",
-        allocationSize = 100)
 @Table(name = "invoice")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class InvoiceDTO implements Serializable {
@@ -151,9 +144,12 @@ public class InvoiceDTO implements Serializable {
         this.deleted = deleted;
         this.createTimestamp = createTimestamp;
     }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "invoice_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_GEN")
+    @SequenceGenerator(
+            name = "invoice_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public int getId() {
         return this.id;

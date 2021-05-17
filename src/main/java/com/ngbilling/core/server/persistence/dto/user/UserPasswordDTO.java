@@ -32,13 +32,6 @@ import java.util.Date;
 
 @Entity
 // No cache, mutable and critical
-@TableGenerator(
-        name = "reset_password_code_GEN",
-        table = "jbilling_seqs",
-        pkColumnName = "name",
-        valueColumnName = "next_id",
-        pkColumnValue = "user_password",
-        allocationSize = 100)
 @Table(name = "user_password_map")
 public class UserPasswordDTO implements Serializable {
     /**
@@ -61,7 +54,11 @@ public class UserPasswordDTO implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "reset_password_code_GEN")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reset_password_code_GEN")
+    @SequenceGenerator(
+            name = "reset_password_code_GEN",
+            allocationSize = 1
+    )
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;

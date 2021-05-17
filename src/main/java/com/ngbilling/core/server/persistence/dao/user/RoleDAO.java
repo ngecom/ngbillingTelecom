@@ -15,5 +15,5 @@ public interface RoleDAO extends JpaRepository<RoleDTO, Integer> {
 
     @Query(value = "select * from role a where a.role_type_id= :roleTypeId and a.entity_id= :companyId", nativeQuery = true)
     public List<RoleDTO> findRoleTypeIdAndCompanyId(Integer roleTypeId, Integer companyId);
-
+    public List<RoleDTO> findByRoleTypeId(Integer roleTypeId);
 }
