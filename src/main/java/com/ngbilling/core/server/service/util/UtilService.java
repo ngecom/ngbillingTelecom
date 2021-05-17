@@ -31,4 +31,6 @@ public interface UtilService {
     public String getDescription(String table,Integer foreignId,String label,Integer languageId);
 
     public void setDescription(String tableName, Integer foreignId, String label,Integer languageId,String content);
+    
+    public boolean isAllowSignup(Integer languageId);
 }
