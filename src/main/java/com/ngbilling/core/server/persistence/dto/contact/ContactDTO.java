@@ -439,6 +439,7 @@ public class ContactDTO implements java.io.Serializable {
                 " contactMap = null " + getContactMap() +
                 " versionNum " + getVersionNum();
     }
+
 }
 
 

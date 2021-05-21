@@ -47,6 +47,7 @@ public class RoleDTO extends AbstractDescription implements Serializable, Initia
     private CompanyDTO company;
     private Integer roleTypeId;
     private String role;
+    private String title;
     private Set<UserDTO> baseUsers = new HashSet<UserDTO>(0);
 
     private String authority;
@@ -130,7 +131,16 @@ public class RoleDTO extends AbstractDescription implements Serializable, Initia
     @Transient
     public String getTitle(Integer languageId) {
       //  return getDescription(languageId, "title");
-        return null;
+        return title;
+    }
+
+    @Transient
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
