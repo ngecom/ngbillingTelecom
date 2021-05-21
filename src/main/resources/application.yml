@@ -86,7 +86,7 @@ spring:
         Size: 1
 ngecom:
   app:
-    jwtSecret: ngBillingKey
+    jwtSecret: ngecomBillingRecurringSubscriptions
     jwtExpirationMs: 86400000
     process:
       time: 3

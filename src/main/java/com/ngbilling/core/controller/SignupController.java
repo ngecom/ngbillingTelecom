@@ -1,6 +1,6 @@
 package com.ngbilling.core.controller;
 
-import com.ngbilling.core.common.exception.MessageResponse;
+import com.ngbilling.core.common.response.MessageResponse;
 import com.ngbilling.core.facade.UserFacade;
 import com.ngbilling.core.payload.request.user.UserWS;
 import com.ngbilling.core.server.persistence.dto.audit.EventLogAPIDTO;

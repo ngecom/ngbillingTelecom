@@ -1,4 +1,4 @@
-package com.ngbilling.core.common.exception;
+package com.ngbilling.core.common.response;
 
 public class MessageResponse {
     private String message;

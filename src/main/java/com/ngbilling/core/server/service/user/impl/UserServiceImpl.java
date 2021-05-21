@@ -12,6 +12,7 @@ import com.ngbilling.core.server.service.user.UserService;
 import com.ngbilling.core.server.service.util.UtilService;
 import com.ngbilling.core.server.util.ServerConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public Locale getLocale(UserDTO user) {
@@ -97,11 +101,16 @@ public class UserServiceImpl implements UserService {
         company.setDeleted(0);
         userDTO.setCompany(companyDAO.save(company));
         ContactDTO adminContact  = userDTO.getContact();
+        ContactDTO userContact  = new ContactDTO(null,userDTO.getContact().getOrganizationName(),userDTO.getContact().getAddress1(), userDTO.getContact().getAddress2(),
+                userDTO.getContact().getCity(), userDTO.getContact().getStateProvince(), userDTO.getContact().getPostalCode(), userDTO.getContact().getCountryCode(),
+                userDTO.getContact().getLastName(), userDTO.getContact().getFirstName(), "", "", userDTO.getContact().getPhoneCountryCode(),
+                0, userDTO.getContact().getPhoneNumber(), null, null, null, userDTO.getContact().getEmail(), new Date(), 0, 1, userDTO.getContact().getUserId(),
+                null);
         userDTO.setContact(null);
         createContact(adminContact, ServerConstants.TABLE_ENTITY,userDTO.getCompany().getId());
         createRole(ServerConstants.TYPE_ROOT, userDTO); createRole(ServerConstants.TYPE_CLERK, userDTO); createRole(ServerConstants.TYPE_CUSTOMER, userDTO);
         userDTO = createAdminUser(userDTO);
-        createContact(adminContact, ServerConstants.TABLE_BASE_USER,userDTO.getId());
+        createContact(userContact, ServerConstants.TABLE_BASE_USER,userDTO.getId());
         utilService.initEntityDefault(userDTO,getLocale(userDTO));
         productService.createInternalTypeCategory(company);
         return userDTO;

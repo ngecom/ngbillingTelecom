@@ -29,6 +29,8 @@ import com.ngbilling.core.server.persistence.dao.user.UserDAO;
 import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.service.user.UserService;
+import com.ngbilling.core.server.service.util.UtilService;
+import com.ngbilling.core.server.util.ServerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.AuthenticationException;
@@ -46,7 +48,7 @@ import java.util.*;
  * class fetches a user from the database and builds a list of granted authorities from the users assigned
  * permissions and roles.
  * <p>
- * This must be used with the {@link CompanyUserAuthenticationFilter} to provide the company ID as part
+ * This must be used with the {@linkCompanyUserAuthenticationFilter} to provide the company ID as part
  * of the username to load.
  *
  * @author Brian Cowdery
@@ -61,6 +63,9 @@ public class CompanyUserDetailsService implements UserDetailsService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private UtilService utilService;
+
     public UserDetails loadUserByUsername(String s, boolean loadRoles)
             throws UsernameNotFoundException, DataAccessException {
         return loadUserByUsername(s);
@@ -70,7 +75,7 @@ public class CompanyUserDetailsService implements UserDetailsService {
      * Loads the user account and all permissions/roles for the given user name. This method does not perform
      * authentication, only retrieves the {@link UserDetails} so that authentication can proceed.
      *
-     * @param s username (principal) to retrieve
+     * @param  username (principal) to retrieve
      * @return found user details
      * @throws AuthenticationException
      * @throws DataAccessException
@@ -83,6 +88,8 @@ public class CompanyUserDetailsService implements UserDetailsService {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         List<Integer> roleIds = new LinkedList<Integer>();
         for (RoleDTO role : user.getRoles()) {
+            String title =  utilService.getDescription(ServerConstants.TABLE_ROLE, role.getId(), "title",user.getCompany().getLanguageId());
+            role.setTitle(title);
             role.initializeAuthority();
             authorities.add(role);
             roleIds.add(role.getRoleTypeId());
@@ -97,7 +104,7 @@ public class CompanyUserDetailsService implements UserDetailsService {
                 user.getEntity().getId(), user.getCurrency().getId(), user.getLanguage().getId());
     }
 
-    private Integer selectMainRole(Collection<Integer> allRoleIds) {
+     private Integer selectMainRole(Collection<Integer> allRoleIds) {
         Integer result = null;
         for (Iterator<Integer> roleIds = allRoleIds.iterator(); roleIds.hasNext(); ) {
             Integer nextId = (Integer) roleIds.next();
