@@ -30,4 +30,9 @@ public class UtilController {
     public List getAllLanguages(){
         return utilService.findAllLanguages(ServerConstants.LANGUAGE_ENGLISH_ID);
     }
+    @GetMapping("/allowSignup")
+    public boolean isAllowSignup(){
+    	boolean allow=utilService.isAllowSignup(ServerConstants.LANGUAGE_ENGLISH_ID);
+        return allow;
+    }
 }
