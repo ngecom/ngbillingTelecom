@@ -46,6 +46,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildErrorResponse(itemNotFoundException, HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(TokenRefreshException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleTokenRefreshException(TokenRefreshException tokenRefreshException, WebRequest request) {
+        log.error("Token Expired Refresh Exception", tokenRefreshException);
+        return buildErrorResponse(tokenRefreshException, HttpStatus.FORBIDDEN, request);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleAllUncaughtException(Exception exception, WebRequest request) {

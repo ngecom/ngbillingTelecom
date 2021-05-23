@@ -64,6 +64,15 @@ CREATE SEQUENCE base_user_GEN START 100 INCREMENT 1;
 CREATE SEQUENCE reset_password_code_GEN START 100 INCREMENT 1;
 CREATE SEQUENCE user_status_GEN START 100 INCREMENT 1;
 
+CREATE TABLE "refresh_token" (
+     id int4 not NULL,
+     user_id int4 not NULL,
+     expiryDate timestamp not NULL,
+     "token" varchar(5000) NOT NULL,
+     CONSTRAINT token_pkey PRIMARY KEY (id),
+     CONSTRAINT token_fk FOREIGN KEY (user_id) REFERENCES base_user(id)
+)
+
 
 
 

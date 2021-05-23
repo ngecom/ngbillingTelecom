@@ -1,5 +1,6 @@
 package com.ngbilling.core.server.service.user.impl;
 
+import com.ngbilling.core.common.exception.TokenRefreshException;
 import com.ngbilling.core.common.util.CommonConstants;
 import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
 import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
@@ -14,15 +15,22 @@ import com.ngbilling.core.server.util.ServerConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${ngecom.app.jwtRefreshExpirationMs}")
+    private Long refreshTokenDurationMs;
 
     @Autowired
     private ContactDAO contactDAO;
@@ -56,6 +64,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private RefreshTokenDAO refreshTokenDAO;
 
     @Override
     public Locale getLocale(UserDTO user) {
@@ -194,5 +205,32 @@ public class UserServiceImpl implements UserService {
         return newRole;
     }
 
+    public Optional<RefreshToken> findByToken(String token) {
+        return refreshTokenDAO.findByToken(token);
+    }
 
+    public RefreshToken createRefreshToken(Integer userId) {
+        RefreshToken refreshToken = new RefreshToken();
+
+        refreshToken.setBaseUser(userDAO.findById(userId).get());
+        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+        refreshToken.setToken(UUID.randomUUID().toString());
+
+        refreshToken = refreshTokenDAO.save(refreshToken);
+        return refreshToken;
+    }
+
+    public RefreshToken verifyExpiration(RefreshToken token) {
+        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
+            refreshTokenDAO.delete(token);
+            throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
+        }
+
+        return token;
+    }
+
+    @Transactional
+    public int deleteByUserName(String userName) {
+        return refreshTokenDAO.deleteByBaseUser(userDAO.findByUserName(userName).get());
+    }
 }

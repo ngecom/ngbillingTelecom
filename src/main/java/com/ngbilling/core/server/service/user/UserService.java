@@ -6,6 +6,7 @@ import com.ngbilling.core.server.persistence.dto.user.*;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -38,5 +39,9 @@ public interface UserService {
 
     public RoleDTO createRole(Integer roleTypeId, UserDTO userDTO);
 
+    public Optional<RefreshToken> findByToken(String token);
+    public RefreshToken createRefreshToken(Integer userId);
+    public RefreshToken verifyExpiration(RefreshToken token);
+    public int deleteByUserName(String userName);
 
 }
