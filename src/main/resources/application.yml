@@ -88,8 +88,9 @@ ngecom:
   app:
     jwtSecret: ngecomBillingRecurringSubscriptions
     jwtExpirationMs: 86400000
+    jwtRefreshExpirationMs: 120000
     process:
       time: 3
       frequency: 4
 springdoc:
-  swagger-ui.path: /ngbillingAPI.html
+  swagger-ui.path: /api/ngbillingAPI.html
