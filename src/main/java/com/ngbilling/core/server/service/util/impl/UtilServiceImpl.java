@@ -54,6 +54,7 @@ import com.ngbilling.core.server.validator.metafield.ValidationRuleType;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,7 +63,10 @@ import java.util.*;
 @Service
 public class UtilServiceImpl implements UtilService {
 
-    @Autowired
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
     private LanguageDAO languageDAO;
 
     @Autowired
@@ -639,5 +643,10 @@ public class UtilServiceImpl implements UtilService {
         InternationalDescriptionId id = new InternationalDescriptionId(table.getId(), foreignId, label, languageId);
         InternationalDescriptionDTO desc = new InternationalDescriptionDTO(id, content);
         internationalDescriptionDAO.save(desc);
+    }
+    
+    @Override
+    public boolean isAllowSignup(Integer languageId) {
+    	return jdbcTemplate.queryForObject("SELECT jb_allow_signup FROM jb_host_master", Boolean.class);
     }
 }
