@@ -22,7 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String LOGIN_ENDPOINT = "/api/**";
+    private static final String LOGIN_ENDPOINT = "/api/auth/**";
+    private static final String UTIL_ENDPOINT = "/api/util/**";
 
     @Autowired
     CompanyUserDetailsService userDetailsService;
@@ -58,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, LOGIN_ENDPOINT).permitAll()
                 .antMatchers(HttpMethod.GET, LOGIN_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.POST, UTIL_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.GET, UTIL_ENDPOINT).permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

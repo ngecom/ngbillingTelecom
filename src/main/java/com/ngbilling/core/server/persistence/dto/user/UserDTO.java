@@ -342,7 +342,7 @@ public class UserDTO implements Serializable {
         this.encryptionScheme = scheme;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role_map",
             joinColumns = {@JoinColumn(name = "user_id", updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "role_id", updatable = false)})
@@ -372,7 +372,7 @@ public class UserDTO implements Serializable {
         return getCurrency().getId();
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "entity_id")
     public CompanyDTO getCompany() {
         return this.company;
@@ -412,7 +412,7 @@ public class UserDTO implements Serializable {
         return getUserStatus();
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "language_id")
     public LanguageDTO getLanguage() {
         return this.language;
