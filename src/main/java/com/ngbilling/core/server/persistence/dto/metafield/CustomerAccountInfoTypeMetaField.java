@@ -29,7 +29,6 @@ public class CustomerAccountInfoTypeMetaField implements java.io.Serializable {
     private AccountInformationTypeDTO accountInfoType;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
     @JoinColumn(name = "meta_field_value_id", nullable = false)
     private MetaFieldValue metaFieldValue;
 

@@ -10,7 +10,7 @@ public enum ValidationRuleType {
     EMAIL(new EmailValidationRuleModel()),
     RANGE(new RangeValidationRuleModel()),
     REGEX(new RegExValidationRuleModel()),
-    SCRIPT(new ScriptValidationRuleModel()),
+    //SCRIPT(new ScriptValidationRuleModel()),
     PAYMENT_CARD(new PaymentCardValidationRuleModel());
 
     // CUSTOM (new CustomValidationRuleModel());;

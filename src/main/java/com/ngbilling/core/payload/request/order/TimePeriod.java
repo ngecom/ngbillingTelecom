@@ -80,9 +80,9 @@ public class TimePeriod {
         if (own_invoice != null && own_invoice.intValue() == 1) {
             // give a unique number to it
             Calendar cal = Calendar.getInstance();
-            this.own_invoice = new Long(cal.getTimeInMillis());
+            this.own_invoice = cal.getTimeInMillis();
         } else {
-            this.own_invoice = new Long(0);
+            this.own_invoice = 0L;
         }
     }
 

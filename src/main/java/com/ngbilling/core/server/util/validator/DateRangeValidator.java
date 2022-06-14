@@ -25,7 +25,7 @@
 package com.ngbilling.core.server.util.validator;
 
 import com.ngbilling.core.common.util.FormatLogger;
-import org.apache.commons.text.WordUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -87,6 +87,6 @@ public class DateRangeValidator implements ConstraintValidator<DateRange, Object
      * @return accessor method
      */
     public Method getAccessorMethod(Class<? extends Object> klass, String propertyName) throws NoSuchMethodException {
-        return klass.getMethod("get" + WordUtils.capitalize(propertyName));
+        return klass.getMethod("get" + StringUtils.capitalize(propertyName));
     }
 }
