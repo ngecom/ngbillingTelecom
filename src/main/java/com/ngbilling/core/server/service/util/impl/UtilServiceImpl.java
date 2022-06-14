@@ -5,6 +5,7 @@ import com.ngbilling.core.payload.request.metafield.DataType;
 import com.ngbilling.core.payload.request.metafield.MetaFieldType;
 import com.ngbilling.core.payload.request.order.ApplyToOrder;
 import com.ngbilling.core.payload.request.order.OrderStatusFlag;
+import com.ngbilling.core.payload.request.util.ComboReferenceInput;
 import com.ngbilling.core.payload.request.util.NotificationMediumType;
 import com.ngbilling.core.server.persistence.dao.audit.EventLogAPIDAO;
 import com.ngbilling.core.server.persistence.dao.invoice.InvoiceDeliveryMethodDAO;
@@ -608,22 +609,27 @@ public class UtilServiceImpl implements UtilService {
     }
 
     @Override
-    public List<Object[]> findAllCurrencies(Integer languageId) {
+    public List<ComboReferenceInput> findAllCurrencies(Integer languageId) {
         List<Object[]> currencyList = currencyDAO.findAllCurrencies();
+        List<ComboReferenceInput> comboCurrencyList = new ArrayList<>();
         if(currencyList ==null||currencyList.size()==0){
             throw new NoSuchElementFoundException(getMessage(ServerConstants.TABLE_CURRENCY, Locale.ENGLISH));
         }else{
             for(Object[] currencyDTO:currencyList){
-                currencyDTO[2] = getDescription(ServerConstants.TABLE_CURRENCY, Integer.valueOf(""+currencyDTO[0]), "description",languageId);
-
+                ComboReferenceInput comboReferenceInput =  new ComboReferenceInput();
+                comboReferenceInput.setId((Integer) currencyDTO[0]);
+                comboReferenceInput.setCode((String) currencyDTO[1]);
+                comboReferenceInput.setDescription(getDescription(ServerConstants.TABLE_CURRENCY, Integer.valueOf(""+currencyDTO[0]), "description",languageId));
+                comboCurrencyList.add(comboReferenceInput);
             }
         }
-        return currencyList;
+        return comboCurrencyList;
     }
 
     @Override
-    public List<Object> findAllLanguages(Integer languageId) {
-        List<Object> languageList = languageDAO.findAllLanguages();
+    public List<ComboReferenceInput> findAllLanguages(Integer languageId) {
+        List<ComboReferenceInput> languageList = languageDAO.findAllLanguages();
+       // List<ComboReferenceInput> comboLanguageList = new ArrayList<>();
         if(languageList ==null||languageList.size()==0){
             throw new NoSuchElementFoundException(getMessage(ServerConstants.TABLE_LANGUAGE, Locale.ENGLISH));
         }
@@ -648,5 +654,22 @@ public class UtilServiceImpl implements UtilService {
     @Override
     public boolean isAllowSignup(Integer languageId) {
     	return jdbcTemplate.queryForObject("SELECT jb_allow_signup FROM jb_host_master", Boolean.class);
+    }
+
+    @Override
+    public List<ComboReferenceInput> findEntityAccountTypes(Integer entityId) {
+        List<Object[]> accountTypeList = accountTypeDAO.findEntityAccountTypes(entityId);
+        List<ComboReferenceInput> comboAccountTypeList = new ArrayList<>();
+        if(accountTypeList ==null||accountTypeList.size()==0){
+            throw new NoSuchElementFoundException(getMessage(ServerConstants.TABLE_ACCOUNT_TYPE, Locale.ENGLISH));
+        }else{
+            for(Object[] accountTypeDTO:accountTypeList){
+                ComboReferenceInput comboReferenceInput =  new ComboReferenceInput();
+                comboReferenceInput.setId((Integer) accountTypeDTO[0]);
+                comboReferenceInput.setDescription(getDescription(ServerConstants.TABLE_ACCOUNT_TYPE, Integer.valueOf(""+accountTypeDTO[0]), "description",ServerConstants.LANGUAGE_ENGLISH_ID));
+                comboAccountTypeList.add(comboReferenceInput);
+            }
+        }
+        return comboAccountTypeList;
     }
 }

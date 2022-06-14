@@ -1,6 +1,8 @@
 package com.ngbilling.core.server.service.util;
 
+import com.ngbilling.core.payload.request.util.ComboReferenceInput;
 import com.ngbilling.core.server.persistence.dto.audit.EventLogAPIDTO;
+import com.ngbilling.core.server.persistence.dto.user.AccountTypeDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 import com.ngbilling.core.server.persistence.dto.util.CountryDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
@@ -20,9 +22,9 @@ public interface UtilService {
 
     public List<CountryDTO> findAllCountries(Integer languageId);
 
-    public List<Object[]> findAllCurrencies(Integer languageId);
+    public List<ComboReferenceInput> findAllCurrencies(Integer languageId);
 
-    public List<Object> findAllLanguages(Integer languageId);
+    public List<ComboReferenceInput> findAllLanguages(Integer languageId);
 
     public void initEntityDefault(UserDTO rootUser, Locale locale);
 
@@ -33,4 +35,6 @@ public interface UtilService {
     public void setDescription(String tableName, Integer foreignId, String label,Integer languageId,String content);
     
     public boolean isAllowSignup(Integer languageId);
+
+    public List<ComboReferenceInput> findEntityAccountTypes(Integer entityId);
 }

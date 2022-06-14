@@ -16,6 +16,7 @@ import com.ngbilling.core.server.persistence.dao.user.UserDAO;
 import com.ngbilling.core.server.persistence.dto.user.RefreshToken;
 import com.ngbilling.core.server.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,16 +59,14 @@ public class LoginController {
                 roles));
     }
 
-    @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken( @RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
-
+    @GetMapping(path="/refreshtoken",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<TokenRefreshResponse> refreshtoken( @RequestParam(required = true) String requestRefreshToken) {
         return userService.findByToken(requestRefreshToken)
                 .map(userService::verifyExpiration)
                 .map(RefreshToken::getBaseUser)
                 .map(baseUser -> {
                     String token = jwtUtils.generateTokenFromUsername(baseUser.getUserName());
-                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                    return Flux.just(new TokenRefreshResponse(token, requestRefreshToken,200));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));

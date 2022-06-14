@@ -26,6 +26,7 @@ public class UtilController {
     public List getAllCurrencies(){
         return utilService.findAllCurrencies(ServerConstants.LANGUAGE_ENGLISH_ID);
     }
+
     @GetMapping("/languages")
     public List getAllLanguages(){
         return utilService.findAllLanguages(ServerConstants.LANGUAGE_ENGLISH_ID);

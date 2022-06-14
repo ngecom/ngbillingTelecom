@@ -86,7 +86,7 @@ spring:
         Size: 1
 ngecom:
   app:
-    jwtSecret: ngecomBillingRecurringSubscriptions
+    jwtSecret: ngecomBillingRecurringSubscriptionsChangeMeAccordignlyngecomBilling
     jwtExpirationMs: 86400000
     jwtRefreshExpirationMs: 120000
     process:

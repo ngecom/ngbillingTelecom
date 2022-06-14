@@ -30,7 +30,7 @@ public class JwtUtils {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 
