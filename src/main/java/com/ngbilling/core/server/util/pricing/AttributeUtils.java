@@ -24,15 +24,16 @@
 
 package com.ngbilling.core.server.util.pricing;
 
-import com.ngbilling.core.server.validator.metafield.ValidationRuleModel;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.BigDecimalValidator;
-import org.joda.time.LocalTime;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.BigDecimalValidator;
+import org.joda.time.LocalTime;
+
+import com.ngbilling.core.server.validator.metafield.ValidationRuleModel;
 
 /**
  * Simple utilities for parsing price model attributes.

@@ -15,9 +15,10 @@
  */
 package com.ngbilling.core.payload.request.item;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * This entities (WSs) are meant to be created by the system and only

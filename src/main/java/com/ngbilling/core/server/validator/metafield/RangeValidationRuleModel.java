@@ -1,12 +1,12 @@
 package com.ngbilling.core.server.validator.metafield;
 
+import java.math.BigDecimal;
+
 import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
 import com.ngbilling.core.server.util.metafield.MetaContent;
 import com.ngbilling.core.server.util.pricing.AttributeDefinition;
 import com.ngbilling.core.server.util.pricing.AttributeDefinition.Type;
 import com.ngbilling.core.server.util.pricing.AttributeUtils;
-
-import java.math.BigDecimal;
 
 /**
  * Range validation model

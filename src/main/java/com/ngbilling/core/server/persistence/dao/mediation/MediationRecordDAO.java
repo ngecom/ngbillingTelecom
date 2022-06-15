@@ -1,12 +1,13 @@
 package com.ngbilling.core.server.persistence.dao.mediation;
 
-import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
-import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordStatusDTO;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
+import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordStatusDTO;
 
 @Repository
 public interface MediationRecordDAO extends JpaRepository<MediationRecordDTO, Integer> {

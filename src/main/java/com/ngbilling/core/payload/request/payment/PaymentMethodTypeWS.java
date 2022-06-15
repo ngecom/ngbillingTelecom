@@ -1,12 +1,13 @@
 package com.ngbilling.core.payload.request.payment;
 
-import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import lombok.ToString;
 
 @ToString
 public class PaymentMethodTypeWS implements Serializable {

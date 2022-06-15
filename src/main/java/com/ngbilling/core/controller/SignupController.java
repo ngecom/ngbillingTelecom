@@ -1,8 +1,18 @@
 package com.ngbilling.core.controller;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ngbilling.core.common.response.MessageResponse;
 import com.ngbilling.core.facade.UserFacade;
-import com.ngbilling.core.facade.impl.UserFacadeImpl;
 import com.ngbilling.core.payload.request.user.UserWS;
 import com.ngbilling.core.server.persistence.dto.audit.EventLogAPIDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
@@ -11,12 +21,6 @@ import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 import com.ngbilling.core.server.service.user.UserService;
 import com.ngbilling.core.server.service.util.UtilService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @RestController
 @RequestMapping("/api/signup")

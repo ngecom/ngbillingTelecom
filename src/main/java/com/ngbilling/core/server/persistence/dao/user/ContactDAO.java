@@ -1,9 +1,10 @@
 package com.ngbilling.core.server.persistence.dao.user;
 
-import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
 
 @Repository
 public interface ContactDAO extends JpaRepository<ContactDTO, Integer> {

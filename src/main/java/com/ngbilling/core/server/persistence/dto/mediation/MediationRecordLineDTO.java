@@ -15,13 +15,25 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
-import com.ngbilling.core.payload.request.configuration.MediationRecordLineWS;
-import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Version;
+
+import com.ngbilling.core.payload.request.configuration.MediationRecordLineWS;
+import com.ngbilling.core.server.persistence.dto.order.OrderLineDTO;
 
 /**
  * This table links a mediation record (CDR) to one or more order lines. It specified how much each

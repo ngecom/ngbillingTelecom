@@ -24,12 +24,13 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 public class PluggableTaskWS {

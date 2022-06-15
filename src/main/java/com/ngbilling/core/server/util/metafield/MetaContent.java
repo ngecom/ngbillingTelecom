@@ -24,11 +24,12 @@
 
 package com.ngbilling.core.server.util.metafield;
 
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
-import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import java.util.List;
 
 import javax.persistence.Transient;
-import java.util.List;
+
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
 
 /**
  * Interface for marking classes that can contain meta-fields. This interface enforces a set

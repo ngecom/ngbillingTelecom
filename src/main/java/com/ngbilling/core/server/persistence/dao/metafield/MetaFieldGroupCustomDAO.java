@@ -1,9 +1,9 @@
 package com.ngbilling.core.server.persistence.dao.metafield;
 
+import java.util.List;
+
 import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
-
-import java.util.List;
 
 public interface MetaFieldGroupCustomDAO {
 

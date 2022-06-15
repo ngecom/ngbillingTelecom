@@ -16,9 +16,10 @@
 
 package com.ngbilling.core.server.persistence.dto.mediation;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 
 @Embeddable
 public class MapPK implements Serializable {

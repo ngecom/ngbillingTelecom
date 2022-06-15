@@ -15,19 +15,36 @@
  */
 package com.ngbilling.core.server.persistence.dto.order;
 
-import com.ngbilling.core.common.util.FormatLogger;
-import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
-import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+
+import com.ngbilling.core.common.util.FormatLogger;
+import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
+import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 
 /**
  * This class describes changes in order that can be applied on target date to produce changes in order lines (create/updates)

@@ -24,12 +24,18 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.server.persistence.dto.util;
 
-import com.ngbilling.core.server.util.ServerConstants;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import com.ngbilling.core.server.util.ServerConstants;
 
 /**
  * CountryDTO

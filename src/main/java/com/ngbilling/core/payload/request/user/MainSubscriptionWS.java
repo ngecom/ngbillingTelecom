@@ -1,10 +1,11 @@
 package com.ngbilling.core.payload.request.user;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 public class MainSubscriptionWS implements Serializable {
 

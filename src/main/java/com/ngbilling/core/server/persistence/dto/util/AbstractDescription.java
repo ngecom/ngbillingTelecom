@@ -25,9 +25,9 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
+
+import org.springframework.stereotype.Component;
 
 @Component
 public abstract class AbstractDescription implements Serializable {

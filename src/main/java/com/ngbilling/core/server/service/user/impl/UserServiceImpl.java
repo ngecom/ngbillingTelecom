@@ -1,17 +1,12 @@
 package com.ngbilling.core.server.service.user.impl;
 
-import com.ngbilling.core.common.exception.TokenRefreshException;
-import com.ngbilling.core.common.util.CommonConstants;
-import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
-import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
-import com.ngbilling.core.server.persistence.dao.user.*;
-import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
-import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
-import com.ngbilling.core.server.persistence.dto.user.*;
-import com.ngbilling.core.server.service.item.ProductService;
-import com.ngbilling.core.server.service.user.UserService;
-import com.ngbilling.core.server.service.util.UtilService;
-import com.ngbilling.core.server.util.ServerConstants;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +14,31 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.UUID;
+import com.ngbilling.core.common.exception.TokenRefreshException;
+import com.ngbilling.core.common.util.CommonConstants;
+import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
+import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
+import com.ngbilling.core.server.persistence.dao.user.CompanyDAO;
+import com.ngbilling.core.server.persistence.dao.user.ContactDAO;
+import com.ngbilling.core.server.persistence.dao.user.ContactMapDAO;
+import com.ngbilling.core.server.persistence.dao.user.RefreshTokenDAO;
+import com.ngbilling.core.server.persistence.dao.user.RoleDAO;
+import com.ngbilling.core.server.persistence.dao.user.UserDAO;
+import com.ngbilling.core.server.persistence.dao.user.UserStatusDAO;
+import com.ngbilling.core.server.persistence.dao.user.UserSubscriptionStatusDAO;
+import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
+import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.user.MainSubscriptionDTO;
+import com.ngbilling.core.server.persistence.dto.user.RefreshToken;
+import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
+import com.ngbilling.core.server.persistence.dto.user.SubscriberStatusDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserStatusDTO;
+import com.ngbilling.core.server.service.item.ProductService;
+import com.ngbilling.core.server.service.user.UserService;
+import com.ngbilling.core.server.service.util.UtilService;
+import com.ngbilling.core.server.util.ServerConstants;
 
 @Service
 public class UserServiceImpl implements UserService {

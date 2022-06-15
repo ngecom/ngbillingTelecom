@@ -1,9 +1,9 @@
 package com.ngbilling.core.server.persistence.dao.item;
 
-import com.ngbilling.core.server.persistence.dto.item.ItemTypeDTO;
-
 import java.util.Date;
 import java.util.List;
+
+import com.ngbilling.core.server.persistence.dto.item.ItemTypeDTO;
 
 public interface ItemTypeCustomDAO {
 

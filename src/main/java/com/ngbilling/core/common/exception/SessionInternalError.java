@@ -24,11 +24,12 @@
 
 package com.ngbilling.core.common.exception;
 
-import com.ngbilling.core.common.util.FormatLogger;
-import org.slf4j.LoggerFactory;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import org.slf4j.LoggerFactory;
+
+import com.ngbilling.core.common.util.FormatLogger;
 
 
 public class SessionInternalError extends RuntimeException {

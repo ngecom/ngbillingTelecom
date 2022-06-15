@@ -24,13 +24,12 @@
 
 package com.ngbilling.core.server.service.user.impl;
 
-import com.ngbilling.core.payload.request.user.CompanyUserDetails;
-import com.ngbilling.core.server.persistence.dao.user.UserDAO;
-import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-import com.ngbilling.core.server.service.user.UserService;
-import com.ngbilling.core.server.service.util.UtilService;
-import com.ngbilling.core.server.util.ServerConstants;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.AuthenticationException;
@@ -40,7 +39,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import com.ngbilling.core.payload.request.user.CompanyUserDetails;
+import com.ngbilling.core.server.persistence.dao.user.UserDAO;
+import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import com.ngbilling.core.server.service.user.UserService;
+import com.ngbilling.core.server.service.util.UtilService;
+import com.ngbilling.core.server.util.ServerConstants;
 
 
 /**

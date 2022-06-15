@@ -25,10 +25,10 @@
 package com.ngbilling.core.payload.request.process;
 
 
-import com.ngbilling.core.common.util.Util;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import com.ngbilling.core.common.util.Util;
 
 
 /**

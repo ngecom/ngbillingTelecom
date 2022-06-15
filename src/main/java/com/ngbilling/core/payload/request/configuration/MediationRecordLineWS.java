@@ -16,11 +16,11 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
-import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordLineDTO;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordLineDTO;
 
 /**
  * MediationRecordLineWS

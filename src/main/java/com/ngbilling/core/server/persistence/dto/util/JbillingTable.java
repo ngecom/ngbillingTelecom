@@ -24,14 +24,23 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
-import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import com.ngbilling.core.server.persistence.dto.audit.EventLogDTO;
+import com.ngbilling.core.server.persistence.dto.contact.ContactMapDTO;
 
 @Entity
 @Table(name = "jbilling_table"

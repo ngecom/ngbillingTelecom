@@ -23,26 +23,41 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.OrderBy;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.payload.request.process.BillingProcessWS;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDTO;
 import com.ngbilling.core.server.persistence.dto.order.OrderProcessDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.service.process.BillingProcessService;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.OrderBy;
-import org.hibernate.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "billing_process")

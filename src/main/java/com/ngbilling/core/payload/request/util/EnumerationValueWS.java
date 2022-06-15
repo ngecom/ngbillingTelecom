@@ -1,7 +1,8 @@
 package com.ngbilling.core.payload.request.util;
 
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+
+import javax.validation.constraints.Size;
 
 /**
  * Created by vojislav on 14.1.15.

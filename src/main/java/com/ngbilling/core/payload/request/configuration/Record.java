@@ -15,10 +15,10 @@
  */
 package com.ngbilling.core.payload.request.configuration;
 
-import com.ngbilling.core.payload.request.item.PricingField;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ngbilling.core.payload.request.item.PricingField;
 
 public class Record {
     private StringBuffer key = new StringBuffer();

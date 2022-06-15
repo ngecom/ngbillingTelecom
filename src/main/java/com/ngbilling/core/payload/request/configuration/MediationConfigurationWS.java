@@ -16,9 +16,9 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
-import com.ngbilling.core.server.persistence.dto.mediation.MediationConfiguration;
-
 import java.util.Date;
+
+import com.ngbilling.core.server.persistence.dto.mediation.MediationConfiguration;
 
 /**
  * MediationConfigurationWS

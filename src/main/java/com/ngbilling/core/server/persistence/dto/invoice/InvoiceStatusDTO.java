@@ -23,17 +23,16 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.invoice;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
-import com.ngbilling.core.server.util.ServerConstants;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+
+import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
+import com.ngbilling.core.server.util.ServerConstants;
 
 @Entity
 @DiscriminatorValue("invoice_status")

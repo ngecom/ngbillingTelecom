@@ -24,20 +24,34 @@
 
 package com.ngbilling.core.server.util.metafield;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.ngbilling.core.common.exception.MetaFieldException;
 import com.ngbilling.core.payload.request.metafield.MetaFieldValueWS;
 import com.ngbilling.core.server.persistence.dao.metafield.MetaFieldDAO;
-import com.ngbilling.core.server.persistence.dto.metafield.*;
+import com.ngbilling.core.server.persistence.dto.metafield.CustomerAccountInfoTypeMetaField;
+import com.ngbilling.core.server.persistence.dto.metafield.CustomizedEntity;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 import com.ngbilling.core.server.persistence.dto.payment.PaymentInformationDTO;
 import com.ngbilling.core.server.persistence.dto.payment.PaymentMethodTypeDTO;
 import com.ngbilling.core.server.persistence.dto.user.CustomerDTO;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
 import com.ngbilling.core.server.service.metafield.MetaFieldService;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.*;
 
 /**
  * Helper class for working with custom fields. It is needed because some classes

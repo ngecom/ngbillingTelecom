@@ -16,13 +16,20 @@
 
 package com.ngbilling.core.server.persistence.dto.order;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
 import com.ngbilling.core.payload.request.order.ApplyToOrder;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
 import com.ngbilling.core.server.util.ServerConstants;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 
 /**
  * @author Alexander Aksenov

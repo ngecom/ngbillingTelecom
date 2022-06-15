@@ -1,10 +1,10 @@
 package com.ngbilling.core.payload.request.payment;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
 import static org.springframework.util.ObjectUtils.nullSafeEquals;
 import static org.springframework.util.ObjectUtils.nullSafeHashCode;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 public class PaymentInformationWS implements Serializable {
     /**

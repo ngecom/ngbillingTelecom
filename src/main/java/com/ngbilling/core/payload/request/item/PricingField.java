@@ -23,7 +23,6 @@
  */
 package com.ngbilling.core.payload.request.item;
 
-import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -33,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author Emil

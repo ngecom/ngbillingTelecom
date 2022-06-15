@@ -1,5 +1,9 @@
 package com.ngbilling.core.server.persistence.dto.report.parameter;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 /*
 jBilling - The Enterprise Open Source Billing System
 Copyright (C) 2003-2011 Enterprise jBilling Software Ltd. and Emiliano Conde
@@ -26,10 +30,6 @@ You may download the latest source from webdataconsulting.github.io.
 
 
 import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
-
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
 
 /**
  * IntegerReportParameterDTO

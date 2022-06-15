@@ -1,5 +1,14 @@
 package com.ngbilling.core.facade.impl;
 
+import java.util.Date;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
 import com.ngbilling.core.facade.UserFacade;
 import com.ngbilling.core.payload.request.user.CompanyUserDetails;
 import com.ngbilling.core.payload.request.user.UserWS;
@@ -8,14 +17,6 @@ import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
 import com.ngbilling.core.server.service.user.UserService;
 import com.ngbilling.core.server.service.util.UtilService;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Component
 public class UserFacadeImpl implements UserFacade {

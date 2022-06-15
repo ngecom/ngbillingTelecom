@@ -24,15 +24,25 @@
 package com.ngbilling.core.server.persistence.dto.util;
 
 
-import com.ngbilling.core.server.persistence.dto.notification.NotificationMessageDTO;
-import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import com.ngbilling.core.server.persistence.dto.notification.NotificationMessageDTO;
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 
 @Entity
 @Table(name = "language")

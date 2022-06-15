@@ -16,14 +16,14 @@
 
 package com.ngbilling.core.payload.request.configuration;
 
-import com.ngbilling.core.server.persistence.dto.mediation.MediationOrderMap;
-import com.ngbilling.core.server.persistence.dto.mediation.MediationProcess;
-import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.ngbilling.core.server.persistence.dto.mediation.MediationOrderMap;
+import com.ngbilling.core.server.persistence.dto.mediation.MediationProcess;
+import com.ngbilling.core.server.persistence.dto.mediation.MediationRecordDTO;
 
 /**
  * MediationProcessWS

@@ -24,15 +24,17 @@
 
 package com.ngbilling.core.payload.request.util;
 
-import com.ngbilling.core.common.util.Util;
-import org.apache.commons.lang3.StringUtils;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.ngbilling.core.common.util.Util;
 
 /**
  * CurrencyWS

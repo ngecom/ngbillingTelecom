@@ -1,5 +1,8 @@
 package com.ngbilling.core.server.persistence.dao.metafield.impl;
 
+import java.util.Date;
+import java.util.List;
+
 import com.ngbilling.core.payload.request.metafield.DataType;
 import com.ngbilling.core.payload.request.metafield.MetaFieldType;
 import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
@@ -7,9 +10,6 @@ import com.ngbilling.core.server.persistence.dao.metafield.MetaFieldCustomDAO;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
-
-import java.util.Date;
-import java.util.List;
 
 public class MetaFieldCustomDAOImpl extends AbstractJpaDAO<MetaField> implements MetaFieldCustomDAO {
 

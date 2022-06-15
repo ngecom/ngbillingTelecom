@@ -1,5 +1,19 @@
 package com.ngbilling.core.server.service.util.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ngbilling.core.common.exception.NoSuchElementFoundException;
 import com.ngbilling.core.payload.request.metafield.DataType;
 import com.ngbilling.core.payload.request.metafield.MetaFieldType;
@@ -24,7 +38,14 @@ import com.ngbilling.core.server.persistence.dao.pluggableTask.PluggableTaskType
 import com.ngbilling.core.server.persistence.dao.process.BillingProcessConfigurationDAO;
 import com.ngbilling.core.server.persistence.dao.report.ReportDAO;
 import com.ngbilling.core.server.persistence.dao.user.AccountTypeDAO;
-import com.ngbilling.core.server.persistence.dao.util.*;
+import com.ngbilling.core.server.persistence.dao.util.CountryDAO;
+import com.ngbilling.core.server.persistence.dao.util.CurrencyDAO;
+import com.ngbilling.core.server.persistence.dao.util.EnumerationDAO;
+import com.ngbilling.core.server.persistence.dao.util.EnumerationValueDAO;
+import com.ngbilling.core.server.persistence.dao.util.InternationalDescriptionDAO;
+import com.ngbilling.core.server.persistence.dao.util.JbillingTableDAO;
+import com.ngbilling.core.server.persistence.dao.util.LanguageDAO;
+import com.ngbilling.core.server.persistence.dao.util.PreferenceDAO;
 import com.ngbilling.core.server.persistence.dto.audit.EventLogAPIDTO;
 import com.ngbilling.core.server.persistence.dto.invoice.InvoiceDeliveryMethodDTO;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
@@ -48,18 +69,20 @@ import com.ngbilling.core.server.persistence.dto.user.AccountTypeDTO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
 import com.ngbilling.core.server.persistence.dto.user.MainSubscriptionDTO;
 import com.ngbilling.core.server.persistence.dto.user.UserDTO;
-import com.ngbilling.core.server.persistence.dto.util.*;
+import com.ngbilling.core.server.persistence.dto.util.CountryDTO;
+import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import com.ngbilling.core.server.persistence.dto.util.EnumerationDTO;
+import com.ngbilling.core.server.persistence.dto.util.EnumerationValueDTO;
+import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionDTO;
+import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionId;
+import com.ngbilling.core.server.persistence.dto.util.JbillingTable;
+import com.ngbilling.core.server.persistence.dto.util.LanguageDTO;
+import com.ngbilling.core.server.persistence.dto.util.PreferenceDTO;
+import com.ngbilling.core.server.persistence.dto.util.PreferenceTypeDTO;
 import com.ngbilling.core.server.service.util.UtilService;
 import com.ngbilling.core.server.util.ServerConstants;
 import com.ngbilling.core.server.validator.metafield.ValidationRuleType;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @Service
 public class UtilServiceImpl implements UtilService {

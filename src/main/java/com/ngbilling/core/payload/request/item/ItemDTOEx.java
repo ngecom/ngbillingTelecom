@@ -24,20 +24,28 @@ You may download the latest source from webdataconsulting.github.io.
 
 package com.ngbilling.core.payload.request.item;
 
-import com.ngbilling.core.common.util.Util;
-import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
-import com.ngbilling.core.server.util.ServerConstants;
-import com.ngbilling.core.server.util.validator.ItemPrices;
-import com.ngbilling.core.server.util.validator.ItemTypes;
-import org.hibernate.validator.constraints.Range;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.util.*;
+
+import org.hibernate.validator.constraints.Range;
+
+import com.ngbilling.core.common.util.Util;
+import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
+import com.ngbilling.core.server.util.ServerConstants;
+import com.ngbilling.core.server.util.validator.ItemPrices;
+import com.ngbilling.core.server.util.validator.ItemTypes;
 
 public class ItemDTOEx {
 

@@ -1,11 +1,18 @@
 package com.ngbilling.core.server.persistence.dto.user;
 
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
+import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
 
 /**
  * Account Information Type entity.

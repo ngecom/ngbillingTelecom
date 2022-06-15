@@ -1,7 +1,5 @@
 package com.ngbilling.core.config;
 
-import com.ngbilling.core.common.util.CommonConstants;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,6 +12,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.ngbilling.core.common.util.CommonConstants;
+import com.zaxxer.hikari.HikariDataSource;
 
 
 @Configuration

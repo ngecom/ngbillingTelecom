@@ -28,9 +28,9 @@
  */
 package com.ngbilling.core.common.util;
 
-import com.ngbilling.core.server.util.ServerConstants;
-
 import java.util.GregorianCalendar;
+
+import com.ngbilling.core.server.util.ServerConstants;
 
 /**
  * @author emilc

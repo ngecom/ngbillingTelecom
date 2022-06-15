@@ -15,11 +15,12 @@
  */
 package com.ngbilling.core.server.persistence.dto.mediation;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 /*
  * Only needed because Order is not JPA, but an entity. Once that table is

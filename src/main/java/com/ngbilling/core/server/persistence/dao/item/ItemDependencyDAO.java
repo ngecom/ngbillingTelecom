@@ -1,9 +1,10 @@
 package com.ngbilling.core.server.persistence.dao.item;
 
-import com.ngbilling.core.server.persistence.dto.item.ItemDependencyDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+
+import com.ngbilling.core.server.persistence.dto.item.ItemDependencyDTO;
 
 @NoRepositoryBean
 public interface ItemDependencyDAO extends JpaRepository<ItemDependencyDTO, Integer> {

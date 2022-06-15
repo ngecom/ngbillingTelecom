@@ -1,18 +1,20 @@
 package com.ngbilling.core.payload.request.metafield;
 
 
-import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
-import com.ngbilling.core.server.persistence.dto.util.EntityType;
-import com.ngbilling.core.server.util.ServerConstants;
-import org.apache.commons.collections.FactoryUtils;
-import org.apache.commons.collections.ListUtils;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
+import org.apache.commons.collections.FactoryUtils;
+import org.apache.commons.collections.ListUtils;
+
+import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import com.ngbilling.core.server.util.ServerConstants;
 
 
 public class MetaFieldGroupWS implements Serializable {

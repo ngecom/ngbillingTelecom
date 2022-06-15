@@ -1,10 +1,10 @@
 package com.ngbilling.core.payload.request.process;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 public class PeriodOfTime implements Serializable {
 

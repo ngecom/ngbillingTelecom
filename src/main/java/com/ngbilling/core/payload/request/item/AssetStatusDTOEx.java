@@ -15,8 +15,9 @@
  */
 package com.ngbilling.core.payload.request.item;
 
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+
+import javax.validation.constraints.Size;
 
 /**
  * Version of AssetStatusDTO which is safe for external communication.

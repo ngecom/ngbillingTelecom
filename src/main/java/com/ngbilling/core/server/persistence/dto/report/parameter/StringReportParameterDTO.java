@@ -1,10 +1,10 @@
 package com.ngbilling.core.server.persistence.dto.report.parameter;
 
-import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+
+import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
 
 @Entity
 @DiscriminatorValue("string")

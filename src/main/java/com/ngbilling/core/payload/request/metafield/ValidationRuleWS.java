@@ -1,12 +1,13 @@
 package com.ngbilling.core.payload.request.metafield;
 
-import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import javax.validation.constraints.NotNull;
+
+import com.ngbilling.core.payload.request.util.InternationalDescriptionWS;
 
 
 /**

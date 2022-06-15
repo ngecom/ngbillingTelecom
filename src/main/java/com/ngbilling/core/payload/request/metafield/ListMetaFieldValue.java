@@ -1,11 +1,18 @@
 package com.ngbilling.core.payload.request.metafield;
 
-import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
-import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Transient;
+
+import com.ngbilling.core.server.persistence.dto.metafield.MetaField;
+import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldValue;
 
 @Entity
 @DiscriminatorValue("list")

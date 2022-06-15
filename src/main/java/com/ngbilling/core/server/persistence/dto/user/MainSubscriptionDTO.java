@@ -23,12 +23,18 @@ You may download the latest source from webdataconsulting.github.io.
  */
 package com.ngbilling.core.server.persistence.dto.user;
 
-import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
-import com.ngbilling.core.server.persistence.dto.order.OrderPeriodDTO;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import com.ngbilling.core.server.persistence.dao.order.OrderPeriodDAO;
+import com.ngbilling.core.server.persistence.dto.order.OrderPeriodDTO;
 
 /**
  * @author Panche.Isajeski

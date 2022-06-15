@@ -1,12 +1,12 @@
 package com.ngbilling.core.server.service.metafield;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.ngbilling.core.payload.request.metafield.MetaFieldGroupWS;
 import com.ngbilling.core.payload.request.user.AccountInformationTypeWS;
 import com.ngbilling.core.server.persistence.dto.metafield.MetaFieldGroup;
 import com.ngbilling.core.server.persistence.dto.util.EntityType;
-
-import java.util.Collection;
-import java.util.List;
 
 public interface MetaFieldGroupService {
 

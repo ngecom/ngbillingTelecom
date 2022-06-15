@@ -1,12 +1,13 @@
 package com.ngbilling.core.server.persistence.dao.item.impl;
 
-import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
-import com.ngbilling.core.server.persistence.dao.item.AssetCustomDAO;
-import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
+import java.util.List;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
+import com.ngbilling.core.server.persistence.dao.item.AssetCustomDAO;
+import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
 
 public class AssetCustomDAOImpl extends AbstractJpaDAO<AssetDTO> implements AssetCustomDAO {
 

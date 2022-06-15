@@ -1,8 +1,9 @@
 package com.ngbilling.core.server.util.validator;
 
+import java.io.Serializable;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.

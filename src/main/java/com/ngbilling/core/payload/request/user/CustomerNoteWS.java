@@ -1,9 +1,10 @@
 package com.ngbilling.core.payload.request.user;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class CustomerNoteWS implements Serializable {
     /**

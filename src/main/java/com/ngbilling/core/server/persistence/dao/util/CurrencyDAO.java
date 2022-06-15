@@ -1,11 +1,12 @@
 package com.ngbilling.core.server.persistence.dao.util;
 
-import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
 
 @Repository
 public interface CurrencyDAO extends JpaRepository<CurrencyDTO, Integer>, CurrencyCustomDAO {

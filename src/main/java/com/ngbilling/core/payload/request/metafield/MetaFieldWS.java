@@ -1,11 +1,12 @@
 package com.ngbilling.core.payload.request.metafield;
 
-import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import java.io.Serializable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
 
 public class MetaFieldWS implements Serializable {
 

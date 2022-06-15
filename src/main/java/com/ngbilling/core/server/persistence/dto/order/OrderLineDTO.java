@@ -24,6 +24,38 @@
 package com.ngbilling.core.server.persistence.dto.order;
 
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ngbilling.core.common.util.CommonConstants;
 import com.ngbilling.core.common.util.FormatLogger;
 import com.ngbilling.core.server.persistence.dao.item.ItemDAO;
@@ -31,15 +63,6 @@ import com.ngbilling.core.server.persistence.dao.order.OrderLineTypeDAO;
 import com.ngbilling.core.server.persistence.dto.item.AssetAssignmentDTO;
 import com.ngbilling.core.server.persistence.dto.item.AssetDTO;
 import com.ngbilling.core.server.persistence.dto.item.ItemDTO;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.*;
 
 @Entity
 @Table(name = "order_line")

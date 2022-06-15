@@ -24,11 +24,11 @@ along with jbilling.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.ngbilling.core.common.util;
 
-import com.ngbilling.core.server.persistence.dto.util.PersistentEnum;
-import com.ngbilling.core.server.util.ServerConstants;
-
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+
+import com.ngbilling.core.server.persistence.dto.util.PersistentEnum;
+import com.ngbilling.core.server.util.ServerConstants;
 
 /**
  * Utility class for working with period units. Can be persisted by Hibernate.

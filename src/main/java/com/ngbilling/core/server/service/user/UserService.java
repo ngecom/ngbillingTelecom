@@ -1,12 +1,18 @@
 package com.ngbilling.core.server.service.user;
 
-import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
-import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
-import com.ngbilling.core.server.persistence.dto.user.*;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+
+import com.ngbilling.core.payload.request.user.MainSubscriptionWS;
+import com.ngbilling.core.server.persistence.dto.contact.ContactDTO;
+import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
+import com.ngbilling.core.server.persistence.dto.user.MainSubscriptionDTO;
+import com.ngbilling.core.server.persistence.dto.user.RefreshToken;
+import com.ngbilling.core.server.persistence.dto.user.RoleDTO;
+import com.ngbilling.core.server.persistence.dto.user.SubscriberStatusDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import com.ngbilling.core.server.persistence.dto.user.UserStatusDTO;
 
 public interface UserService {
 

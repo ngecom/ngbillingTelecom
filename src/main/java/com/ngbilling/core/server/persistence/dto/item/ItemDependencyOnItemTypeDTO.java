@@ -23,9 +23,14 @@ You may download the latest source from webdataconsulting.github.io.
 */
 package com.ngbilling.core.server.persistence.dto.item;
 
-import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
-import javax.persistence.*;
+import com.ngbilling.core.server.persistence.dto.util.ItemDependencyType;
 
 /**
  * Class represents a dependency of an ItemDTO on an ItemTypeDTO.

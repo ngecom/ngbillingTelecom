@@ -24,13 +24,24 @@
 
 package com.ngbilling.core.server.persistence.dto.pluggableTask;
 
-import com.ngbilling.core.common.util.FormatLogger;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
+import com.ngbilling.core.common.util.FormatLogger;
 
 @Entity
 @Table(name = "pluggable_task_parameter")

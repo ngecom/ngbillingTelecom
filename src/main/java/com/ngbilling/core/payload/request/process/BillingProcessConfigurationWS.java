@@ -24,12 +24,13 @@
 
 package com.ngbilling.core.payload.request.process;
 
-import com.ngbilling.core.server.util.validator.DateBetween;
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Date;
+
+import com.ngbilling.core.server.util.validator.DateBetween;
 
 
 /**

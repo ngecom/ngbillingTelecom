@@ -16,12 +16,12 @@
 
 package com.ngbilling.core.server.persistence.dto.mediation;
 
-import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
-import com.ngbilling.core.server.util.ServerConstants;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
+
+import com.ngbilling.core.server.persistence.dto.util.AbstractGenericStatus;
+import com.ngbilling.core.server.util.ServerConstants;
 
 @Entity
 @DiscriminatorValue("mediation_record_status")

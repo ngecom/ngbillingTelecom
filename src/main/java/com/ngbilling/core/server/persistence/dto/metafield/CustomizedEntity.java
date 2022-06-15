@@ -24,15 +24,17 @@
 
 package com.ngbilling.core.server.persistence.dto.metafield;
 
-import com.ngbilling.core.server.service.metafield.MetaFieldService;
-import com.ngbilling.core.server.util.metafield.MetaContent;
-import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.Transient;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.Transient;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ngbilling.core.server.service.metafield.MetaFieldService;
+import com.ngbilling.core.server.util.metafield.MetaContent;
+import com.ngbilling.core.server.util.metafield.MetaFieldHelper;
 
 /**
  * Common class for extending by entities that can contain meta-fields. This class enforces a set

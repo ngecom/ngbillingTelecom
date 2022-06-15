@@ -1,12 +1,12 @@
 package com.ngbilling.core.server.service.process.impl;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import com.ngbilling.core.common.util.CalendarUtils;
 import com.ngbilling.core.common.util.MapPeriodToCalendar;
 import com.ngbilling.core.server.persistence.dto.process.BillingProcessDTO;
 import com.ngbilling.core.server.service.process.BillingProcessService;
-
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class BillingProcessServiceImpl implements BillingProcessService {
 

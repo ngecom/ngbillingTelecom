@@ -1,11 +1,11 @@
 package com.ngbilling.core.server.persistence.dao.util.impl;
 
+import javax.persistence.TypedQuery;
+
 import com.ngbilling.core.server.persistence.dao.AbstractJpaDAO;
 import com.ngbilling.core.server.persistence.dao.util.CurrencyCustomDAO;
 import com.ngbilling.core.server.persistence.dto.order.OrderDTO;
 import com.ngbilling.core.server.persistence.dto.util.CurrencyDTO;
-
-import javax.persistence.TypedQuery;
 
 public class CurrencyCustomDAOImpl extends AbstractJpaDAO<CurrencyDTO> implements CurrencyCustomDAO {
 

@@ -1,8 +1,5 @@
 package com.ngbilling.core.config;
 
-import com.ngbilling.core.security.AuthEntryPointJwt;
-import com.ngbilling.core.security.AuthTokenFilter;
-import com.ngbilling.core.server.service.user.impl.CompanyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +13,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.ngbilling.core.security.AuthEntryPointJwt;
+import com.ngbilling.core.security.AuthTokenFilter;
+import com.ngbilling.core.server.service.user.impl.CompanyUserDetailsService;
 
 
 @Configuration

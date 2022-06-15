@@ -1,8 +1,9 @@
 package com.ngbilling.core.payload.request.item;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 /**
  * Version of ItemDependencyDTO safe for WS.

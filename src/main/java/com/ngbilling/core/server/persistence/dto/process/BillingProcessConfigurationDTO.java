@@ -23,14 +23,29 @@
  */
 package com.ngbilling.core.server.persistence.dto.process;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ngbilling.core.payload.request.process.BillingProcessConfigurationWS;
 import com.ngbilling.core.server.persistence.dao.process.PeriodUnitDAO;
 import com.ngbilling.core.server.persistence.dto.user.CompanyDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "billing_process_configuration")

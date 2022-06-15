@@ -1,11 +1,12 @@
 package com.ngbilling.core.payload.request.user;
 
 
-import com.ngbilling.core.payload.request.metafield.MetaFieldGroupWS;
-import com.ngbilling.core.server.persistence.dto.util.EntityType;
+import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+
+import com.ngbilling.core.payload.request.metafield.MetaFieldGroupWS;
+import com.ngbilling.core.server.persistence.dto.util.EntityType;
 
 
 public class AccountInformationTypeWS extends MetaFieldGroupWS implements Serializable {

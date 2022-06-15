@@ -1,11 +1,12 @@
 package com.ngbilling.core.server.persistence.dao;
 
-import com.ngbilling.core.common.util.CommonConstants;
+import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
-import java.util.List;
+
+import com.ngbilling.core.common.util.CommonConstants;
 
 public abstract class AbstractJpaDAO<T extends Serializable> {
 

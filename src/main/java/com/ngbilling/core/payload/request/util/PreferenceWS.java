@@ -23,9 +23,10 @@
  */
 package com.ngbilling.core.payload.request.util;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 
 public class PreferenceWS implements Serializable {

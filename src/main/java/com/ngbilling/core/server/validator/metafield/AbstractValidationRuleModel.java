@@ -1,11 +1,11 @@
 package com.ngbilling.core.server.validator.metafield;
 
-import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
-import com.ngbilling.core.server.util.pricing.AttributeDefinition;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import com.ngbilling.core.server.persistence.dto.metafield.ValidationRule;
+import com.ngbilling.core.server.util.pricing.AttributeDefinition;
 
 /**
  * Abstraction of the validation rule model

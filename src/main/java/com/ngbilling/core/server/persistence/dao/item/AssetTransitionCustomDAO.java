@@ -1,8 +1,8 @@
 package com.ngbilling.core.server.persistence.dao.item;
 
-import com.ngbilling.core.server.persistence.dto.item.AssetTransitionDTO;
-
 import java.util.List;
+
+import com.ngbilling.core.server.persistence.dto.item.AssetTransitionDTO;
 
 public interface AssetTransitionCustomDAO {
 

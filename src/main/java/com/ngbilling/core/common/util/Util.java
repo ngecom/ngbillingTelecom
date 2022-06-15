@@ -24,14 +24,15 @@
 
 package com.ngbilling.core.common.util;
 
-import com.ngbilling.core.server.util.ServerConstants;
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.ngbilling.core.server.util.ServerConstants;
 
 /**
  * Client miscellaneous utility functions

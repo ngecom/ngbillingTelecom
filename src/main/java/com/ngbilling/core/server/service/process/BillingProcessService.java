@@ -1,8 +1,8 @@
 package com.ngbilling.core.server.service.process;
 
-import com.ngbilling.core.server.persistence.dto.process.BillingProcessDTO;
-
 import java.util.Date;
+
+import com.ngbilling.core.server.persistence.dto.process.BillingProcessDTO;
 
 public interface BillingProcessService {
 

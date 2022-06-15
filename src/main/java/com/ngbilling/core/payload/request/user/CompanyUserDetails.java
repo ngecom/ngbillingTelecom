@@ -24,12 +24,13 @@
 
 package com.ngbilling.core.payload.request.user;
 
-import com.ngbilling.core.server.persistence.dto.user.UserDTO;
+import java.util.Collection;
+import java.util.Locale;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Collection;
-import java.util.Locale;
+import com.ngbilling.core.server.persistence.dto.user.UserDTO;
 
 /**
  * A spring security {@link org.springframework.security.core.userdetails.UserDetails}

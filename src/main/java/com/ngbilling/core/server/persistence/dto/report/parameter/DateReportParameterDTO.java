@@ -1,11 +1,12 @@
 package com.ngbilling.core.server.persistence.dto.report.parameter;
 
-import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
+import java.util.Date;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.util.Date;
+
+import com.ngbilling.core.server.persistence.dto.report.ReportParameterDTO;
 
 
 /**

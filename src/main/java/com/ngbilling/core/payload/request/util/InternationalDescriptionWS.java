@@ -25,9 +25,9 @@
 package com.ngbilling.core.payload.request.util;
 
 
-import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionDTO;
-
 import java.io.Serializable;
+
+import com.ngbilling.core.server.persistence.dto.util.InternationalDescriptionDTO;
 
 /**
  * InternationalDescriptionWS
